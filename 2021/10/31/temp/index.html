@@ -21,23 +21,31 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"shain001.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-<meta property="og:type" content="website">
-<meta property="og:title" content="Shain&#39;s Blogs">
-<meta property="og:url" content="https://shain001.github.io/index.html">
+<meta name="description" content="Spring Foundation(1) – IoC and IoC Container1. What is IoC?IoC (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high lev">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Foundation(1) -- IoC and IoC Container">
+<meta property="og:url" content="https://shain001.github.io/2021/10/31/temp/index.html">
 <meta property="og:site_name" content="Shain&#39;s Blogs">
+<meta property="og:description" content="Spring Foundation(1) – IoC and IoC Container1. What is IoC?IoC (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high lev">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-31T11:27:38.000Z">
+<meta property="article:modified_time" content="2021-11-01T06:41:05.547Z">
 <meta property="article:author" content="Shain">
+<meta property="article:tag" content="IoC">
+<meta property="article:tag" content="IoC Container">
+<meta property="article:tag" content="BeanFactory">
+<meta property="article:tag" content="ApplicationContext">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://shain001.github.io/">
+<link rel="canonical" href="https://shain001.github.io/2021/10/31/temp/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://shain001.github.io/2021/10/31/temp/","path":"2021/10/31/temp/","title":"Spring Foundation(1) -- IoC and IoC Container"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Shain's Blogs</title>
+<title>Spring Foundation(1) -- IoC and IoC Container | Shain's Blogs</title>
   
 
 
@@ -103,7 +111,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -116,6 +124,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Foundation-1-%E2%80%93-IoC-and-IoC-Container"><span class="nav-number">1.</span> <span class="nav-text">Spring Foundation(1) – IoC and IoC Container</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-What-is-IoC"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. What is IoC?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Why-we-need-it"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. Why we need it</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-How-does-it-work"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. How does it work?</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#IoC-Service-Provider"><span class="nav-number">1.0.3.0.1.</span> <span class="nav-text">IoC Service Provider</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-IoC-Container"><span class="nav-number">1.0.4.</span> <span class="nav-text">4. IoC Container</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#BeanFactory-VS-ApplicationContext"><span class="nav-number">1.0.4.0.1.</span> <span class="nav-text">BeanFactory VS ApplicationContext</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -178,16 +187,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/10/31/temp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -200,9 +210,9 @@
       <meta itemprop="name" content="Shain's Blogs">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/31/temp/" class="post-title-link" itemprop="url">Spring Foundation(1) -- IoC and IoC Container</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Spring Foundation(1) -- IoC and IoC Container
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -241,7 +251,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="Spring-Foundation-1-–-IoC-and-IoC-Container"><a href="#Spring-Foundation-1-–-IoC-and-IoC-Container" class="headerlink" title="Spring Foundation(1) – IoC and IoC Container"></a>Spring Foundation(1) – IoC and IoC Container</h1><h3 id="1-What-is-IoC"><a href="#1-What-is-IoC" class="headerlink" title="1. What is IoC?"></a>1. What is IoC?</h3><p><code>IoC</code> (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high level”. </p>
+        <h1 id="Spring-Foundation-1-–-IoC-and-IoC-Container"><a href="#Spring-Foundation-1-–-IoC-and-IoC-Container" class="headerlink" title="Spring Foundation(1) – IoC and IoC Container"></a>Spring Foundation(1) – IoC and IoC Container</h1><h3 id="1-What-is-IoC"><a href="#1-What-is-IoC" class="headerlink" title="1. What is IoC?"></a>1. What is IoC?</h3><p><code>IoC</code> (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high level”. </p>
 <p>In software engineering, this abstract concept normally just refers to let a “third party” to help us <code>**create objects and manage their dependencies**</code> , in which context the so called third party is  the <code>IoC Container</code> and the process that IoC Container helps to create and manage objects is called <code>Dependency Injection(DI)</code>.</p>
 <h3 id="2-Why-we-need-it"><a href="#2-Why-we-need-it" class="headerlink" title="2. Why we need it"></a>2. Why we need it</h3><p>This might be confusing, so let’s see an example to have a clearer understanding. Imagine one scenario that you have 5 classes A - E, where Class A depends on Class B and Class B depends on Class C and so on.  Let’s say Class E has a field e, so in Class D there should be a line of code <code>new ClassE(&#39;valueOfe&#39;)</code>, then in Class C, still you have to have a line of code saying <code>new ClassD(&#39;valueOfe&#39;)</code> right? Same thing happens in Class A and B.  To be more specific:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Class E&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> e;</span><br><span class="line">    E(<span class="keyword">int</span> e)&#123;</span><br><span class="line">        <span class="keyword">this</span>.e = e;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Class D&#123;</span><br><span class="line">	<span class="keyword">private</span> E objectE;</span><br><span class="line">    D(<span class="keyword">int</span> valueOfIntE)&#123;</span><br><span class="line">        <span class="keyword">this</span>.objectE = <span class="keyword">new</span> E(valueOfIntE);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Class C&#123;</span><br><span class="line">    <span class="keyword">private</span> D objectD;</span><br><span class="line">    C(<span class="keyword">int</span> valueofIntE)&#123;</span><br><span class="line">        <span class="keyword">this</span>.objectD = <span class="keyword">new</span> D(valueOfIntE);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
@@ -263,7 +273,6 @@
 <p>BeanFactory uses <code>Lazy-load</code> strategy, which means <strong>it initiates object and inject dependencies to it only when this object is needed</strong>. This means <strong>BeanFactory has a faster speed when the container is initiated.</strong>  Therefore, <strong>in the situation where the resource is limited and there is no strict requirement about the functionalities, BeanFactory would be a good choice.</strong></p>
 <p>In contrast, ApplicationContext has more functionalities than BeanFactory. <strong>It indirectly inherent from the BeanFactory and thus has all functionalities that BeanFactory has, and provide more functionalities such as Event Publish etc.</strong>  Unlike BeanFactory, <strong>ApplicationContext initiate all objects and inject dependencies to them as soon as the container is initiated, which means the initiating speed is lower.</strong>  <strong>It fits the situation where you have enough resource and has needs more functionalities.</strong></p>
 
-      
     </div>
 
     
@@ -271,82 +280,24 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
+          <div class="post-tags">
+              <a href="/tags/IoC/" rel="tag"># IoC</a>
+              <a href="/tags/IoC-Container/" rel="tag"># IoC Container</a>
+              <a href="/tags/BeanFactory/" rel="tag"># BeanFactory</a>
+              <a href="/tags/ApplicationContext/" rel="tag"># ApplicationContext</a>
+          </div>
 
+        
 
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/10/30/test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.jpg">
-      <meta itemprop="name" content="Shain">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shain's Blogs">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/30/test/" class="post-title-link" itemprop="url">test</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-10-30 00:52:02 / Modified: 02:12:51" itemprop="dateCreated datePublished" datetime="2021-10-30T00:52:02+11:00">2021-10-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/for-leihee/" itemprop="url" rel="index"><span itemprop="name">for_leihee</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Thank my dear dear dear favorite girl <a target="_blank" rel="noopener" href="https://leihehehe.github.io/">Leiheee’s</a> help during the build of this blog❤❤❤❤😍😍😍😍🐱‍🐉🐱‍🐉🐱‍🐉🐱‍🐉.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/30/test/" rel="prev" title="test">
+                  <i class="fa fa-chevron-left"></i> test
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
@@ -355,6 +306,8 @@
 
 
 
+
+    <div class="comments gitalk-container"></div>
 </div>
   </main>
 
@@ -396,7 +349,7 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Shain001","repo":"shain001.github.io","client_id":"0745fda8ca1ea837efeb","client_secret":"a82f9499fab935c4c98040bc800fd7b52a439841","admin_user":"Shain001","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"d1546d731a9f30cc80127d57142a482b"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Shain001","repo":"shain001.github.io","client_id":"0745fda8ca1ea837efeb","client_secret":"a82f9499fab935c4c98040bc800fd7b52a439841","admin_user":"Shain001","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"498e619f9f8e7b2f0b3baad4d0ebc63d"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>
