@@ -21,23 +21,28 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"shain001.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-<meta property="og:type" content="website">
-<meta property="og:title" content="Shain&#39;s Blogs">
-<meta property="og:url" content="https://shain001.github.io/index.html">
+<meta name="description" content="算法思想及排序算法的实现与对比循环和递归​    递归即大问题分解成小问题，但递归通常效率较低，通常表现为时间， 空间 均效率低下。  ​    递归时由于重复调用方法自身，每次调用方法时皆需在内存栈中分配空间以保存参数，返回地址及临时变量 因此需大量空间，而压栈弹栈皆需要时间。 动态规划​    如果某个问题可以分解成小问题，并且所问为求最优解，则通常可用动态规划。  ​    分析动态规划时的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法思想及排序算法的实现与对比">
+<meta property="og:url" content="https://shain001.github.io/2021/10/30/%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/index.html">
 <meta property="og:site_name" content="Shain&#39;s Blogs">
+<meta property="og:description" content="算法思想及排序算法的实现与对比循环和递归​    递归即大问题分解成小问题，但递归通常效率较低，通常表现为时间， 空间 均效率低下。  ​    递归时由于重复调用方法自身，每次调用方法时皆需在内存栈中分配空间以保存参数，返回地址及临时变量 因此需大量空间，而压栈弹栈皆需要时间。 动态规划​    如果某个问题可以分解成小问题，并且所问为求最优解，则通常可用动态规划。  ​    分析动态规划时的">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-29T13:52:02.000Z">
+<meta property="article:modified_time" content="2021-11-30T05:19:30.441Z">
 <meta property="article:author" content="Shain">
+<meta property="article:tag" content="sorting algorithm &amp; algorithm general">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://shain001.github.io/">
+<link rel="canonical" href="https://shain001.github.io/2021/10/30/%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://shain001.github.io/2021/10/30/%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/","path":"2021/10/30/几种常见算法思想/","title":"算法思想及排序算法的实现与对比"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Shain's Blogs</title>
+<title>算法思想及排序算法的实现与对比 | Shain's Blogs</title>
   
 
 
@@ -103,7 +108,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -116,6 +121,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3%E5%8F%8A%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B8%8E%E5%AF%B9%E6%AF%94"><span class="nav-number">1.</span> <span class="nav-text">算法思想及排序算法的实现与对比</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-number">1.0.0.1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E5%92%8C%E9%80%92%E5%BD%92"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">循环和递归</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">动态规划</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%B4%AA%E5%BF%83"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">贪心</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9B%9E%E6%BA%AF"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">回溯</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">查找算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">顺序查找</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">二分查找</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E6%9F%A5%E6%89%BE"><span class="nav-number">2.0.0.3.</span> <span class="nav-text">哈希查找</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%8E%92%E5%BA%8F%E6%A0%91%E6%9F%A5%E6%89%BE%EF%BC%88%E5%8D%B3%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%EF%BC%89"><span class="nav-number">2.0.0.4.</span> <span class="nav-text">二叉排序树查找（即二叉查找树）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Code-and-Commitment"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">Code and Commitment:</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -178,178 +184,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/10/31/temp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.jpg">
-      <meta itemprop="name" content="Shain">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shain's Blogs">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/31/temp/" class="post-title-link" itemprop="url">Spring Foundation(1) -- IoC and IoC Container</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-10-31 22:27:38" itemprop="dateCreated datePublished" datetime="2021-10-31T22:27:38+11:00">2021-10-31</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-11-01 17:46:32" itemprop="dateModified" datetime="2021-11-01T17:46:32+11:00">2021-11-01</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Spring-Foundation-1-–-IoC-and-IoC-Container"><a href="#Spring-Foundation-1-–-IoC-and-IoC-Container" class="headerlink" title="Spring Foundation(1) – IoC and IoC Container"></a>Spring Foundation(1) – IoC and IoC Container</h1><h3 id="1-What-is-IoC"><a href="#1-What-is-IoC" class="headerlink" title="1. What is IoC?"></a>1. What is IoC?</h3><p><code>IoC</code> (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high level”. </p>
-<p>In software engineering, this abstract concept normally just refers to let a “third party” to help us <code>create objects and manage their dependencies</code> , in which context the so called third party is  the <code>IoC Container</code> and the process that IoC Container helps to create and manage objects is called <code>Dependency Injection(DI)</code>.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/10/31/temp/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/10/30/test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/head.jpg">
-      <meta itemprop="name" content="Shain">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shain's Blogs">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/30/test/" class="post-title-link" itemprop="url">test</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-10-30 00:52:02 / Modified: 02:12:51" itemprop="dateCreated datePublished" datetime="2021-10-30T00:52:02+11:00">2021-10-30</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/for-leihee/" itemprop="url" rel="index"><span itemprop="name">for_leihee</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Thank my dear dear dear favorite girl <a target="_blank" rel="noopener" href="https://leihehehe.github.io/">Leiheee’s</a> help during the build of this blog❤❤❤❤😍😍😍😍🐱‍🐉🐱‍🐉🐱‍🐉🐱‍🐉.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/10/30/%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -362,9 +207,9 @@
       <meta itemprop="name" content="Shain's Blogs">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/30/%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/" class="post-title-link" itemprop="url">算法思想及排序算法的实现与对比</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          算法思想及排序算法的实现与对比
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -403,7 +248,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="算法思想及排序算法的实现与对比"><a href="#算法思想及排序算法的实现与对比" class="headerlink" title="算法思想及排序算法的实现与对比"></a>算法思想及排序算法的实现与对比</h2><h5 id=""><a href="#" class="headerlink" title=""></a></h5><h5 id="循环和递归"><a href="#循环和递归" class="headerlink" title="循环和递归"></a>循环和递归</h5><p>​    递归即大问题分解成小问题，但递归通常效率较低，通常表现为<code>时间</code>， <code>空间</code> 均效率低下。 </p>
+        <h2 id="算法思想及排序算法的实现与对比"><a href="#算法思想及排序算法的实现与对比" class="headerlink" title="算法思想及排序算法的实现与对比"></a>算法思想及排序算法的实现与对比</h2><h5 id=""><a href="#" class="headerlink" title=""></a></h5><h5 id="循环和递归"><a href="#循环和递归" class="headerlink" title="循环和递归"></a>循环和递归</h5><p>​    递归即大问题分解成小问题，但递归通常效率较低，通常表现为<code>时间</code>， <code>空间</code> 均效率低下。 </p>
 <p>​    递归时由于重复调用方法自身，每次调用方法时皆需在内存栈中分配空间以保存参数，返回地址及临时变量 因此需大量空间，而压栈弹栈皆需要时间。</p>
 <h5 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h5><p>​    如果某个问题可以分解成小问题，并且所问为求最优解，则通常可用动态规划。 </p>
 <p>​    分析动态规划时的思考方式与递归类似，因为都是大问题分解小问题。 </p>
@@ -437,7 +282,6 @@
 <p>时间复杂度总是O(nlogn)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span>(<span class="params">nums</span>) -&gt; <span class="type">List</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        归并即先将数组持续对半分，直到分解成单个元素</span></span><br><span class="line"><span class="string">        再依次进行merge</span></span><br><span class="line"><span class="string">        典型的分治思想</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">merge</span>(<span class="params">left: <span class="type">List</span>, right: <span class="type">List</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        2021-11-29</span></span><br><span class="line"><span class="string">        错误代码：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        temp_result = []</span></span><br><span class="line"><span class="string">        while len(n1) != 0 and len(n2) != 0:</span></span><br><span class="line"><span class="string">            # 错误1.1：</span></span><br><span class="line"><span class="string">            en1 = n1.pop(0)</span></span><br><span class="line"><span class="string">            en2 = n2.pop(0)</span></span><br><span class="line"><span class="string">            if en1 &gt; en2:</span></span><br><span class="line"><span class="string">                # 错误1.2：</span></span><br><span class="line"><span class="string">                temp_result.append(en2)</span></span><br><span class="line"><span class="string">                temp_result.append(en1)</span></span><br><span class="line"><span class="string">            else:</span></span><br><span class="line"><span class="string">                # 错误1：</span></span><br><span class="line"><span class="string">                temp_result.append(en1)</span></span><br><span class="line"><span class="string">                temp_result.append(en2)</span></span><br><span class="line"><span class="string">        # 错误2</span></span><br><span class="line"><span class="string">        temp_result.append(en1)</span></span><br><span class="line"><span class="string">        temp_result.append(en2)</span></span><br><span class="line"><span class="string">        return temp_result</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        错1：</span></span><br><span class="line"><span class="string">        根源在于，在merge时，有可能n1中的元素全部比n2中的小，即n1全部添加进了result以后n2才开始pop</span></span><br><span class="line"><span class="string">        1.1 and 1.2 皆时assume n1， n2 必是轮流进一个， 即n1进一个后n2就进一个</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        错2：</span></span><br><span class="line"><span class="string">        此处以为添加剩余元素，不可直接append， 这样会使整个列表变成result中的一个元素，即[..., []] 而非 [...,...]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">while</span> left <span class="keyword">and</span> right:</span><br><span class="line">            <span class="keyword">if</span> left[<span class="number">0</span>] &lt; right[<span class="number">0</span>]:</span><br><span class="line">                result.append(left.pop(<span class="number">0</span>))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result.append(right.pop(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">        result += left</span><br><span class="line">        result += right</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">merge_sort_entry</span>(<span class="params">nums</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">            merge_sort_entry 本身的函数功能 “仅仅为分解而已！” ， 看终止条件的设置即可理解。（写递归代码时需确定： 终止条件，函数功能，递归方程）</span></span><br><span class="line"><span class="string">            merge排序的工作是merge function做的</span></span><br><span class="line"><span class="string">        :param nums:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(nums) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line">        mid = <span class="built_in">len</span>(nums)//<span class="number">2</span></span><br><span class="line">        left = nums[:mid]</span><br><span class="line">        right = nums[mid:]</span><br><span class="line">        <span class="keyword">return</span> merge(merge_sort_entry(left), merge_sort_entry(right))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(nums) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> merge_sort_entry(nums)</span><br></pre></td></tr></table></figure>
 
-      
     </div>
 
     
@@ -445,8 +289,21 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          <div class="post-tags">
+              <a href="/tags/sorting-algorithm-algorithm-general/" rel="tag"># sorting algorithm & algorithm general</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/30/test/" rel="next" title="test">
+                  test <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
     </footer>
   </article>
 </div>
@@ -455,6 +312,8 @@
 
 
 
+
+    <div class="comments gitalk-container"></div>
 </div>
   </main>
 
@@ -496,7 +355,7 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Shain001","repo":"shain001.github.io","client_id":"0745fda8ca1ea837efeb","client_secret":"a82f9499fab935c4c98040bc800fd7b52a439841","admin_user":"Shain001","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"d1546d731a9f30cc80127d57142a482b"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Shain001","repo":"shain001.github.io","client_id":"0745fda8ca1ea837efeb","client_secret":"a82f9499fab935c4c98040bc800fd7b52a439841","admin_user":"Shain001","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"813a03985b8cf11c0338cb07724cd30d"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>
