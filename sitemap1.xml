@@ -74,13 +74,6 @@
 
   
   <url>
-    <loc>https://shain001.github.io/tags/for-Leiheee/</loc>
-    <lastmod>2021-11-30</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://shain001.github.io/tags/IoC/</loc>
     <lastmod>2021-11-30</lastmod>
     <changefreq>daily</changefreq>
@@ -109,6 +102,13 @@
   </url>
   
   <url>
+    <loc>https://shain001.github.io/tags/for-Leiheee/</loc>
+    <lastmod>2021-11-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://shain001.github.io/tags/sorting-algorithm-algorithm-general/</loc>
     <lastmod>2021-11-30</lastmod>
     <changefreq>daily</changefreq>
@@ -118,14 +118,14 @@
 
   
   <url>
-    <loc>https://shain001.github.io/categories/for-leihee/</loc>
+    <loc>https://shain001.github.io/categories/Spring/</loc>
     <lastmod>2021-11-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://shain001.github.io/categories/Spring/</loc>
+    <loc>https://shain001.github.io/categories/for-leihee/</loc>
     <lastmod>2021-11-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
