@@ -29,7 +29,7 @@
 <meta property="og:description" content="算法思想及排序算法的实现与对比循环和递归​    递归即大问题分解成小问题，但递归通常效率较低，通常表现为时间， 空间 均效率低下。  ​    递归时由于重复调用方法自身，每次调用方法时皆需在内存栈中分配空间以保存参数，返回地址及临时变量 因此需大量空间，而压栈弹栈皆需要时间。 动态规划​    如果某个问题可以分解成小问题，并且所问为求最优解，则通常可用动态规划。  ​    分析动态规划时的">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-10-29T13:52:02.000Z">
-<meta property="article:modified_time" content="2021-11-30T05:34:50.084Z">
+<meta property="article:modified_time" content="2021-12-01T23:16:52.122Z">
 <meta property="article:author" content="Shain">
 <meta property="article:tag" content="sorting algorithm &amp; algorithm general">
 <meta name="twitter:card" content="summary">
@@ -88,9 +88,9 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">6</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">3</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">3</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">7</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">4</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">4</span></a></li>
   </ul>
 </nav>
 
@@ -136,18 +136,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -226,7 +226,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-11-30 16:34:50" itemprop="dateModified" datetime="2021-11-30T16:34:50+11:00">2021-11-30</time>
+        <time title="Modified: 2021-12-02 10:16:52" itemprop="dateModified" datetime="2021-12-02T10:16:52+11:00">2021-12-02</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -254,7 +254,14 @@
 <p>​    分析动态规划时的思考方式与递归类似，因为都是大问题分解小问题。 </p>
 <p>​    动态规划则为<code>自上而下</code> 方式思考解体思路。而用代码实现时则用<code>自下而上</code> 的方式解决问题，同时利用数据存储小问题的解， 熟练后可抛弃数组，仅用几个变量    存储有用的解</p>
 <h5 id="贪心"><a href="#贪心" class="headerlink" title="贪心"></a>贪心</h5><p>​    若某个问题用动态规划的思路思考以后， 发现<code>分解子问题时存在某种特定条件能使得结果一定为最优解</code>， 则此时应思考贪心算法</p>
-<h5 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h5><p>对于在二维数组中搜索路径的问题，如迷宫或棋盘，则通常可用<code>回溯法</code>。 而回溯法通常可用递归的方式求解。 递归又可用栈来实现。</p>
+<h5 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h5><p>可理解为<code>有剪枝的穷举</code>，其从解决问题每一步的多个选项里系统的选择一个可行的方案。</p>
+<p>适合用于解决<code>有多个步骤组成，且每个步骤有多个选项的问题</code>。</p>
+<p>回溯法解决问题的过程，可以近似理解为“遍历”一颗树的过程。 树中的每一个level 即一个步骤，每个node即一个选项。</p>
+<p>当遍历至一个节点时，发现结果已不可能满足条件，则可放弃该节点返回至上一层节点。</p>
+<p>同理，若发现一个节点的所有子节点均不满足条件时，则同样返回至上一层节点。</p>
+<p>而返回至上一层节点时，若发现上一层中所有节点均已被遍历过，则再次返回至上一层节点。</p>
+<p>如果所有节点（即路径）均已遍历且无符合条件的路径，则r</p>
+<p>对于在二维数组中搜索路径的问题，如迷宫或棋盘，则通常可用<code>回溯法</code>。 而回溯法通常可用递归的方式求解。 递归又可用栈来实现。</p>
 <span id="more"></span>
 
 <h2 id="查找算法"><a href="#查找算法" class="headerlink" title="查找算法"></a>查找算法</h2><h5 id="顺序查找"><a href="#顺序查找" class="headerlink" title="顺序查找"></a>顺序查找</h5><h5 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h5><p>对于在一个<code>排序的，或部分排序的数组</code>中<code>查找一个数字</code>，或<code>统计一个数字出现的次数</code>的问题，均可尝试使用二分查找</p>
@@ -283,7 +290,6 @@
 <p><strong>归并排序</strong></p>
 <p>时间复杂度总是O(nlogn)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span>(<span class="params">nums</span>) -&gt; <span class="type">List</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        归并即先将数组持续对半分，直到分解成单个元素</span></span><br><span class="line"><span class="string">        再依次进行merge</span></span><br><span class="line"><span class="string">        典型的分治思想</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">merge</span>(<span class="params">left: <span class="type">List</span>, right: <span class="type">List</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        2021-11-29</span></span><br><span class="line"><span class="string">        错误代码：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        temp_result = []</span></span><br><span class="line"><span class="string">        while len(n1) != 0 and len(n2) != 0:</span></span><br><span class="line"><span class="string">            # 错误1.1：</span></span><br><span class="line"><span class="string">            en1 = n1.pop(0)</span></span><br><span class="line"><span class="string">            en2 = n2.pop(0)</span></span><br><span class="line"><span class="string">            if en1 &gt; en2:</span></span><br><span class="line"><span class="string">                # 错误1.2：</span></span><br><span class="line"><span class="string">                temp_result.append(en2)</span></span><br><span class="line"><span class="string">                temp_result.append(en1)</span></span><br><span class="line"><span class="string">            else:</span></span><br><span class="line"><span class="string">                # 错误1：</span></span><br><span class="line"><span class="string">                temp_result.append(en1)</span></span><br><span class="line"><span class="string">                temp_result.append(en2)</span></span><br><span class="line"><span class="string">        # 错误2</span></span><br><span class="line"><span class="string">        temp_result.append(en1)</span></span><br><span class="line"><span class="string">        temp_result.append(en2)</span></span><br><span class="line"><span class="string">        return temp_result</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        错1：</span></span><br><span class="line"><span class="string">        根源在于，在merge时，有可能n1中的元素全部比n2中的小，即n1全部添加进了result以后n2才开始pop</span></span><br><span class="line"><span class="string">        1.1 and 1.2 皆时assume n1， n2 必是轮流进一个， 即n1进一个后n2就进一个</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        错2：</span></span><br><span class="line"><span class="string">        此处以为添加剩余元素，不可直接append， 这样会使整个列表变成result中的一个元素，即[..., []] 而非 [...,...]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">while</span> left <span class="keyword">and</span> right:</span><br><span class="line">            <span class="keyword">if</span> left[<span class="number">0</span>] &lt; right[<span class="number">0</span>]:</span><br><span class="line">                result.append(left.pop(<span class="number">0</span>))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result.append(right.pop(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">        result += left</span><br><span class="line">        result += right</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">merge_sort_entry</span>(<span class="params">nums</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">            merge_sort_entry 本身的函数功能 “仅仅为分解而已！” ， 看终止条件的设置即可理解。（写递归代码时需确定： 终止条件，函数功能，递归方程）</span></span><br><span class="line"><span class="string">            merge排序的工作是merge function做的</span></span><br><span class="line"><span class="string">        :param nums:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(nums) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line">        mid = <span class="built_in">len</span>(nums)//<span class="number">2</span></span><br><span class="line">        left = nums[:mid]</span><br><span class="line">        right = nums[mid:]</span><br><span class="line">        <span class="keyword">return</span> merge(merge_sort_entry(left), merge_sort_entry(right))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(nums) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> merge_sort_entry(nums)</span><br></pre></td></tr></table></figure>
-
     </div>
 
     

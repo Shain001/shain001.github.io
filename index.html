@@ -83,9 +83,9 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">6</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">3</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">3</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">7</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">4</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">4</span></a></li>
   </ul>
 </nav>
 
@@ -130,18 +130,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -179,6 +179,89 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/12/02/JVM-1-JVM%E5%88%86%E5%8C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Shain">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shain's Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/02/JVM-1-JVM%E5%88%86%E5%8C%BA/" class="post-title-link" itemprop="url">JVM(1)-JVM Memory Area</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-12-02 10:19:33 / Modified: 11:27:22" itemprop="dateCreated datePublished" datetime="2021-12-02T10:19:33+11:00">2021-12-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>Java is the well-known language that has the slogan “write once, run everywhere”, and the exist of JVM is exactly the reason why this slogan can be achieved. Specifically, when we write and run the Java code, the .java file is ultimately translated into bytecode, and then be loaded in the JVM to be implemented. This means that as long as we have a JVM in our machine, we can run the compiled JAVA file whatever the OS we are using. </p>
+<p>JVM divides the memory into different parts to better manage it, we can say the the process that JVM load and create a Class/Instance is exactly the process that it put data into different parts of memories. </p>
+<p>There are FIVE areas in JVM memory, with 2 of them are shared by threads (Heap, Method Area) and 3 of them (Stack, Native Method Stack, Program Counter) are thread-private. </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/02/JVM-1-JVM%E5%88%86%E5%8C%BA/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -381,7 +464,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-11-30 16:34:50" itemprop="dateModified" datetime="2021-11-30T16:34:50+11:00">2021-11-30</time>
+        <time title="Modified: 2021-12-02 10:16:52" itemprop="dateModified" datetime="2021-12-02T10:16:52+11:00">2021-12-02</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -409,7 +492,14 @@
 <p>​    分析动态规划时的思考方式与递归类似，因为都是大问题分解小问题。 </p>
 <p>​    动态规划则为<code>自上而下</code> 方式思考解体思路。而用代码实现时则用<code>自下而上</code> 的方式解决问题，同时利用数据存储小问题的解， 熟练后可抛弃数组，仅用几个变量    存储有用的解</p>
 <h5 id="贪心"><a href="#贪心" class="headerlink" title="贪心"></a>贪心</h5><p>​    若某个问题用动态规划的思路思考以后， 发现<code>分解子问题时存在某种特定条件能使得结果一定为最优解</code>， 则此时应思考贪心算法</p>
-<h5 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h5><p>对于在二维数组中搜索路径的问题，如迷宫或棋盘，则通常可用<code>回溯法</code>。 而回溯法通常可用递归的方式求解。 递归又可用栈来实现。</p>
+<h5 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h5><p>可理解为<code>有剪枝的穷举</code>，其从解决问题每一步的多个选项里系统的选择一个可行的方案。</p>
+<p>适合用于解决<code>有多个步骤组成，且每个步骤有多个选项的问题</code>。</p>
+<p>回溯法解决问题的过程，可以近似理解为“遍历”一颗树的过程。 树中的每一个level 即一个步骤，每个node即一个选项。</p>
+<p>当遍历至一个节点时，发现结果已不可能满足条件，则可放弃该节点返回至上一层节点。</p>
+<p>同理，若发现一个节点的所有子节点均不满足条件时，则同样返回至上一层节点。</p>
+<p>而返回至上一层节点时，若发现上一层中所有节点均已被遍历过，则再次返回至上一层节点。</p>
+<p>如果所有节点（即路径）均已遍历且无符合条件的路径，则r</p>
+<p>对于在二维数组中搜索路径的问题，如迷宫或棋盘，则通常可用<code>回溯法</code>。 而回溯法通常可用递归的方式求解。 递归又可用栈来实现。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/10/30/%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/#more" rel="contents">
