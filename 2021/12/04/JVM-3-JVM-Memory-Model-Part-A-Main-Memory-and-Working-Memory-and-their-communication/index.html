@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="RF4rbWX5kBRP_AQ4E3_w2gV3AdeQ0--63XZqMzpif2Q">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"shain001.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":true,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-2}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Java Memory Model (JMM) Overview所谓JMM即可粗略理解为 “JVM中为针对变量在内存中写入写出而制定的一系列规则”， 也即以线程安全为主要目标的一系列底层基础设计。其存在目的即为： “使程序再各种不同架构的系统中都可保证并发安全， 即保证原子性，可见性，有序性” 该篇内容主要介绍：  JVM中线程的通信 JVM中工作内存与主内存交互的8个基本操作 JVM中针对上述八">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication">
+<meta property="og:url" content="https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/index.html">
+<meta property="og:site_name" content="Shain&#39;s Blogs">
+<meta property="og:description" content="Java Memory Model (JMM) Overview所谓JMM即可粗略理解为 “JVM中为针对变量在内存中写入写出而制定的一系列规则”， 也即以线程安全为主要目标的一系列底层基础设计。其存在目的即为： “使程序再各种不同架构的系统中都可保证并发安全， 即保证原子性，可见性，有序性” 该篇内容主要介绍：  JVM中线程的通信 JVM中工作内存与主内存交互的8个基本操作 JVM中针对上述八">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-12-04T09:32:31.000Z">
+<meta property="article:modified_time" content="2021-12-04T10:56:57.648Z">
+<meta property="article:author" content="Shain">
+<meta property="article:tag" content="JMM">
+<meta property="article:tag" content="JVM Working Memory">
+<meta property="article:tag" content="JVM Main Memory">
+<meta property="article:tag" content="JVM Thread Communication">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/","path":"2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/","title":"JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication | Shain's Blogs</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Shain's Blogs</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">13</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">4</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">6</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Memory-Model-JMM-Overview"><span class="nav-number">1.</span> <span class="nav-text">Java Memory Model (JMM) Overview</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM%E4%B8%AD%E7%BA%BF%E7%A8%8B%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="nav-number">1.0.1.</span> <span class="nav-text">JVM中线程的通信</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98-amp-%E4%B8%BB%E5%86%85%E5%AD%98-VS-%E5%A0%86-amp-%E6%A0%88"><span class="nav-number">1.0.2.</span> <span class="nav-text">工作内存&amp;主内存 VS 堆&amp;栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM%E4%B8%AD%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98%E4%B8%8E%E4%B8%BB%E5%86%85%E5%AD%98%E4%BA%A4%E4%BA%92%E7%9A%848%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">1.0.3.</span> <span class="nav-text">JVM中工作内存与主内存交互的8个基本操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM%E4%B8%AD%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98%E4%B8%8E%E4%B8%BB%E5%86%85%E5%AD%98%E4%BA%A4%E4%BA%92%E7%9A%84%E5%87%A0%E6%9D%A1%E5%9F%BA%E6%9C%AC%E8%A7%84%E5%88%99"><span class="nav-number">1.0.4.</span> <span class="nav-text">JVM中工作内存与主内存交互的几条基本规则</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Shain"
+      src="/images/head.jpg">
+  <p class="site-author-name" itemprop="name">Shain</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Shain001" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Shain001" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/Shain001" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Shain">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shain's Blogs">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-12-04 20:32:31 / Modified: 21:56:57" itemprop="dateCreated datePublished" datetime="2021-12-04T20:32:31+11:00">2021-12-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Java-Memory-Model-JMM-Overview"><a href="#Java-Memory-Model-JMM-Overview" class="headerlink" title="Java Memory Model (JMM) Overview"></a>Java Memory Model (JMM) Overview</h2><p>所谓JMM即可粗略理解为 “JVM中为针对变量在内存中写入写出而制定的一系列规则”， 也即以线程安全为主要目标的一系列底层基础设计。其存在目的即为： “<strong>使程序再各种不同架构的系统中都可保证并发安全， 即保证原子性，可见性，有序性</strong>”</p>
+<p>该篇内容主要介绍：</p>
+<ul>
+<li>JVM中线程的通信</li>
+<li>JVM中工作内存与主内存交互的8个基本操作</li>
+<li>JVM中针对上述八个基本操作而指定的几条基本规则</li>
+<li>从JMM角度解释线程安全问题的根本原因</li>
+</ul>
+<h4 id="JVM中线程的通信"><a href="#JVM中线程的通信" class="headerlink" title="JVM中线程的通信"></a>JVM中线程的通信</h4><p>JVM中的内存被分为<strong>工作内存</strong>与<strong>主内存</strong>， 其中主内存为所有线程共享， 也即主内存中的内容对于所有线程均是可见且可访问的， 而工作内存则为线程私有。 每条线程均拥有自己的工作内存， 且线程间不可访问对方的工作内存。</p>
+<p><strong>在JVM中， 所有变量均存储在主内存中，</strong> <strong>工作内存若需使用某个变量，则需从主内存中拷贝一份变量副本</strong>， 然后对副本进行操作， 最后写回主内存。 注意， <strong>此处的变量特指线程共享的变量</strong>， 包括 instance’s fields, static fields, and elements of array， 其不包括线程私有的变量，即局部变量即方法参数等。 </p>
+<p>由于线程间不能互相访问对方的工作内存， 那么为了实现线程间的通信，就只能通过一个“第三方” — 主内存。其具体方式为： <strong>“若线程A与线程B间想要实现通信， 则A需先将变量值写回主内存， 之后线程B从主内存中复制该值， 进而实现通信目的”</strong></p>
+<h4 id="工作内存-amp-主内存-VS-堆-amp-栈"><a href="#工作内存-amp-主内存-VS-堆-amp-栈" class="headerlink" title="工作内存&amp;主内存 VS 堆&amp;栈"></a>工作内存&amp;主内存 VS 堆&amp;栈</h4><p>至此， 你可能会认为主内存即对应着JVM中的堆， 而工作内存则对应着JVM中的栈。 然而， <strong>实际上工作内存/主内存 与堆栈并非同一Scope下的概念</strong>。 如果一定要将两个概念向类比， 那么工作内存可对应位堆中的<strong>实例数据部分</strong>， 而工作内存可对应为栈中的<strong>部分数据</strong>。</p>
+<p>首先， 之所以说两者属于不同的Scope, 是因为主内存对应于物理内存， 工作内存则会有限被存储于寄存器和缓存中（因为程序运行时主要访问的是工作内存， 而将工作内存放置于寄存器和缓存可提高运行速度）。</p>
+<p>同时， 上文提到工作内存的作用为存放线程共享变量， 但尽管成员变量，类变量，数组元素等共享变量是存储与堆中， 这些变量仅仅对应着堆中的实例数据的部分，而非全部。 因为堆中除了存储实例数据以外， 还包含着Object Head and padding。具体来讲， 当一个对象被new到堆中以后， 其在堆中的结构由三部分组成： Object Head + 实例数据 + padding。 其中Object Head 中存放着 Mark Word + 类型指针。Mark Word作用为存储 锁状态， GC年龄等， 类型指针作用为指明该实例所属的是哪个类。</p>
+<h4 id="JVM中工作内存与主内存交互的8个基本操作"><a href="#JVM中工作内存与主内存交互的8个基本操作" class="headerlink" title="JVM中工作内存与主内存交互的8个基本操作"></a>JVM中工作内存与主内存交互的8个基本操作</h4><p>交互所需的8个基本操作即在实现工作内存与主内存的交互过程中所需要的八个最基本操作。 也即不论你要进行何种复杂的操作， 其皆为这八个基本操作中的多个或全部组成。</p>
+<p>八个基本操作如下：</p>
+<ul>
+<li>lock: 对主内存中某一变量上锁，使其只可被一条线程独占。 同一时间只有一条线程可对一个变量lock。</li>
+<li>unlock： 解锁， 且解锁后才可被其他线程Lock。</li>
+<li>read： 作用于主内存变量，将该变量的值传输到工作内存中， 之后才可进行load。 <strong>即主内存中的值传入工作内存中的过程。 仅指“传输”</strong>。</li>
+<li>load： 作用于工作内存，将read进来的变量放入工作内存的副本。 <strong>即将“传输”进来的变量值， 更新到工作内存中的过程。 仅指“更新/对工作内存的内存赋值”</strong>。</li>
+<li>use： 于工作内存，将工作内存中变量的值交给执行引擎进行操作。</li>
+<li>assign： 于工作内存，接受工作引擎操作后的值，然后将其赋值回工作内存。 注意，<strong>此处可以发现工作引擎与工作内存间的交互过程不同于工作内存与主内存间的交互过程。 后两者交互过程中“传输”和“更新”是分开的， 而前两者则是一体的。</strong></li>
+<li>store： 作用于工作内存，把工作内存中的变量值发给主内存。<strong>即工作内存中的值传入主内存的过程。 仅指“传输”</strong>。</li>
+<li>write： 作用于主内存变量，将store进来的值更新到主内存。<strong>工作内存中的值传入主内存以后， 工作内存更新内存中的值的过程。 仅指“更新”</strong>。</li>
+</ul>
+<p>其中， <strong>“store/write and read/load 操作之间一定是顺序执行，但不一定是连续执行，即store and write之间， read and load之间，是可以插入其他指令的”。 这就是线程不安全的根源所在。</strong></p>
+<p>同时， <strong>这八个操作都为原子性</strong>，但是在某些架构的系统中，对于long/double的读写可能不具有原子性，因为是64位占两个格子。</p>
+<h4 id="JVM中工作内存与主内存交互的几条基本规则"><a href="#JVM中工作内存与主内存交互的几条基本规则" class="headerlink" title="JVM中工作内存与主内存交互的几条基本规则"></a>JVM中工作内存与主内存交互的几条基本规则</h4><ol>
+<li>read &amp; load 以及 store &amp; write  必须不可单独出现，及read 必load， store必write；即， <strong>如果工作内存从主内存中复制来一个值， 则必须在工作内存中写入这个值</strong>。同理， 当主内存从工作内存中接受了一个值， 也必须在主内存中更新该值。</li>
+<li>没有assign操作，则不可进行store and write操作，<strong>即不可无原因的将变量更新回主内存</strong>，也即， <strong>若想将一个变量值写回主内存， 则其前提是这个变量值已经被CPU使用完且已经写回了工作内存。</strong></li>
+<li>只有主内存可生成新的变量，不可由工作内存自己生成新的变量， <strong>即use, store &amp; write 之前必有assign 和load</strong>。</li>
+<li>一个变量同一时间只可被一条thread lock, but can be locked many times。</li>
+<li>当执行lock操作后，工作内存中该变量的值将被清空，在use之前需重新进行Load 或 assign操作以”初始化”(this is why assign is also  OK)该变量的值。<strong>即在线程对于一个变量上锁后， 必定要重新read&amp;load该变量的值。</strong></li>
+<li>只可由lock的线程进行unlock， 且one var can only be locked by one thread。</li>
+<li><strong>unlock之前，必须将变量值更新回主内存。</strong></li>
+</ol>
+<p>Created by Shain at 2021/12/4, Melbourne, Australia.</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JMM/" rel="tag"># JMM</a>
+              <a href="/tags/JVM-Working-Memory/" rel="tag"># JVM Working Memory</a>
+              <a href="/tags/JVM-Main-Memory/" rel="tag"># JVM Main Memory</a>
+              <a href="/tags/JVM-Thread-Communication/" rel="tag"># JVM Thread Communication</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/12/03/JVM-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E5%9B%9E%E6%94%B6%EF%BC%88GC%EF%BC%89/" rel="prev" title="JVM (2) 内存分配与回收(GC)">
+                  <i class="fa fa-chevron-left"></i> JVM (2) 内存分配与回收(GC)
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shain</span>
+</div>
+
+<!--
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+-->
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"Shain001","repo":"shain001.github.io","client_id":"0745fda8ca1ea837efeb","client_secret":"a82f9499fab935c4c98040bc800fd7b52a439841","admin_user":"Shain001","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"621e5b3746be22198d24e539c6e9fa29"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>

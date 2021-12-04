@@ -2,9 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/</loc>
+    
+    <lastmod>2021-12-04</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://shain001.github.io/2021/10/30/test/</loc>
+    
+    <lastmod>2021-12-04</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/</loc>
+    
+    <lastmod>2021-12-04</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://shain001.github.io/2021/12/02/JVM-1-JVM%E5%88%86%E5%8C%BA/</loc>
+    
+    <lastmod>2021-12-04</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://shain001.github.io/2021/12/03/JVM-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E5%9B%9E%E6%94%B6%EF%BC%88GC%EF%BC%89/</loc>
     
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     
   </url>
   
@@ -16,28 +44,7 @@
   </url>
   
   <url>
-    <loc>https://shain001.github.io/2021/12/02/JVM-1-JVM%E5%88%86%E5%8C%BA/</loc>
-    
-    <lastmod>2021-12-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://shain001.github.io/2021/10/31/temp/</loc>
-    
-    <lastmod>2021-11-01</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://shain001.github.io/archives/index.html</loc>
-    
-    <lastmod>2021-10-29</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://shain001.github.io/2021/10/30/test/</loc>
     
     <lastmod>2021-10-29</lastmod>
     
@@ -81,7 +88,7 @@
 
   <url>
     <loc>https://shain001.github.io/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -89,63 +96,91 @@
   
   <url>
     <loc>https://shain001.github.io/tags/IoC/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://shain001.github.io/tags/IoC-Container/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://shain001.github.io/tags/BeanFactory/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://shain001.github.io/tags/ApplicationContext/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://shain001.github.io/tags/for-Leiheee/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://shain001.github.io/tags/sorting-algorithm-algorithm-general/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://shain001.github.io/tags/JVM%E5%88%86%E5%8C%BA/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://shain001.github.io/tags/GC/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://shain001.github.io/tags/JVM-Memory-Allocation/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://shain001.github.io/tags/JMM/</loc>
+    <lastmod>2021-12-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://shain001.github.io/tags/JVM-Working-Memory/</loc>
+    <lastmod>2021-12-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://shain001.github.io/tags/JVM-Main-Memory/</loc>
+    <lastmod>2021-12-04</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://shain001.github.io/tags/JVM-Thread-Communication/</loc>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -154,28 +189,28 @@
   
   <url>
     <loc>https://shain001.github.io/categories/Spring/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://shain001.github.io/categories/for-leihee/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://shain001.github.io/categories/Algorithm/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://shain001.github.io/categories/JVM/</loc>
-    <lastmod>2021-12-03</lastmod>
+    <lastmod>2021-12-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>

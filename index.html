@@ -83,9 +83,9 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">9</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">13</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">4</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">5</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">6</span></a></li>
   </ul>
 </nav>
 
@@ -130,7 +130,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -141,7 +141,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -188,6 +188,117 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Shain">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shain's Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/" class="post-title-link" itemprop="url">JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-12-04 20:32:31 / Modified: 21:56:57" itemprop="dateCreated datePublished" datetime="2021-12-04T20:32:31+11:00">2021-12-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="Java-Memory-Model-JMM-Overview"><a href="#Java-Memory-Model-JMM-Overview" class="headerlink" title="Java Memory Model (JMM) Overview"></a>Java Memory Model (JMM) Overview</h2><p>所谓JMM即可粗略理解为 “JVM中为针对变量在内存中写入写出而制定的一系列规则”， 也即以线程安全为主要目标的一系列底层基础设计。其存在目的即为： “<strong>使程序再各种不同架构的系统中都可保证并发安全， 即保证原子性，可见性，有序性</strong>”</p>
+<p>该篇内容主要介绍：</p>
+<ul>
+<li>JVM中线程的通信</li>
+<li>JVM中工作内存与主内存交互的8个基本操作</li>
+<li>JVM中针对上述八个基本操作而指定的几条基本规则</li>
+<li>从JMM角度解释线程安全问题的根本原因</li>
+</ul>
+<h4 id="JVM中线程的通信"><a href="#JVM中线程的通信" class="headerlink" title="JVM中线程的通信"></a>JVM中线程的通信</h4><p>JVM中的内存被分为<strong>工作内存</strong>与<strong>主内存</strong>， 其中主内存为所有线程共享， 也即主内存中的内容对于所有线程均是可见且可访问的， 而工作内存则为线程私有。 每条线程均拥有自己的工作内存， 且线程间不可访问对方的工作内存。</p>
+<p><strong>在JVM中， 所有变量均存储在主内存中，</strong> <strong>工作内存若需使用某个变量，则需从主内存中拷贝一份变量副本</strong>， 然后对副本进行操作， 最后写回主内存。 注意， <strong>此处的变量特指线程共享的变量</strong>， 包括 instance’s fields, static fields, and elements of array， 其不包括线程私有的变量，即局部变量即方法参数等。 </p>
+<p>由于线程间不能互相访问对方的工作内存， 那么为了实现线程间的通信，就只能通过一个“第三方” — 主内存。其具体方式为： <strong>“若线程A与线程B间想要实现通信， 则A需先将变量值写回主内存， 之后线程B从主内存中复制该值， 进而实现通信目的”</strong></p>
+<h4 id="工作内存-amp-主内存-VS-堆-amp-栈"><a href="#工作内存-amp-主内存-VS-堆-amp-栈" class="headerlink" title="工作内存&amp;主内存 VS 堆&amp;栈"></a>工作内存&amp;主内存 VS 堆&amp;栈</h4><p>至此， 你可能会认为主内存即对应着JVM中的堆， 而工作内存则对应着JVM中的栈。 然而， <strong>实际上工作内存/主内存 与堆栈并非同一Scope下的概念</strong>。 如果一定要将两个概念向类比， 那么工作内存可对应位堆中的<strong>实例数据部分</strong>， 而工作内存可对应为栈中的<strong>部分数据</strong>。</p>
+<p>首先， 之所以说两者属于不同的Scope, 是因为主内存对应于物理内存， 工作内存则会有限被存储于寄存器和缓存中（因为程序运行时主要访问的是工作内存， 而将工作内存放置于寄存器和缓存可提高运行速度）。</p>
+<p>同时， 上文提到工作内存的作用为存放线程共享变量， 但尽管成员变量，类变量，数组元素等共享变量是存储与堆中， 这些变量仅仅对应着堆中的实例数据的部分，而非全部。 因为堆中除了存储实例数据以外， 还包含着Object Head and padding。具体来讲， 当一个对象被new到堆中以后， 其在堆中的结构由三部分组成： Object Head + 实例数据 + padding。 其中Object Head 中存放着 Mark Word + 类型指针。Mark Word作用为存储 锁状态， GC年龄等， 类型指针作用为指明该实例所属的是哪个类。</p>
+<h4 id="JVM中工作内存与主内存交互的8个基本操作"><a href="#JVM中工作内存与主内存交互的8个基本操作" class="headerlink" title="JVM中工作内存与主内存交互的8个基本操作"></a>JVM中工作内存与主内存交互的8个基本操作</h4><p>交互所需的8个基本操作即在实现工作内存与主内存的交互过程中所需要的八个最基本操作。 也即不论你要进行何种复杂的操作， 其皆为这八个基本操作中的多个或全部组成。</p>
+<p>八个基本操作如下：</p>
+<ul>
+<li>lock: 对主内存中某一变量上锁，使其只可被一条线程独占。 同一时间只有一条线程可对一个变量lock。</li>
+<li>unlock： 解锁， 且解锁后才可被其他线程Lock。</li>
+<li>read： 作用于主内存变量，将该变量的值传输到工作内存中， 之后才可进行load。 <strong>即主内存中的值传入工作内存中的过程。 仅指“传输”</strong>。</li>
+<li>load： 作用于工作内存，将read进来的变量放入工作内存的副本。 <strong>即将“传输”进来的变量值， 更新到工作内存中的过程。 仅指“更新/对工作内存的内存赋值”</strong>。</li>
+<li>use： 于工作内存，将工作内存中变量的值交给执行引擎进行操作。</li>
+<li>assign： 于工作内存，接受工作引擎操作后的值，然后将其赋值回工作内存。 注意，<strong>此处可以发现工作引擎与工作内存间的交互过程不同于工作内存与主内存间的交互过程。 后两者交互过程中“传输”和“更新”是分开的， 而前两者则是一体的。</strong></li>
+<li>store： 作用于工作内存，把工作内存中的变量值发给主内存。<strong>即工作内存中的值传入主内存的过程。 仅指“传输”</strong>。</li>
+<li>write： 作用于主内存变量，将store进来的值更新到主内存。<strong>工作内存中的值传入主内存以后， 工作内存更新内存中的值的过程。 仅指“更新”</strong>。</li>
+</ul>
+<p>其中， <strong>“store/write and read/load 操作之间一定是顺序执行，但不一定是连续执行，即store and write之间， read and load之间，是可以插入其他指令的”。 这就是线程不安全的根源所在。</strong></p>
+<p>同时， <strong>这八个操作都为原子性</strong>，但是在某些架构的系统中，对于long/double的读写可能不具有原子性，因为是64位占两个格子。</p>
+<h4 id="JVM中工作内存与主内存交互的几条基本规则"><a href="#JVM中工作内存与主内存交互的几条基本规则" class="headerlink" title="JVM中工作内存与主内存交互的几条基本规则"></a>JVM中工作内存与主内存交互的几条基本规则</h4><ol>
+<li>read &amp; load 以及 store &amp; write  必须不可单独出现，及read 必load， store必write；即， <strong>如果工作内存从主内存中复制来一个值， 则必须在工作内存中写入这个值</strong>。同理， 当主内存从工作内存中接受了一个值， 也必须在主内存中更新该值。</li>
+<li>没有assign操作，则不可进行store and write操作，<strong>即不可无原因的将变量更新回主内存</strong>，也即， <strong>若想将一个变量值写回主内存， 则其前提是这个变量值已经被CPU使用完且已经写回了工作内存。</strong></li>
+<li>只有主内存可生成新的变量，不可由工作内存自己生成新的变量， <strong>即use, store &amp; write 之前必有assign 和load</strong>。</li>
+<li>一个变量同一时间只可被一条thread lock, but can be locked many times。</li>
+<li>当执行lock操作后，工作内存中该变量的值将被清空，在use之前需重新进行Load 或 assign操作以”初始化”(this is why assign is also  OK)该变量的值。<strong>即在线程对于一个变量上锁后， 必定要重新read&amp;load该变量的值。</strong></li>
+<li>只可由lock的线程进行unlock， 且one var can only be locked by one thread。</li>
+<li><strong>unlock之前，必须将变量值更新回主内存。</strong></li>
+</ol>
+<p>Created by Shain at 2021/12/4, Melbourne, Australia.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/12/03/JVM-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E5%9B%9E%E6%94%B6%EF%BC%88GC%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -201,7 +312,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/03/JVM-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E5%9B%9E%E6%94%B6%EF%BC%88GC%EF%BC%89/" class="post-title-link" itemprop="url">JVM 内存分配与回收（GC）</a>
+          <a href="/2021/12/03/JVM-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E5%9B%9E%E6%94%B6%EF%BC%88GC%EF%BC%89/" class="post-title-link" itemprop="url">JVM (2) 内存分配与回收(GC)</a>
         </h2>
 
         <div class="post-meta-container">
@@ -211,10 +322,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-12-03 21:17:49 / Modified: 23:20:00" itemprop="dateCreated datePublished" datetime="2021-12-03T21:17:49+11:00">2021-12-03</time>
+      <time title="Created: 2021-12-03 21:17:49" itemprop="dateCreated datePublished" datetime="2021-12-03T21:17:49+11:00">2021-12-03</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-12-04 21:56:23" itemprop="dateModified" datetime="2021-12-04T21:56:23+11:00">2021-12-04</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -285,7 +402,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/12/02/JVM-1-JVM%E5%88%86%E5%8C%BA/" class="post-title-link" itemprop="url">JVM(1)-JVM Memory Area</a>
+          <a href="/2021/12/02/JVM-1-JVM%E5%88%86%E5%8C%BA/" class="post-title-link" itemprop="url">JVM (1)-JVM Memory Area</a>
         </h2>
 
         <div class="post-meta-container">
@@ -295,10 +412,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-12-02 10:19:33 / Modified: 11:27:22" itemprop="dateCreated datePublished" datetime="2021-12-02T10:19:33+11:00">2021-12-02</time>
+      <time title="Created: 2021-12-02 10:19:33" itemprop="dateCreated datePublished" datetime="2021-12-02T10:19:33+11:00">2021-12-02</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-12-04 21:56:43" itemprop="dateModified" datetime="2021-12-04T21:56:43+11:00">2021-12-04</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -355,7 +478,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/10/31/temp/">
+    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/head.jpg">
@@ -368,7 +491,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/31/temp/" class="post-title-link" itemprop="url">Spring Foundation(1) -- IoC and IoC Container</a>
+          <a href="/2021/10/31/springFoundation-1-Ioc/" class="post-title-link" itemprop="url">Spring Foundation(1) -- IoC and IoC Container</a>
         </h2>
 
         <div class="post-meta-container">
@@ -386,7 +509,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-11-01 17:46:32" itemprop="dateModified" datetime="2021-11-01T17:46:32+11:00">2021-11-01</time>
+        <time title="Modified: 2021-12-04 21:57:54" itemprop="dateModified" datetime="2021-12-04T21:57:54+11:00">2021-12-04</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -412,7 +535,7 @@
 <p>In software engineering, this abstract concept normally just refers to let a “third party” to help us <code>create objects and manage their dependencies</code> , in which context the so called third party is  the <code>IoC Container</code> and the process that IoC Container helps to create and manage objects is called <code>Dependency Injection(DI)</code>.</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/10/31/temp/#more" rel="contents">
+              <a class="btn" href="/2021/10/31/springFoundation-1-Ioc/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -456,7 +579,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/30/test/" class="post-title-link" itemprop="url">test</a>
+          <a href="/2021/10/30/test/" class="post-title-link" itemprop="url">For LeiHeHe</a>
         </h2>
 
         <div class="post-meta-container">
@@ -466,10 +589,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-10-30 00:52:02 / Modified: 02:12:51" itemprop="dateCreated datePublished" datetime="2021-10-30T00:52:02+11:00">2021-10-30</time>
+      <time title="Created: 2021-10-30 00:52:02" itemprop="dateCreated datePublished" datetime="2021-10-30T00:52:02+11:00">2021-10-30</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-12-04 21:57:24" itemprop="dateModified" datetime="2021-12-04T21:57:24+11:00">2021-12-04</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -490,7 +619,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>Thank my dear dear dear favorite girl <a target="_blank" rel="noopener" href="https://leihehehe.github.io/">Leiheee’s</a> help during the build of this blog❤❤❤❤😍😍😍😍🐱‍🐉🐱‍🐉🐱‍🐉🐱‍🐉.</p>
+          <p>Thank my dear dear dear favorite girl <a target="_blank" rel="noopener" href="https://leihehehe.github.io/">Leiheee’s</a> help during the construction of this blog❤❤❤❤😍😍😍😍🐱‍🐉🐱‍🐉🐱‍🐉🐱‍🐉.</p>
 
       
     </div>
