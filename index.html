@@ -83,9 +83,9 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">13</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">4</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">6</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">15</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">5</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">8</span></a></li>
   </ul>
 </nav>
 
@@ -130,18 +130,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -179,6 +179,246 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Shain">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shain's Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/" class="post-title-link" itemprop="url">算法随手-树</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-12-06 15:28:56 / Modified: 17:55:16" itemprop="dateCreated datePublished" datetime="2021-12-06T15:28:56+11:00">2021-12-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/Data-Structure/" itemprop="url" rel="index"><span itemprop="name">Data Structure</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h2><p>与树结构相关的题，多为递归求解。 若可确定使用递归求解树相关的题， 则：</p>
+<ul>
+<li>分析问题， 确定解体步骤。</li>
+<li>按照步骤，确定递归函数。 所谓确定递归函数，即以下三个步骤：<ul>
+<li>确定函数终止条件<ul>
+<li><strong>在利用递归解决树相关问题时， 为了确定函数终止条件， 可以从输入的节点的不同状态入手，进而判断何时应该是False, 也即被拦截，或者说被终止。</strong>例如， a, b两个节点都为空则如何， 一个为空如何等等。 同时，如果有可以合并的终止条件， 那么在写if 条件时， 可以利用不同 if 间的顺序达到精简代码的效果。</li>
+<li><strong>并且目前接触到的大部分情况下。 再树中递归时的终止条件基本是拦截所有False的情况， 对于True的情况不需显示写if拦截， 只需让程序继续往下跑即可。 那么通常此时是跑到 return的函数方程， 或者进行某些更改操作。</strong></li>
+</ul>
+</li>
+<li>确定函数功能</li>
+<li>确定递归方程</li>
+<li>切记不要用人脑模拟递归过程！</li>
+</ul>
+</li>
+</ul>
+<p>同时， 目前接触到的 “二叉树” 相关的需要递归的题， <strong>要么是需要更改树， 要么是需要判断树是否满足某种条件</strong>，即只需遍历树的个节点值同时做判断，而非更改。 </p>
+<p>仅限目前接触的来说， <strong>当需要更改树的内容时， 可”从下至上“ 更改。</strong> 那么在这种情况下，往往需要通过 前序遍历 先到达树的底部，然后进行更改操作， e.g. offer 26。  通常再这种情况下，代码的结构很可能是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fun():</span><br><span class="line">	pre_order_traversal(left)</span><br><span class="line">    pre_order_traversal(right)</span><br><span class="line">    do somthing..</span><br></pre></td></tr></table></figure>
+
+
+
+<p>**当不需要更改，只需要判断时， 可”从上至下判断”**。所为从上至下判断， <strong>即每当一个节点进来递归函数， 先对该节点进行判断</strong>， <strong>然后再 return fun(左) and fun(右)。</strong>e.g. offer 28。通常再这种情况下，代码的结构很可能是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用if 过滤所有需被终止的不满足需求的条件。</span></span><br><span class="line"><span class="keyword">if</span> ...</span><br><span class="line">	<span class="keyword">return</span> </span><br><span class="line"><span class="keyword">if</span> ...</span><br><span class="line">	<span class="keyword">return</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> fun(left) <span class="keyword">and</span> fun(right)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果不想用递归， 那么可以使用栈实现， 因为只要能用递归求解的问题， 用栈都可解决， 递归的过程实际也就是计算机进行压栈出栈的过程。其典型代表即为BST的中/前序遍历。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/head.jpg">
+      <meta itemprop="name" content="Shain">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shain's Blogs">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/" class="post-title-link" itemprop="url">算法随手-链表</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-12-05 15:48:26" itemprop="dateCreated datePublished" datetime="2021-12-05T15:48:26+11:00">2021-12-05</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-12-06 15:29:55" itemprop="dateModified" datetime="2021-12-06T15:29:55+11:00">2021-12-06</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/Data-Structure/" itemprop="url" rel="index"><span itemprop="name">Data Structure</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>See code in Git Repository/Leetcode-algorithm/data_structure/Linked_list</p>
+<p>Most in Link_List_Review.py</p>
+<h4 id="链表的环"><a href="#链表的环" class="headerlink" title="链表的环"></a>链表的环</h4><ul>
+<li>判断是否有环：<ul>
+<li>维护快慢两个指针， 快指针一次前进两位，慢指针一次一位。 若两个指针能够相遇，则有环。 若快指针运动到末尾还未与满指针相遇则无环。</li>
+<li>注意， 如果有环，则使用 while node.next is not None为判断条件时，一定会有快慢指针相遇的时候， <strong>因为如果有环的话， 那么链表就没有尾节点，也就是没有next为None的节点。换句话说， 如果链表有尾节点，也就是next 为none的节点，那么链表一定无环。</strong></li>
+</ul>
+</li>
+<li>找到链表环的入口：<ul>
+<li>首先使用上述方法判断是否有环</li>
+<li>找到环中任意一个节点。 <ul>
+<li>方法： 若有环， 则使用上述方法判断过程中会得到两个指针相遇的节点， 记录该节点。</li>
+</ul>
+</li>
+<li>当快慢指针相遇时，创建一新指针从头节点出发， 当该新指针与慢指针相遇时所处的结点即为环的入口。</li>
+</ul>
+</li>
+</ul>
+<h4 id="链表的倒数第K个元素-offer"><a href="#链表的倒数第K个元素-offer" class="headerlink" title="链表的倒数第K个元素 - offer"></a>链表的倒数第K个元素 - offer</h4><ul>
+<li>注意双指针在链表中的使用：<ul>
+<li>倒数第k个元素， 可使快指针先走k步， 然后慢指针再开始走，这样当快指针走到末尾慢指针所指即答案。</li>
+</ul>
+</li>
+<li><strong>注意代码鲁棒性</strong>：<ul>
+<li>所谓鲁棒性即注意对input的检查， 通常再写算法时表现再程序入口的几个 if-return。 很重要，勿忘。</li>
+<li>再此题中包括：<ul>
+<li>链表是否为空？</li>
+<li>k是否为0？</li>
+<li>链表长度是否大于k？</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="链表的反转"><a href="#链表的反转" class="headerlink" title="链表的反转"></a>链表的反转</h4><ul>
+<li><p>recursive即可</p>
+</li>
+<li><p>但是注意：</p>
+<ul>
+<li>不要忘了把原头节点的next置空</li>
+<li>终止条件应为：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">不应使用cur_node is None 为if条件，因为不好记录新的头节点</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">if</span> cur_node.<span class="built_in">next</span> <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    cur_node.<span class="built_in">next</span> = pre_node</span><br><span class="line">    self.head = cur_node</span><br><span class="line">    <span class="keyword">return</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>Created by Shenyi Zhang at 2021-12-5, Mel, Australia</p>
+<p>Last Update: 2021-12-5</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
