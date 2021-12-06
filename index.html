@@ -213,7 +213,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-12-06 15:28:56 / Modified: 17:55:16" itemprop="dateCreated datePublished" datetime="2021-12-06T15:28:56+11:00">2021-12-06</time>
+      <time title="Created: 2021-12-06 15:28:56 / Modified: 17:56:14" itemprop="dateCreated datePublished" datetime="2021-12-06T15:28:56+11:00">2021-12-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -239,7 +239,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h2><p>与树结构相关的题，多为递归求解。 若可确定使用递归求解树相关的题， 则：</p>
+          <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>与树结构相关的题，多为递归求解。 若可确定使用递归求解树相关的题， 则：</p>
 <ul>
 <li>分析问题， 确定解体步骤。</li>
 <li>按照步骤，确定递归函数。 所谓确定递归函数，即以下三个步骤：<ul>
@@ -254,18 +254,6 @@
 </ul>
 </li>
 </ul>
-<p>同时， 目前接触到的 “二叉树” 相关的需要递归的题， <strong>要么是需要更改树， 要么是需要判断树是否满足某种条件</strong>，即只需遍历树的个节点值同时做判断，而非更改。 </p>
-<p>仅限目前接触的来说， <strong>当需要更改树的内容时， 可”从下至上“ 更改。</strong> 那么在这种情况下，往往需要通过 前序遍历 先到达树的底部，然后进行更改操作， e.g. offer 26。  通常再这种情况下，代码的结构很可能是：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fun():</span><br><span class="line">	pre_order_traversal(left)</span><br><span class="line">    pre_order_traversal(right)</span><br><span class="line">    do somthing..</span><br></pre></td></tr></table></figure>
-
-
-
-<p>**当不需要更改，只需要判断时， 可”从上至下判断”**。所为从上至下判断， <strong>即每当一个节点进来递归函数， 先对该节点进行判断</strong>， <strong>然后再 return fun(左) and fun(右)。</strong>e.g. offer 28。通常再这种情况下，代码的结构很可能是：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用if 过滤所有需被终止的不满足需求的条件。</span></span><br><span class="line"><span class="keyword">if</span> ...</span><br><span class="line">	<span class="keyword">return</span> </span><br><span class="line"><span class="keyword">if</span> ...</span><br><span class="line">	<span class="keyword">return</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> fun(left) <span class="keyword">and</span> fun(right)</span><br></pre></td></tr></table></figure>
-
-
-
-<p>如果不想用递归， 那么可以使用栈实现， 因为只要能用递归求解的问题， 用栈都可解决， 递归的过程实际也就是计算机进行压栈出栈的过程。其典型代表即为BST的中/前序遍历。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/#more" rel="contents">
