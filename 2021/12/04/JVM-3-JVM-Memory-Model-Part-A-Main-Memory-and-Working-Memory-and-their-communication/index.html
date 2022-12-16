@@ -1,93 +1,12 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next muse use-motion" lang="en">
+<!DOCTYPE html>
+<html lang=en>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="JMM,JVM Working Memory,JVM Main Memory,JVM Thread Communication," />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
-
-
-
-
-
-
-<meta name="description" content="Java Memory Model (JMM) Overview所谓JMM即可粗略理解为 “JVM中为针对变量在内存中写入写出而制定的一系列规则”， 也即以线程安全为主要目标的一系列底层基础设计。其存在目的即为： “使程序再各种不同架构的系统中都可保证并发安全， 即保证原子性，可见性，有序性” 该篇文章涵盖以下内容：  JVM中线程的通信 JVM中工作内存与主内存交互的8个基本操作 JVM中针对上">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Java Memory Model (JMM) Overview所谓JMM即可粗略理解为 “JVM中为针对变量在内存中写入写出而制定的一系列规则”， 也即以线程安全为主要目标的一系列底层基础设计。其存在目的即为： “使程序再各种不同架构的系统中都可保证并发安全， 即保证原子性，可见性，有序性” 该篇文章涵盖以下内容：  JVM中线程的通信 JVM中工作内存与主内存交互的8个基本操作 JVM中针对上">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication">
 <meta property="og:url" content="https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/index.html">
@@ -102,253 +21,152 @@
 <meta property="article:tag" content="JVM Main Memory">
 <meta property="article:tag" content="JVM Thread Communication">
 <meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
 
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '',
-    scheme: 'Muse',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/"/>
-
-
-
-
-
-  <title> JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication | Shain's Blogs </title>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
 <meta name="generator" content="Hexo 5.4.0"></head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
+<body class="max-width mx-auto px3 ltr">
     
-  
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2021/12/03/JVM-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E5%9B%9E%E6%94%B6%EF%BC%88GC%EF%BC%89/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&text=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&title=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&is_video=false&description=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication&body=Check out this article: https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&title=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&title=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&title=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&title=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&name=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication&description=&lt;h2 id=&#34;Java-Memory-Model-JMM-Overview&#34;&gt;&lt;a href=&#34;#Java-Memory-Model-JMM-Overview&#34; class=&#34;headerlink&#34; title=&#34;Java Memory Model (JMM) Overview&#34;&gt;&lt;/a&gt;Java Memory Model (JMM) Overview&lt;/h2&gt;&lt;p&gt;所谓JMM即可粗略理解为 “JVM中为针对变量在内存中写入写出而制定的一系列规则”， 也即以线程安全为主要目标的一系列底层基础设计。其存在目的即为： “&lt;strong&gt;使程序再各种不同架构的系统中都可保证并发安全， 即保证原子性，可见性，有序性&lt;/strong&gt;”&lt;/p&gt;
+&lt;p&gt;该篇文章涵盖以下内容：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;JVM中线程的通信&lt;/li&gt;
+&lt;li&gt;JVM中工作内存与主内存交互的8个基本操作&lt;/li&gt;
+&lt;li&gt;JVM中针对上述八个基本操作而指定的几条基本规则&lt;/li&gt;
+&lt;li&gt;从JMM角度解释线程安全问题的根本原因&lt;/li&gt;
+&lt;li&gt;JVM中的原子性， 可见性及有序性&lt;/li&gt;
+&lt;/ul&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&t=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Shain's Blogs</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
-  </div>
-
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-Memory-Model-JMM-Overview"><span class="toc-number">1.</span> <span class="toc-text">Java Memory Model (JMM) Overview</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#JVM%E4%B8%AD%E7%BA%BF%E7%A8%8B%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="toc-number">1.0.1.</span> <span class="toc-text">JVM中线程的通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98-amp-%E4%B8%BB%E5%86%85%E5%AD%98-VS-%E5%A0%86-amp-%E6%A0%88"><span class="toc-number">1.0.2.</span> <span class="toc-text">工作内存&amp;主内存 VS 堆&amp;栈</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JVM%E4%B8%AD%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98%E4%B8%8E%E4%B8%BB%E5%86%85%E5%AD%98%E4%BA%A4%E4%BA%92%E7%9A%848%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">1.0.3.</span> <span class="toc-text">JVM中工作内存与主内存交互的8个基本操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JVM%E4%B8%AD%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98%E4%B8%8E%E4%B8%BB%E5%86%85%E5%AD%98%E4%BA%A4%E4%BA%92%E7%9A%84%E5%87%A0%E6%9D%A1%E5%9F%BA%E6%9C%AC%E8%A7%84%E5%88%99"><span class="toc-number">1.0.4.</span> <span class="toc-text">JVM中工作内存与主内存交互的几条基本规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JVM%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%AD%90%E6%80%A7%EF%BC%8C-%E5%8F%AF%E8%A7%81%E6%80%A7%E5%8F%8A%E6%9C%89%E5%BA%8F%E6%80%A7"><span class="toc-number">1.0.5.</span> <span class="toc-text">JVM中的原子性， 可见性及有序性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="toc-number">1.0.6.</span> <span class="toc-text">可见性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="toc-number">1.0.7.</span> <span class="toc-text">原子性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%89%E5%BA%8F%E6%80%A7"><span class="toc-number">1.0.8.</span> <span class="toc-text">有序性</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
 </div>
 
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            Tags
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
-</nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
     
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shain's Blogs">
-    </span>
-
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
     
-      <header class="post-header">
+    <h1 class="posttitle" itemprop="name headline">
+        JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication
+    </h1>
 
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Shain</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-12-04T09:32:31.000Z" itemprop="datePublished">2021-12-04</time>
         
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication
-              
-            
-          </h1>
-        
+      
+    </div>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-12-04T20:32:31+11:00">
-                2021-12-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JVM/" itemprop="url" rel="index">
-                    <span itemprop="name">JVM</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
 
       
-      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/JVM/">JVM</a>
+    </div>
+
 
       
-        <h2 id="Java-Memory-Model-JMM-Overview"><a href="#Java-Memory-Model-JMM-Overview" class="headerlink" title="Java Memory Model (JMM) Overview"></a>Java Memory Model (JMM) Overview</h2><p>所谓JMM即可粗略理解为 “JVM中为针对变量在内存中写入写出而制定的一系列规则”， 也即以线程安全为主要目标的一系列底层基础设计。其存在目的即为： “<strong>使程序再各种不同架构的系统中都可保证并发安全， 即保证原子性，可见性，有序性</strong>”</p>
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/JMM/" rel="tag">JMM</a>, <a class="tag-link-link" href="/tags/JVM-Main-Memory/" rel="tag">JVM Main Memory</a>, <a class="tag-link-link" href="/tags/JVM-Thread-Communication/" rel="tag">JVM Thread Communication</a>, <a class="tag-link-link" href="/tags/JVM-Working-Memory/" rel="tag">JVM Working Memory</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h2 id="Java-Memory-Model-JMM-Overview"><a href="#Java-Memory-Model-JMM-Overview" class="headerlink" title="Java Memory Model (JMM) Overview"></a>Java Memory Model (JMM) Overview</h2><p>所谓JMM即可粗略理解为 “JVM中为针对变量在内存中写入写出而制定的一系列规则”， 也即以线程安全为主要目标的一系列底层基础设计。其存在目的即为： “<strong>使程序再各种不同架构的系统中都可保证并发安全， 即保证原子性，可见性，有序性</strong>”</p>
 <p>该篇文章涵盖以下内容：</p>
 <ul>
 <li>JVM中线程的通信</li>
@@ -413,351 +231,150 @@
 </ol>
 <p>Created by Shain at 2021/12/4, Melbourne, Australia.</p>
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/JMM/" rel="tag"># JMM</a>
-          
-            <a href="/tags/JVM-Working-Memory/" rel="tag"># JVM Working Memory</a>
-          
-            <a href="/tags/JVM-Main-Memory/" rel="tag"># JVM Main Memory</a>
-          
-            <a href="/tags/JVM-Thread-Communication/" rel="tag"># JVM Thread Communication</a>
-          
-        </div>
-      
-
-      
-        
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2021/12/03/JVM-%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E5%9B%9E%E6%94%B6%EF%BC%88GC%EF%BC%89/" rel="next" title="JVM (2) 内存分配与回收(GC)">
-                <i class="fa fa-chevron-left"></i> JVM (2) 内存分配与回收(GC)
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/" rel="prev" title="算法随手-链表">
-                算法随手-链表 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
   </div>
-
-          
-          </div>
-          
+</article>
 
 
-          
-  <div class="comments" id="comments">
-    
-  </div>
 
-
-        </div>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
+        
+      </ul>
     </div>
-  </div>
 
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-Memory-Model-JMM-Overview"><span class="toc-number">1.</span> <span class="toc-text">Java Memory Model (JMM) Overview</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#JVM%E4%B8%AD%E7%BA%BF%E7%A8%8B%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="toc-number">1.0.1.</span> <span class="toc-text">JVM中线程的通信</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98-amp-%E4%B8%BB%E5%86%85%E5%AD%98-VS-%E5%A0%86-amp-%E6%A0%88"><span class="toc-number">1.0.2.</span> <span class="toc-text">工作内存&amp;主内存 VS 堆&amp;栈</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JVM%E4%B8%AD%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98%E4%B8%8E%E4%B8%BB%E5%86%85%E5%AD%98%E4%BA%A4%E4%BA%92%E7%9A%848%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">1.0.3.</span> <span class="toc-text">JVM中工作内存与主内存交互的8个基本操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JVM%E4%B8%AD%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98%E4%B8%8E%E4%B8%BB%E5%86%85%E5%AD%98%E4%BA%A4%E4%BA%92%E7%9A%84%E5%87%A0%E6%9D%A1%E5%9F%BA%E6%9C%AC%E8%A7%84%E5%88%99"><span class="toc-number">1.0.4.</span> <span class="toc-text">JVM中工作内存与主内存交互的几条基本规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JVM%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%AD%90%E6%80%A7%EF%BC%8C-%E5%8F%AF%E8%A7%81%E6%80%A7%E5%8F%8A%E6%9C%89%E5%BA%8F%E6%80%A7"><span class="toc-number">1.0.5.</span> <span class="toc-text">JVM中的原子性， 可见性及有序性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="toc-number">1.0.6.</span> <span class="toc-text">可见性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="toc-number">1.0.7.</span> <span class="toc-text">原子性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%89%E5%BA%8F%E6%80%A7"><span class="toc-number">1.0.8.</span> <span class="toc-text">有序性</span></a></li></ol></li></ol></li></ol>
+    </div>
 
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/avatar.gif"
-               alt="" />
-          <p class="site-author-name" itemprop="name"></p>
-           
-              <p class="site-description motion-element" itemprop="description"></p>
-          
-        </div>
-        <nav class="site-state motion-element">
-        
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives">
-                <span class="site-state-item-count">17</span>
-                <span class="site-state-item-name">posts</span>
-              </a>
-            </div>
-          
-
-          
-            <div class="site-state-item site-state-categories">
-              
-                <span class="site-state-item-count">5</span>
-                <span class="site-state-item-name">categories</span>
-              
-            </div>
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">17</span>
-                <span class="site-state-item-name">tags</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Memory-Model-JMM-Overview"><span class="nav-number">1.</span> <span class="nav-text">Java Memory Model (JMM) Overview</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM%E4%B8%AD%E7%BA%BF%E7%A8%8B%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="nav-number">1.0.1.</span> <span class="nav-text">JVM中线程的通信</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98-amp-%E4%B8%BB%E5%86%85%E5%AD%98-VS-%E5%A0%86-amp-%E6%A0%88"><span class="nav-number">1.0.2.</span> <span class="nav-text">工作内存&amp;主内存 VS 堆&amp;栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM%E4%B8%AD%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98%E4%B8%8E%E4%B8%BB%E5%86%85%E5%AD%98%E4%BA%A4%E4%BA%92%E7%9A%848%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">1.0.3.</span> <span class="nav-text">JVM中工作内存与主内存交互的8个基本操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM%E4%B8%AD%E5%B7%A5%E4%BD%9C%E5%86%85%E5%AD%98%E4%B8%8E%E4%B8%BB%E5%86%85%E5%AD%98%E4%BA%A4%E4%BA%92%E7%9A%84%E5%87%A0%E6%9D%A1%E5%9F%BA%E6%9C%AC%E8%A7%84%E5%88%99"><span class="nav-number">1.0.4.</span> <span class="nav-text">JVM中工作内存与主内存交互的几条基本规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%AD%90%E6%80%A7%EF%BC%8C-%E5%8F%AF%E8%A7%81%E6%80%A7%E5%8F%8A%E6%9C%89%E5%BA%8F%E6%80%A7"><span class="nav-number">1.0.5.</span> <span class="nav-text">JVM中的原子性， 可见性及有序性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="nav-number">1.0.6.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="nav-number">1.0.7.</span> <span class="nav-text">原子性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E5%BA%8F%E6%80%A7"><span class="nav-number">1.0.8.</span> <span class="nav-text">有序性</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&text=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&title=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&is_video=false&description=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication&body=Check out this article: https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&title=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&title=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&title=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&title=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&name=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication&description=&lt;h2 id=&#34;Java-Memory-Model-JMM-Overview&#34;&gt;&lt;a href=&#34;#Java-Memory-Model-JMM-Overview&#34; class=&#34;headerlink&#34; title=&#34;Java Memory Model (JMM) Overview&#34;&gt;&lt;/a&gt;Java Memory Model (JMM) Overview&lt;/h2&gt;&lt;p&gt;所谓JMM即可粗略理解为 “JVM中为针对变量在内存中写入写出而制定的一系列规则”， 也即以线程安全为主要目标的一系列底层基础设计。其存在目的即为： “&lt;strong&gt;使程序再各种不同架构的系统中都可保证并发安全， 即保证原子性，可见性，有序性&lt;/strong&gt;”&lt;/p&gt;
+&lt;p&gt;该篇文章涵盖以下内容：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;JVM中线程的通信&lt;/li&gt;
+&lt;li&gt;JVM中工作内存与主内存交互的8个基本操作&lt;/li&gt;
+&lt;li&gt;JVM中针对上述八个基本操作而指定的几条基本规则&lt;/li&gt;
+&lt;li&gt;从JMM角度解释线程安全问题的根本原因&lt;/li&gt;
+&lt;li&gt;JVM中的原子性， 可见性及有序性&lt;/li&gt;
+&lt;/ul&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2021/12/04/JVM-3-JVM-Memory-Model-Part-A-Main-Memory-and-Working-Memory-and-their-communication/&t=JVM (3) -JVM Memory Model Part A: Main Memory and Working Memory and their communication"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
 
     </div>
-  </aside>
 
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
 
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2022</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Shain</span>
+  </div>
 </div>
 
-
-<div class="powered-by">
-  Powered by <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
-</div>
-
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
-  </a>
-</div>
-
-
         
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
     
     
+    2016-2022
+    Shain
   </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
 
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
   
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
 
 
+<script src="/js/main.js"></script>
 
+<!-- search -->
 
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+<!-- Google Analytics -->
 
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+<!-- Baidu Analytics -->
 
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<!-- Cloudflare Analytics -->
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+<!-- Umami Analytics -->
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<!-- Disqus Comments -->
 
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
-
-
-
-  
-
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
-  
+<!-- utterances Comments -->
 
 </body>
 </html>

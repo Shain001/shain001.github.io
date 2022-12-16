@@ -1,93 +1,12 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next muse use-motion" lang="en">
+<!DOCTYPE html>
+<html lang=en>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="IoC,IoC Container,BeanFactory,ApplicationContext," />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
-
-
-
-
-
-
-<meta name="description" content="Spring Foundation(1) – IoC and IoC Container1. What is IoC?IoC (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high lev">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Spring Foundation(1) – IoC and IoC Container1. What is IoC?IoC (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high lev">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring Foundation(1) -- IoC and IoC Container">
 <meta property="og:url" content="https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/index.html">
@@ -102,253 +21,145 @@
 <meta property="article:tag" content="BeanFactory">
 <meta property="article:tag" content="ApplicationContext">
 <meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Spring Foundation(1) -- IoC and IoC Container</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
 
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '',
-    scheme: 'Muse',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/"/>
-
-
-
-
-
-  <title> Spring Foundation(1) -- IoC and IoC Container | Shain's Blogs </title>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
 <meta name="generator" content="Hexo 5.4.0"></head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
+<body class="max-width mx-auto px3 ltr">
     
-  
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2021/12/02/JVM-1-JVM%E5%88%86%E5%8C%BA/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2021/10/30/test/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&text=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&title=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&is_video=false&description=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Spring Foundation(1) -- IoC and IoC Container&body=Check out this article: https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&title=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&title=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&title=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&title=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&name=Spring Foundation(1) -- IoC and IoC Container&description=&lt;h1 id=&#34;Spring-Foundation-1-–-IoC-and-IoC-Container&#34;&gt;&lt;a href=&#34;#Spring-Foundation-1-–-IoC-and-IoC-Container&#34; class=&#34;headerlink&#34; title=&#34;Spring Foundation(1) – IoC and IoC Container&#34;&gt;&lt;/a&gt;Spring Foundation(1) – IoC and IoC Container&lt;/h1&gt;&lt;h3 id=&#34;1-What-is-IoC&#34;&gt;&lt;a href=&#34;#1-What-is-IoC&#34; class=&#34;headerlink&#34; title=&#34;1. What is IoC?&#34;&gt;&lt;/a&gt;1. What is IoC?&lt;/h3&gt;&lt;p&gt;&lt;code&gt;IoC&lt;/code&gt; (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high level”. &lt;/p&gt;
+&lt;p&gt;In software engineering, this abstract concept normally just refers to let a “third party” to help us &lt;code&gt;create objects and manage their dependencies&lt;/code&gt; , in which context the so called third party is  the &lt;code&gt;IoC Container&lt;/code&gt; and the process that IoC Container helps to create and manage objects is called &lt;code&gt;Dependency Injection(DI)&lt;/code&gt;.&lt;/p&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&t=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Shain's Blogs</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
-  </div>
-
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-Foundation-1-%E2%80%93-IoC-and-IoC-Container"><span class="toc-number">1.</span> <span class="toc-text">Spring Foundation(1) – IoC and IoC Container</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-What-is-IoC"><span class="toc-number">1.0.1.</span> <span class="toc-text">1. What is IoC?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Why-we-need-it"><span class="toc-number">1.0.2.</span> <span class="toc-text">2. Why we need it</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-How-does-it-work"><span class="toc-number">1.0.3.</span> <span class="toc-text">3. How does it work?</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#IoC-Service-Provider"><span class="toc-number">1.0.3.0.1.</span> <span class="toc-text">IoC Service Provider</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-IoC-Container"><span class="toc-number">1.0.4.</span> <span class="toc-text">4. IoC Container</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#BeanFactory-VS-ApplicationContext"><span class="toc-number">1.0.4.0.1.</span> <span class="toc-text">BeanFactory VS ApplicationContext</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+    </div>
+  </span>
 </div>
 
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            Tags
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
-</nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
     
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Shain's Blogs">
-    </span>
-
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
     
-      <header class="post-header">
+    <h1 class="posttitle" itemprop="name headline">
+        Spring Foundation(1) -- IoC and IoC Container
+    </h1>
 
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Shain</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-10-31T11:27:38.000Z" itemprop="datePublished">2021-10-31</time>
         
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Spring Foundation(1) -- IoC and IoC Container
-              
-            
-          </h1>
-        
+      
+    </div>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-10-31T22:27:38+11:00">
-                2021-10-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
 
       
-      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Spring/">Spring</a>
+    </div>
+
 
       
-        <h1 id="Spring-Foundation-1-–-IoC-and-IoC-Container"><a href="#Spring-Foundation-1-–-IoC-and-IoC-Container" class="headerlink" title="Spring Foundation(1) – IoC and IoC Container"></a>Spring Foundation(1) – IoC and IoC Container</h1><h3 id="1-What-is-IoC"><a href="#1-What-is-IoC" class="headerlink" title="1. What is IoC?"></a>1. What is IoC?</h3><p><code>IoC</code> (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high level”. </p>
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/ApplicationContext/" rel="tag">ApplicationContext</a>, <a class="tag-link-link" href="/tags/BeanFactory/" rel="tag">BeanFactory</a>, <a class="tag-link-link" href="/tags/IoC/" rel="tag">IoC</a>, <a class="tag-link-link" href="/tags/IoC-Container/" rel="tag">IoC Container</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="Spring-Foundation-1-–-IoC-and-IoC-Container"><a href="#Spring-Foundation-1-–-IoC-and-IoC-Container" class="headerlink" title="Spring Foundation(1) – IoC and IoC Container"></a>Spring Foundation(1) – IoC and IoC Container</h1><h3 id="1-What-is-IoC"><a href="#1-What-is-IoC" class="headerlink" title="1. What is IoC?"></a>1. What is IoC?</h3><p><code>IoC</code> (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high level”. </p>
 <p>In software engineering, this abstract concept normally just refers to let a “third party” to help us <code>create objects and manage their dependencies</code> , in which context the so called third party is  the <code>IoC Container</code> and the process that IoC Container helps to create and manage objects is called <code>Dependency Injection(DI)</code>.</p>
 <span id="more"></span>
 
@@ -373,351 +184,143 @@
 <p>In contrast, ApplicationContext has more functionalities than BeanFactory. <strong>It indirectly inherent from the BeanFactory and thus has all functionalities that BeanFactory has, and provide more functionalities such as Event Publish etc.</strong>  Unlike BeanFactory, <strong>ApplicationContext initiate all objects and inject dependencies to them as soon as the container is initiated, which means the initiating speed is lower.</strong>  <strong>It fits the situation where you have enough resource and has needs more functionalities.</strong></p>
 <p>Created by Shain Melbourne, Australia.</p>
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/IoC/" rel="tag"># IoC</a>
-          
-            <a href="/tags/IoC-Container/" rel="tag"># IoC Container</a>
-          
-            <a href="/tags/BeanFactory/" rel="tag"># BeanFactory</a>
-          
-            <a href="/tags/ApplicationContext/" rel="tag"># ApplicationContext</a>
-          
-        </div>
-      
-
-      
-        
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2021/10/30/test/" rel="next" title="For LeiHeHe">
-                <i class="fa fa-chevron-left"></i> For LeiHeHe
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2021/12/02/JVM-1-JVM%E5%88%86%E5%8C%BA/" rel="prev" title="JVM (1)-JVM Memory Area">
-                JVM (1)-JVM Memory Area <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
   </div>
-
-          
-          </div>
-          
+</article>
 
 
-          
-  <div class="comments" id="comments">
-    
-  </div>
 
-
-        </div>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li>
+        
+      </ul>
     </div>
-  </div>
 
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Spring-Foundation-1-%E2%80%93-IoC-and-IoC-Container"><span class="toc-number">1.</span> <span class="toc-text">Spring Foundation(1) – IoC and IoC Container</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-What-is-IoC"><span class="toc-number">1.0.1.</span> <span class="toc-text">1. What is IoC?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Why-we-need-it"><span class="toc-number">1.0.2.</span> <span class="toc-text">2. Why we need it</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-How-does-it-work"><span class="toc-number">1.0.3.</span> <span class="toc-text">3. How does it work?</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#IoC-Service-Provider"><span class="toc-number">1.0.3.0.1.</span> <span class="toc-text">IoC Service Provider</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-IoC-Container"><span class="toc-number">1.0.4.</span> <span class="toc-text">4. IoC Container</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#BeanFactory-VS-ApplicationContext"><span class="toc-number">1.0.4.0.1.</span> <span class="toc-text">BeanFactory VS ApplicationContext</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+    </div>
 
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/avatar.gif"
-               alt="" />
-          <p class="site-author-name" itemprop="name"></p>
-           
-              <p class="site-description motion-element" itemprop="description"></p>
-          
-        </div>
-        <nav class="site-state motion-element">
-        
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives">
-                <span class="site-state-item-count">17</span>
-                <span class="site-state-item-name">posts</span>
-              </a>
-            </div>
-          
-
-          
-            <div class="site-state-item site-state-categories">
-              
-                <span class="site-state-item-count">5</span>
-                <span class="site-state-item-name">categories</span>
-              
-            </div>
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">17</span>
-                <span class="site-state-item-name">tags</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Foundation-1-%E2%80%93-IoC-and-IoC-Container"><span class="nav-number">1.</span> <span class="nav-text">Spring Foundation(1) – IoC and IoC Container</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-What-is-IoC"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. What is IoC?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Why-we-need-it"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. Why we need it</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-How-does-it-work"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. How does it work?</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#IoC-Service-Provider"><span class="nav-number">1.0.3.0.1.</span> <span class="nav-text">IoC Service Provider</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-IoC-Container"><span class="nav-number">1.0.4.</span> <span class="nav-text">4. IoC Container</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#BeanFactory-VS-ApplicationContext"><span class="nav-number">1.0.4.0.1.</span> <span class="nav-text">BeanFactory VS ApplicationContext</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&text=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&title=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&is_video=false&description=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Spring Foundation(1) -- IoC and IoC Container&body=Check out this article: https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&title=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&title=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&title=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&title=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&name=Spring Foundation(1) -- IoC and IoC Container&description=&lt;h1 id=&#34;Spring-Foundation-1-–-IoC-and-IoC-Container&#34;&gt;&lt;a href=&#34;#Spring-Foundation-1-–-IoC-and-IoC-Container&#34; class=&#34;headerlink&#34; title=&#34;Spring Foundation(1) – IoC and IoC Container&#34;&gt;&lt;/a&gt;Spring Foundation(1) – IoC and IoC Container&lt;/h1&gt;&lt;h3 id=&#34;1-What-is-IoC&#34;&gt;&lt;a href=&#34;#1-What-is-IoC&#34; class=&#34;headerlink&#34; title=&#34;1. What is IoC?&#34;&gt;&lt;/a&gt;1. What is IoC?&lt;/h3&gt;&lt;p&gt;&lt;code&gt;IoC&lt;/code&gt; (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high level”. &lt;/p&gt;
+&lt;p&gt;In software engineering, this abstract concept normally just refers to let a “third party” to help us &lt;code&gt;create objects and manage their dependencies&lt;/code&gt; , in which context the so called third party is  the &lt;code&gt;IoC Container&lt;/code&gt; and the process that IoC Container helps to create and manage objects is called &lt;code&gt;Dependency Injection(DI)&lt;/code&gt;.&lt;/p&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/&t=Spring Foundation(1) -- IoC and IoC Container"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
 
     </div>
-  </aside>
 
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
 
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2022</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Shain</span>
+  </div>
 </div>
 
-
-<div class="powered-by">
-  Powered by <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
-</div>
-
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Muse
-  </a>
-</div>
-
-
         
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
     
     
+    2016-2022
+    Shain
   </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">Projects</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
 
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
   
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
 
 
+<script src="/js/main.js"></script>
 
+<!-- search -->
 
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+<!-- Google Analytics -->
 
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+<!-- Baidu Analytics -->
 
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<!-- Cloudflare Analytics -->
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+<!-- Umami Analytics -->
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<!-- Disqus Comments -->
 
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
-
-
-
-  
-
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
-  
+<!-- utterances Comments -->
 
 </body>
 </html>
