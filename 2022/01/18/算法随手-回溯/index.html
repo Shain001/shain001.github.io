@@ -1,38 +1,705 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="回溯问题总结：基础无非三种情况：  同一层级中， 每个节点的分支数相同。 –&gt; 使用 used[] 改变状态，不使用 start作为 递归方程的参数。   e.g.  leetcode 全排列1，2   同一层级中， 每个节点的分支数不相同， 即同一层级中， 节点2 的分支中不包含节点1的元素， 同理， 节点三的分支中不包含节点1，2两个节点的元素。 –&gt; 使用 start 作为 递归">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法随手-链表">
+<meta property="og:url" content="https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/index.html">
+<meta property="og:site_name" content="Shain&#39;s Blogs">
+<meta property="og:description" content="回溯问题总结：基础无非三种情况：  同一层级中， 每个节点的分支数相同。 –&gt; 使用 used[] 改变状态，不使用 start作为 递归方程的参数。   e.g.  leetcode 全排列1，2   同一层级中， 每个节点的分支数不相同， 即同一层级中， 节点2 的分支中不包含节点1的元素， 同理， 节点三的分支中不包含节点1，2两个节点的元素。 –&gt; 使用 start 作为 递归">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:/Users/Senry/Desktop/bt.png">
+<meta property="article:published_time" content="2022-01-18T04:20:25.000Z">
+<meta property="article:modified_time" content="2022-12-16T14:01:26.428Z">
+<meta property="article:author" content="Shain">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/Senry/Desktop/bt.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://shain001.github.io/2022/01/18/算法随手-回溯/"/>
+
+
+
+
+
+  <title> 算法随手-链表 | Shain's Blogs </title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shain's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shain's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                算法随手-链表
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-01-18T15:20:25+11:00">
+                2022-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="回溯问题总结："><a href="#回溯问题总结：" class="headerlink" title="回溯问题总结："></a>回溯问题总结：</h1><h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>无非三种情况：</p>
+<ul>
+<li><p>同一层级中， 每个节点的分支数相同。 –&gt; 使用 used[] 改变状态，不使用 start作为 递归方程的参数。 </p>
+<ul>
+<li>e.g.  leetcode 全排列1，2</li>
+</ul>
+</li>
+<li><p>同一层级中， 每个节点的分支数不相同， 即同一层级中， 节点2 的分支中不包含节点1的元素， 同理， 节点三的分支中不包含节点1，2两个节点的元素。 –&gt; 使用 start 作为 递归方程的参数， 进而改变for循环开始位置， 即从start开始， 即：</p>
+<ul>
+<li>e.g. leetcode 39</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(start):</span><br><span class="line">  back_track(start=i, xxx)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>各层单个节点下分支数量相同， 但是在单个层中， 每个节点的元素数量在变化， 并且 输入元素的顺序不改变。 语言不好理解， 我想表达的是 Leetcode 93. IP地址， 以及offer46 的这种类型； （offer46 应用DP求解， 但bt也可以做， 只不过效率低）<ul>
+<li>对于这种类型， 格式也较为固定，代码框架如下。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ip_config</span>(<span class="params">s</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">back_track</span>(<span class="params">remained_s, ip, ip_seg, count</span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 剪枝条件</span></span><br><span class="line">        <span class="keyword">if</span> .....</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 终止条件</span></span><br><span class="line">        <span class="keyword">if</span> count == <span class="number">1</span>:</span><br><span class="line">            ...</span><br><span class="line">            </span><br><span class="line">        <span class="comment"># ！！！！重点在这个for循环， 此处， i的范围， 表示 ”单个节点内， 元素数量的可能性“</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">4</span>):</span><br><span class="line">            ip_seg = remained_s[<span class="number">0</span>:i] + <span class="string">&quot;.&quot;</span></span><br><span class="line">            temp = ip + ip_seg</span><br><span class="line">            back_track(remained_s[i:], temp, ip_seg, count - <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(s) &lt; <span class="number">4</span> <span class="keyword">or</span> <span class="built_in">len</span>(s) &gt; <span class="number">12</span>:</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line">    to_return = []</span><br><span class="line">    back_track(s, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="number">4</span>)</span><br><span class="line">    <span class="keyword">return</span> to_return</span><br></pre></td></tr></table></figure>
+
+
+
+<p>通常， abc 不等同于 acb时， 则需使用情况1， 即使用used， 使分支数相同。 而若 abc 等同于 acb， 即顺序无关， 则应使用 情况2， 避免重复解。 </p>
+<p>之所以情况二可以避免重复解，画个树， 或者举个例子即可明白。 简单说， e.g. 2为最上层节点， 其一条分支为 2， 2， 3； 那么到了最上层的2的同级节点3以后， 就不应该再在3的分支中包括2， 因为这样一定会出现一条分路 3， 2， 2，进而造成重复。</p>
+<p>More About used：</p>
+<p>Used 的作用即为： 控制单个节点下的分支个数，也即单个节点下的分支有哪些节点。 比如， 一个节点的分支中， 应不应该有自己？ 此时则应用used控制， 通过 递归前， 后的更改/还原状态控制。 </p>
+<p>注意， used和start并非不可同时使用， 看情况判断。</p>
+<h2 id="关于求子集问题"><a href="#关于求子集问题" class="headerlink" title="关于求子集问题"></a>关于求子集问题</h2><p>即 offer38 的扩展题。  输入123， 输出： 1， 2， 3， 12， 13， 23， 123</p>
+<p><strong>即不仅仅输出“一条到叶子节点的路线”， 也要输出第一层， 第一层+第二层， 第一层+ 第二层+ … + 第n层</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">subset</span>(<span class="params">s</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">back_track</span>(<span class="params">start, path</span>):</span></span><br><span class="line">      	<span class="comment"># 载递归函数入口就将path加到result上即可。</span></span><br><span class="line">        to_return.append(path[:])</span><br><span class="line">        <span class="keyword">if</span> start == <span class="built_in">len</span>(s) - <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(start, <span class="built_in">len</span>(s)):</span><br><span class="line">            <span class="keyword">if</span> used[i] <span class="keyword">is</span> <span class="literal">False</span>:</span><br><span class="line">                used[i] = <span class="literal">True</span></span><br><span class="line">                back_track(i, path + [s[i]])</span><br><span class="line">                used[i] = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    used = [<span class="literal">False</span>] * <span class="built_in">len</span>(s)</span><br><span class="line">    to_return = []</span><br><span class="line">    back_track(<span class="number">0</span>, [])</span><br><span class="line">    <span class="keyword">return</span> to_return</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>该问题相当于 上文中情况1， 2的结合使用。 即所说的used和start的同时使用的情况的例子。</p>
+<p>唯一需要注意的是： 这一问题的特殊点在于不仅仅输出 到 叶子节点的完整路线， 也要输出“从第一层节点， 到每一个节点的temp 路线”。 实现原理很简单， 在函数入口 直接 append就可以。 </p>
+<p>之所以这么实现， 是因为每调用一次 backtrack() , 就是向下创建了一层， 到达了一个新的子节点。 而此时， path中已经更新了当前这个新的叶子节点的值， 那么只需要直接append path to result， 就相当于实现了 “第一层节点， 到每一个节点的temp 路线都被记录下来”这一目的。</p>
+<p> 如下图， 每call一次 backtrack， 就创建了一个新的子节点， 也即一条edge。 也即， 要记录从第一层节点到每一层节点的路径， 只需要在backtrack路口处添加path到result就可以。</p>
+<p><img src="C:\Users\Senry\Desktop\bt.png" alt="bt"></p>
+<h2 id="复杂些的问题-搜索问题？"><a href="#复杂些的问题-搜索问题？" class="headerlink" title="复杂些的问题 - 搜索问题？"></a>复杂些的问题 - 搜索问题？</h2><p>大概率从剪枝条件入手创造难度。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/01/07/Spring-Cloud-configures-Hystrix-using-Feign-Record/" rel="next" title="Spring Cloud configures Hystrix using Feign Record">
+                <i class="fa fa-chevron-left"></i> Spring Cloud configures Hystrix using Feign Record
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/01/20/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%95%B0%E7%BB%84-%E5%AD%97%E7%AC%A6%E4%B8%B2/" rel="prev" title="算法随手-数组/字符串">
+                算法随手-数组/字符串 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
-
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          
+          </div>
+          
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">categories</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">回溯问题总结：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-number">1.1.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E6%B1%82%E5%AD%90%E9%9B%86%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.</span> <span class="nav-text">关于求子集问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E6%9D%82%E4%BA%9B%E7%9A%84%E9%97%AE%E9%A2%98-%E6%90%9C%E7%B4%A2%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="nav-number">1.3.</span> <span class="nav-text">复杂些的问题 - 搜索问题？</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shain</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

@@ -1,38 +1,728 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="从伪超杀问题的解决思路及问题演变理解Redisson加锁机制场景 功能： 秒杀 –&gt; 高并发  架构： nginx + multiple TomCat + Redis Database (Redis中存一简单KV， K &#x3D; 商品名， V &#x3D; 库存)  Note： 均为伪场景， 实际秒杀问题并非这样设计   V1123456789101112public string deductStock(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式锁(1) redisson">
+<meta property="og:url" content="https://shain001.github.io/2021/12/22/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81-1/index.html">
+<meta property="og:site_name" content="Shain&#39;s Blogs">
+<meta property="og:description" content="从伪超杀问题的解决思路及问题演变理解Redisson加锁机制场景 功能： 秒杀 –&gt; 高并发  架构： nginx + multiple TomCat + Redis Database (Redis中存一简单KV， K &#x3D; 商品名， V &#x3D; 库存)  Note： 均为伪场景， 实际秒杀问题并非这样设计   V1123456789101112public string deductStock(">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-12-21T23:37:22.000Z">
+<meta property="article:modified_time" content="2022-12-16T14:01:26.428Z">
+<meta property="article:author" content="Shain">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://shain001.github.io/2021/12/22/分布式锁-1/"/>
+
+
+
+
+
+  <title> 分布式锁(1) redisson | Shain's Blogs </title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shain's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/12/22/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shain's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                分布式锁(1) redisson
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-12-22T10:37:22+11:00">
+                2021-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="从伪超杀问题的解决思路及问题演变理解Redisson加锁机制"><a href="#从伪超杀问题的解决思路及问题演变理解Redisson加锁机制" class="headerlink" title="从伪超杀问题的解决思路及问题演变理解Redisson加锁机制"></a>从伪超杀问题的解决思路及问题演变理解Redisson加锁机制</h1><h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><ul>
+<li><p>功能： 秒杀 –&gt; 高并发</p>
+</li>
+<li><p>架构： nginx + multiple TomCat + Redis Database (Redis中存一简单KV， K = 商品名， V = 库存)</p>
+</li>
+<li><p>Note： 均为伪场景， 实际秒杀问题并非这样设计</p>
+</li>
+</ul>
+<h3 id="V1"><a href="#V1" class="headerlink" title="V1"></a>V1</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> string <span class="title">deductStock</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> stock = Integer.parseInt(stringRedisTemplate.opsForValue().get(<span class="string">&quot;stock&quot;</span>));  <span class="comment">// 得到stock数量</span></span><br><span class="line">    <span class="keyword">if</span> ( strock &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> realStrock = stock - <span class="number">1</span>;</span><br><span class="line">        stringRedisTemplate.opsForValue().set(<span class="string">&quot;stock&quot;</span>, realStrok + <span class="string">&quot;&quot;</span>);  <span class="comment">// 写回</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        库存不足；</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;end&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>问题</strong>：</p>
+<p>单机内，TomCat集群皆无锁。</p>
+<p>线程1 得到stock = 200 时， 线程2 也可能得到stock = 200， 两个线程操作后正常数量应为198， 但是均写回了199。</p>
+<h3 id="V2"><a href="#V2" class="headerlink" title="V2"></a>V2</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> string <span class="title">deductStock</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">synchronized</span>(<span class="keyword">this</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> stock = Integer.parseInt(stringRedisTemplate.opsForValue().get(<span class="string">&quot;stock&quot;</span>));  <span class="comment">// 得到stock数量</span></span><br><span class="line">        <span class="keyword">if</span> ( strock &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> realStrock = stock - <span class="number">1</span>;</span><br><span class="line">            stringRedisTemplate.opsForValue().set(<span class="string">&quot;stock&quot;</span>, realStrok + <span class="string">&quot;&quot;</span>);  <span class="comment">// 写回</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            库存不足；</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;end&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>evolution1: added Synchronized keyword</p>
+</li>
+<li><p>问题：</p>
+<p>单机内实现了并发安全， 但集群下无效，因为多个TomCat同一时刻下均各自出来一条线程访问redis， 此时依然有线程安全问题</p>
+</li>
+</ul>
+<h3 id="V3"><a href="#V3" class="headerlink" title="V3"></a>V3</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> string <span class="title">deductStock</span><span class="params">()</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">    String lockKey = <span class="string">&quot;lockKey&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 此处不可将设置key与设置超时两个步骤写成两句代码， 因为无法保证原子性， 如设置了key以后宕机了， 那么时间设置就丢失了。</span></span><br><span class="line">    Boolean result = StringRedisTemplate.opsForValue().setIfAbscent(lockKey, <span class="string">&quot;test&quot;</span>, <span class="number">10</span>, TimeUnit.Seconds);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (! result)</span><br><span class="line">		retrun <span class="string">&quot;error&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        nt stock = Integer.parseInt(stringRedisTemplate.opsForValue().get(<span class="string">&quot;stock&quot;</span>));  <span class="comment">// 得到stock数量</span></span><br><span class="line">        <span class="keyword">if</span> ( strock &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> realStrock = stock - <span class="number">1</span>;</span><br><span class="line">        stringRedisTemplate.opsForValue().set(<span class="string">&quot;stock&quot;</span>, realStrok + <span class="string">&quot;&quot;</span>);  <span class="comment">// 写回</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">    库存不足；</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">finally</span>&#123;</span><br><span class="line">        stringRedisTemplate.delete(lockKey);</span><br><span class="line">    &#125;</span><br><span class="line">    i</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;end&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>evolution2:</p>
+<ul>
+<li>利用 redis的单线成特性， <strong>使用setnx指令</strong>， 使各个线程串行的取set一个key， 如果set成功则代表抢锁成功， <strong>此时没抢到锁的线程做自旋等待。</strong></li>
+<li>同时需将key设置expire时间， 其目的是防止程序跑到finally前宕机而无法释放这个key， 也即无法释放锁导致死锁。</li>
+</ul>
+</li>
+<li><p>问题：</p>
+<ul>
+<li>线程实际运行时间超过设置的expire时间， 一个线程还未结束时就释放了锁， 此时线程2拿到锁， 线程2运行过程中线程1运行结束调用finally代码， 从而删除了这个key，也即释放了这个锁。 但问题是此时这个被删除的锁其实是线程2的。 –&gt; 这个现象称为永久失效？</li>
+</ul>
+</li>
+</ul>
+<h3 id="V4"><a href="#V4" class="headerlink" title="V4"></a>V4</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> string <span class="title">deductStock</span><span class="params">()</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">    String lockKey = <span class="string">&quot;lockKey&quot;</span>;</span><br><span class="line">    String clientID = <span class="string">&quot;..&quot;</span></span><br><span class="line">    <span class="comment">// 此处不可将设置key与设置超时两个步骤写成两句代码， 因为无法保证原子性， 如设置了key以后宕机了， 那么时间设置就丢失了。</span></span><br><span class="line">    Boolean result = StringRedisTemplate.opsForValue().setIfAbscent(lockKey, clientID, <span class="number">10</span>, TimeUnit.Seconds);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (! result)</span><br><span class="line">		retrun <span class="string">&quot;error&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line"> 		# 更新内存并写回</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">finally</span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> ( clientID.equals(redis.get(LockKey)))</span><br><span class="line">        &#123;</span><br><span class="line">            stringRedisTemplate.delete(lockKey);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    i</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;end&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Evolution:<ul>
+<li>V3的问题是一个线程删除了不属于自己的锁， 也即不属于自己的key， 所以V4将key的value设置成线程唯一的， 再删除key之前先判断这个key是不是自己的</li>
+</ul>
+</li>
+<li>问题：<ul>
+<li>依然会出现一个线程删除了不属于自己的key的情况。 如： key的超时时间为10s, 即10s后一个key会被自动删除。 假设在第9.99999s时， 一个线程运行了finally 中的if条件， 判断if为true， 所以开始执行delete操作。 而在执行delete时， 已经是第10.000001s。 这意味着该线程的key其实已经被自动删除了， 而此时再此执行delete， 则删除的还是另一个线程的锁，即key。</li>
+</ul>
+</li>
+<li>该问题原因：<ul>
+<li>所有线程都用了同一个名称的key，即锁。 –&gt;  无法解决<ul>
+<li>因为，利用redis实现分布式线程安全的本质是利用了“SETNX”， 这意味着所有线程必须使用同一个名称的KEY。</li>
+</ul>
+</li>
+<li>一个线程还未正常运行结束时， key就超时被自动删除了 –&gt; 可解决： <strong>线程运行中为其持有的key续时间</strong>， which is Redisson did。</li>
+</ul>
+</li>
+</ul>
+<h3 id="Redisson-Lock"><a href="#Redisson-Lock" class="headerlink" title="Redisson Lock"></a>Redisson Lock</h3><p>Redisson Lock即帮助自动的为一个线程持有的锁“续命”， 从而避免出现误删其他线程的key的问题。</p>
+<p>总结 Redisson Lock工作原理本质：</p>
+<ul>
+<li>利用SETNX的特点（实际源码中并不是这么写， 但原理是一样的）， 即判断一个key是否存在， 存在即不可持有， 不存在则可更新value， 来实现给线程分发锁。</li>
+<li>使每个线程持有的key中的value唯一， 来实现防止误删的问题。</li>
+<li>使每个线程持有的key自动续命， 来实现防止误删的问题。</li>
+<li>Redisson Lock的源码中大量使用Lua脚本语言来保证操作的原子性。</li>
+</ul>
+<h3 id="Extra-如何提高并发效率？"><a href="#Extra-如何提高并发效率？" class="headerlink" title="Extra: 如何提高并发效率？"></a>Extra: 如何提高并发效率？</h3><p>上述场景中， 所有操作时串行的，例如stock=1000， 那么每个线程都需排队操作者1000个库存。 效率低下。 </p>
+<p>若想提高并发效率， 可将stock分段， 如分成stock_001 = 200,  stock_002 = 200 …. ， 如此并发效率便提高五倍。 同时服务器压力也会增大。 即分段粒度越高， 并发效率越高。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/09/%E9%9D%A2%E8%AF%95%E5%85%AB%E8%82%A1%E6%96%87-Spring/" rel="next" title="面试八股文-Spring">
+                <i class="fa fa-chevron-left"></i> 面试八股文-Spring
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/01/03/project-reflection/" rel="prev" title="project reflection">
+                project reflection <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
-
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          
+          </div>
+          
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">categories</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8E%E4%BC%AA%E8%B6%85%E6%9D%80%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF%E5%8F%8A%E9%97%AE%E9%A2%98%E6%BC%94%E5%8F%98%E7%90%86%E8%A7%A3Redisson%E5%8A%A0%E9%94%81%E6%9C%BA%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">从伪超杀问题的解决思路及问题演变理解Redisson加锁机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.0.1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#V1"><span class="nav-number">1.0.2.</span> <span class="nav-text">V1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#V2"><span class="nav-number">1.0.3.</span> <span class="nav-text">V2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#V3"><span class="nav-number">1.0.4.</span> <span class="nav-text">V3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#V4"><span class="nav-number">1.0.5.</span> <span class="nav-text">V4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redisson-Lock"><span class="nav-number">1.0.6.</span> <span class="nav-text">Redisson Lock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Extra-%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98%E5%B9%B6%E5%8F%91%E6%95%88%E7%8E%87%EF%BC%9F"><span class="nav-number">1.0.7.</span> <span class="nav-text">Extra: 如何提高并发效率？</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shain</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

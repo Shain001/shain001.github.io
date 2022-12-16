@@ -1,38 +1,737 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="sorting algorithm & algorithm general," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="算法思想及排序算法的实现与对比循环和递归​    递归即大问题分解成小问题，但递归通常效率较低，通常表现为时间， 空间 均效率低下。  ​    递归时由于重复调用方法自身，每次调用方法时皆需在内存栈中分配空间以保存参数，返回地址及临时变量 因此需大量空间，而压栈弹栈皆需要时间。 ​     ​    写递归代码切忌人脑模拟电脑思考进栈出栈细节。 ​    只需确认三点： ​    终止条件 +">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法思想及排序算法的实现与对比">
+<meta property="og:url" content="https://shain001.github.io/2021/10/30/%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/index.html">
+<meta property="og:site_name" content="Shain&#39;s Blogs">
+<meta property="og:description" content="算法思想及排序算法的实现与对比循环和递归​    递归即大问题分解成小问题，但递归通常效率较低，通常表现为时间， 空间 均效率低下。  ​    递归时由于重复调用方法自身，每次调用方法时皆需在内存栈中分配空间以保存参数，返回地址及临时变量 因此需大量空间，而压栈弹栈皆需要时间。 ​     ​    写递归代码切忌人脑模拟电脑思考进栈出栈细节。 ​    只需确认三点： ​    终止条件 +">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-29T13:52:02.000Z">
+<meta property="article:modified_time" content="2022-12-16T14:01:26.428Z">
+<meta property="article:author" content="Shain">
+<meta property="article:tag" content="sorting algorithm &amp; algorithm general">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://shain001.github.io/2021/10/30/几种常见算法思想/"/>
+
+
+
+
+
+  <title> 算法思想及排序算法的实现与对比 | Shain's Blogs </title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shain's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/10/30/%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shain's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                算法思想及排序算法的实现与对比
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-10-30T00:52:02+11:00">
+                2021-10-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="算法思想及排序算法的实现与对比"><a href="#算法思想及排序算法的实现与对比" class="headerlink" title="算法思想及排序算法的实现与对比"></a>算法思想及排序算法的实现与对比</h2><h5 id=""><a href="#" class="headerlink" title=""></a></h5><h5 id="循环和递归"><a href="#循环和递归" class="headerlink" title="循环和递归"></a>循环和递归</h5><p>​    递归即大问题分解成小问题，但递归通常效率较低，通常表现为<code>时间</code>， <code>空间</code> 均效率低下。 </p>
+<p>​    递归时由于重复调用方法自身，每次调用方法时皆需在内存栈中分配空间以保存参数，返回地址及临时变量 因此需大量空间，而压栈弹栈皆需要时间。</p>
+<p>​    </p>
+<p>​    写递归代码切忌人脑模拟电脑思考进栈出栈细节。</p>
+<p>​    只需确认三点：</p>
+<p>​    终止条件 + 函数功能 + 函数方程；</p>
+<p>​    此外思考函数方程时，也需注意终止条件中的返回值是什么。</p>
+<p>​    </p>
+<p>​    同时， 别太死板的觉得 终止条件一定要 “同时包含互斥条件的两方”， 例如 offer 13. 只需判断当前格子不可选时，return 0即可。 无需包含 当前格子是最后一     个可选的时返回1， 观察函数方程即可理解。</p>
+<h5 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h5><p>​    特点：</p>
+<p>​        （1）某个问题可以分解成小问题 ，并且所问为求最优解（关于是否要求最优解不绝对 ）。</p>
+<p>​        （2）把小问题的最优解组合起来能得到整体最优解，则通常可用动态规划。 </p>
+<p>​        （3） 小问题之间有重叠的子问题（即如果用递归则需要算很多重复的值）。</p>
+<p>​    分析动态规划时的思考方式与递归类似，因为都是大问题分解小问题。 </p>
+<p>​    动态规划则为<code>自上而下</code> 方式思考解体思路。而用代码实现时则用<code>自下而上</code> 的方式解决问题，同时利用数据<code>存储小问题的解</code>然后组合小问题的解以得到整个问题的解， 熟练后可抛弃数组，仅用几个变量    存储有用的解</p>
+<h5 id="贪心"><a href="#贪心" class="headerlink" title="贪心"></a>贪心</h5><p>​    若某个问题用动态规划的思路思考以后， 发现<code>分解子问题时存在某种特定条件能使得结果一定为最优解</code>， 则此时应思考贪心算法</p>
+<h5 id="回溯"><a href="#回溯" class="headerlink" title="回溯"></a>回溯</h5><p>可理解为<code>有剪枝的穷举</code>，其从解决问题每一步的多个选项里系统的选择一个可行的方案。</p>
+<p>适合用于解决<code>有多个步骤组成，且每个步骤有多个选项的问题</code>。</p>
+<p>回溯法解决问题的过程，可以近似理解为“遍历”一颗树的过程。 树中的每一个level 即一个步骤，每个node即一个选项。</p>
+<p>当遍历至一个节点时，发现结果已不可能满足条件，则可放弃该节点返回至上一层节点。</p>
+<p>同理，若发现一个节点的所有子节点均不满足条件时，则同样返回至上一层节点。</p>
+<p>而返回至上一层节点时，若发现上一层中所有节点均已被遍历过，则再次返回至上一层节点。</p>
+<p>如果所有节点（即路径）均已遍历且无符合条件的路径，则r</p>
+<p>对于在二维数组中搜索路径的问题，如迷宫或棋盘，以及搜索可行解的问题，则通常可用<code>回溯法</code>。 而回溯法通常可用递归的方式求解。 递归又可用栈来实现。</p>
+<span id="more"></span>
+
+<h2 id="查找算法"><a href="#查找算法" class="headerlink" title="查找算法"></a>查找算法</h2><h5 id="顺序查找"><a href="#顺序查找" class="headerlink" title="顺序查找"></a>顺序查找</h5><h5 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h5><p>对于在一个<code>排序的，或部分排序的数组</code>中<code>查找一个数字</code>，或<code>统计一个数字出现的次数</code>的问题，均可尝试使用二分查找</p>
+<h5 id="哈希查找"><a href="#哈希查找" class="headerlink" title="哈希查找"></a>哈希查找</h5><p>优： 效率最高， 时间复杂度O(1)</p>
+<p>缺： 空间效率较低，需额外空间维护哈希表</p>
+<h5 id="二叉排序树查找（即二叉查找树）"><a href="#二叉排序树查找（即二叉查找树）" class="headerlink" title="二叉排序树查找（即二叉查找树）"></a>二叉排序树查找（即二叉查找树）</h5><h2 id="排序算法"><a href="#排序算法" class="headerlink" title="排序算法"></a>排序算法</h2><h5 id="Code-and-Commitment"><a href="#Code-and-Commitment" class="headerlink" title="Code and Commitment:"></a>Code and Commitment:</h5><p><strong>冒泡排序</strong></p>
+<p>空间复杂度O(1)</p>
+<p>时间复杂度：</p>
+<p>最低O(n): 即input is already sorted</p>
+<p>最高O(n^2): input is fully reversed</p>
+<p>平均： O(n^2)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort</span>(<span class="params">nums: <span class="type">List</span></span>) -&gt; <span class="type">List</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    # wrong answer writen in 2021-11-29</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    for i in range(len(nums)-1, 0):</span></span><br><span class="line"><span class="string">        for j in range(len(nums)-1, i):</span></span><br><span class="line"><span class="string">            if nums[j] &lt; nums[j - 1]:</span></span><br><span class="line"><span class="string">                nums[j], nums[j - 1] = nums[j - 1], nums[j]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    冒泡排序：</span></span><br><span class="line"><span class="string">        冒泡排序每次交换相邻的两个元素</span></span><br><span class="line"><span class="string">        每次循环结束后， 最大或最小的元素均被挪动至数组结尾，因此， “循环条件为每次上层循环结束后，下层循环的终点应右移”</span></span><br><span class="line"><span class="string">        上述错误产生原因在与对第一层循环i的理解有误， i的作用是使第二曾循环j的终点至右移， 因为i每加1， 则意味着有 1 个元素已经被</span></span><br><span class="line"><span class="string">        放置在正确位置， 也即数组的后i个元素已经排好序无需在比较</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(nums) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(nums) - <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(nums) - i - <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> nums[j] &gt; nums[j + <span class="number">1</span>]:</span><br><span class="line">                nums[j], nums[j + <span class="number">1</span>] = nums[j + <span class="number">1</span>], nums[j]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort_optimized</span>(<span class="params">nums</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        原版本代码对于一个已排序的数组，依旧需循环 n + n-1 + n-2 + ... 次， which is unefficient</span></span><br><span class="line"><span class="string">        可加入标志为实现对于一个已排序的数组，时间复杂度为O(n)</span></span><br><span class="line"><span class="string">        关于标志位：</span></span><br><span class="line"><span class="string">        即记录每次内层循环中是否发生换位，如果没发生，则代表每两个数据间大小顺序均已符合条件，即数组已排好序</span></span><br><span class="line"><span class="string">    :param nums:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(nums) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> nums</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(nums) - <span class="number">1</span>):</span><br><span class="line">        no_swap = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(nums) - i - <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> nums[j] &gt; nums[j + <span class="number">1</span>]:</span><br><span class="line">                nums[j], nums[j + <span class="number">1</span>] = nums[j + <span class="number">1</span>], nums[j]</span><br><span class="line">                no_swap = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">if</span> no_swap <span class="keyword">is</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> nums</span><br></pre></td></tr></table></figure>
+
+<p><strong>插入排序</strong></p>
+<p>时间复杂度总是O(n^2)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insert_sort</span>(<span class="params">nums</span>) -&gt; <span class="type">List</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Overall, insertion sort virtually divide the array into two parts: sorted part and unsorted part</span></span><br><span class="line"><span class="string">        It get one of elements in unsorted part every time and insert it into the right position of sorted part</span></span><br><span class="line"><span class="string">        During the insertion process, we need to move the elements in sorted part to make space for the newly inserted one</span></span><br><span class="line"><span class="string">        E.g. sorted part:</span></span><br><span class="line"><span class="string">        index:    0, 1, 2, 3, 4</span></span><br><span class="line"><span class="string">        element:  1, 3, 4, 5, 6      to be inserted: 2</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Then:</span></span><br><span class="line"><span class="string">        index:    0, 1, 2, 3, 4, 5</span></span><br><span class="line"><span class="string">        element:  1,  , 3, 4, 5, 6</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(nums) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line">    <span class="comment"># i 的左侧为已经排好序的元素， 右侧为未排序元素</span></span><br><span class="line">    <span class="comment"># 每当i右移1位，则取一个未排序元素并将其插入i的左侧为其排序</span></span><br><span class="line">    <span class="comment"># i的值从1开始</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(nums)):</span><br><span class="line">        current = nums[i]</span><br><span class="line">        j = i</span><br><span class="line">        <span class="keyword">while</span> current &lt; nums[j-<span class="number">1</span>] <span class="keyword">and</span> j &gt;= <span class="number">1</span>:</span><br><span class="line">            <span class="comment"># 已排序元素右移为新元素腾位置</span></span><br><span class="line">            nums[j] = nums[j-<span class="number">1</span>]</span><br><span class="line">            j -= <span class="number">1</span></span><br><span class="line">        nums[j] = current</span><br><span class="line">    <span class="keyword">return</span> nums</span><br></pre></td></tr></table></figure>
+
+<p><strong>快速排序</strong></p>
+<p>平均时间复杂度： O(nlogn)</p>
+<p>最佳：  O(nlogn)</p>
+<p>最坏： O(n^2)</p>
+<p>快排的复杂度好坏取决于pivot的选取，而因为一般实现快排时通常选取最左或最有的元素为pivot，因此在这种情况下，当输入数组为完全倒序时时间复杂度最坏，为O(n^2)</p>
+<p>Specifically, 当pivot总是为数组正中的元素时，那么时间复杂度最佳，为O(n^2)。 原因在于，如果我们将整个排序过程想成一颗树的话，那么此时递归树是平衡的，也即深度最小。 但若对完全反序的数组排序，那么递归树则为完全倾斜的，即深度最高，递归次数最多。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quick_sort</span>(<span class="params">nums: <span class="type">List</span></span>) -&gt; <span class="type">List</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    快排的关键即为pivot找位置</span></span><br><span class="line"><span class="string">    pivot：</span></span><br><span class="line"><span class="string">    可以选取任意元素为pivot</span></span><br><span class="line"><span class="string">    pivot左侧皆比其小，右侧皆比其大</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    为pivot选好位置后，即可将pivot左右两侧的数据分为两个数组（pivot无需再包括在其中）</span></span><br><span class="line"><span class="string">    然后对两个sub arrays 进行同样操作即可</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    注意理解quick_sort_recursive的终止条件</span></span><br><span class="line"><span class="string">    e.g. [1,3,2] ==&gt; pivot = index1 ==&gt; left array = [1], right array = [2]</span></span><br><span class="line"><span class="string">    以[1] 为例， 此时[1] 调用partition后返回的pivot index 为0，</span></span><br><span class="line"><span class="string">    此时再传参至下列代码时</span></span><br><span class="line"><span class="string">    quick_sort_recursive(left, pivot_index - 1, li)</span></span><br><span class="line"><span class="string">    quick_sort_recursive(pivot_index + 1, right, li)</span></span><br><span class="line"><span class="string">    left = 0, right = -1;</span></span><br><span class="line"><span class="string">    left = 1, right = 0</span></span><br><span class="line"><span class="string">    触发终止条件</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">partition</span>(<span class="params">left, right, li</span>):</span></span><br><span class="line">        pivot = li[left]</span><br><span class="line">        <span class="keyword">while</span> left &lt; right:</span><br><span class="line"></span><br><span class="line">            <span class="comment"># 之所以加上left &lt; right 的条件，是为了防止始终没找到符合条件的元素</span></span><br><span class="line">            <span class="comment"># 比如到了index 0 还比pivot大， 再减1 则会变-1， 访问li[-1] 便会报错</span></span><br><span class="line">            <span class="keyword">while</span> left &lt; right <span class="keyword">and</span> li[right] &gt;= pivot:</span><br><span class="line">                right -= <span class="number">1</span></span><br><span class="line">            <span class="comment"># 至此，找到了比pivot小的元素， 所以应将其移到左侧，在第一次循环时， left指针指向的值为pivot，</span></span><br><span class="line">            <span class="comment"># 当使left = right时， 数组中重复了一个right指针指向的元素，丢失了pivot</span></span><br><span class="line">            <span class="comment"># 但是pivot的值已经保存在pivot变量中，所以最后会被还原</span></span><br><span class="line">            li[left] = li[right]</span><br><span class="line">            <span class="keyword">while</span> left &lt; right <span class="keyword">and</span> li[left] &lt;= pivot:</span><br><span class="line">                left += <span class="number">1</span></span><br><span class="line">            <span class="comment"># 而当程序运行至此，数组中重复的right值会被消除，因为此时right指针没动，还指向原本right值的位置，当进行此赋值操作时，</span></span><br><span class="line">            <span class="comment"># right值变成了left。 此时数组中又重复了一个left值</span></span><br><span class="line">            li[right] = li[left]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 此时，left指针指向应该消除的重复的left值，并且此时left指针必定会移动到pivot应该所在的位置</span></span><br><span class="line">        <span class="comment"># 所以进行该赋值操作后，整个数组中元素没有重复，没有丢失，且pivot被转移到应在的位置</span></span><br><span class="line">        li[left] = pivot</span><br><span class="line">        <span class="keyword">return</span> left</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quick_sort_recursive</span>(<span class="params">left, right, li</span>):</span></span><br><span class="line">        <span class="keyword">if</span> left &gt;= right:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        pivot_index = partition(left, right, li)</span><br><span class="line">        quick_sort_recursive(left, pivot_index - <span class="number">1</span>, li)</span><br><span class="line">        quick_sort_recursive(pivot_index + <span class="number">1</span>, right, li)</span><br><span class="line"></span><br><span class="line">    left = <span class="number">0</span></span><br><span class="line">    right = <span class="built_in">len</span>(nums) - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    quick_sort_recursive(left, right, nums)</span><br><span class="line">    <span class="keyword">return</span> nums</span><br></pre></td></tr></table></figure>
+
+<p><strong>归并排序</strong></p>
+<p>时间复杂度总是O(nlogn)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span>(<span class="params">nums</span>) -&gt; <span class="type">List</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        归并即先将数组持续对半分，直到分解成单个元素</span></span><br><span class="line"><span class="string">        再依次进行merge</span></span><br><span class="line"><span class="string">        典型的分治思想</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">merge</span>(<span class="params">left: <span class="type">List</span>, right: <span class="type">List</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        2021-11-29</span></span><br><span class="line"><span class="string">        错误代码：</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        temp_result = []</span></span><br><span class="line"><span class="string">        while len(n1) != 0 and len(n2) != 0:</span></span><br><span class="line"><span class="string">            # 错误1.1：</span></span><br><span class="line"><span class="string">            en1 = n1.pop(0)</span></span><br><span class="line"><span class="string">            en2 = n2.pop(0)</span></span><br><span class="line"><span class="string">            if en1 &gt; en2:</span></span><br><span class="line"><span class="string">                # 错误1.2：</span></span><br><span class="line"><span class="string">                temp_result.append(en2)</span></span><br><span class="line"><span class="string">                temp_result.append(en1)</span></span><br><span class="line"><span class="string">            else:</span></span><br><span class="line"><span class="string">                # 错误1：</span></span><br><span class="line"><span class="string">                temp_result.append(en1)</span></span><br><span class="line"><span class="string">                temp_result.append(en2)</span></span><br><span class="line"><span class="string">        # 错误2</span></span><br><span class="line"><span class="string">        temp_result.append(en1)</span></span><br><span class="line"><span class="string">        temp_result.append(en2)</span></span><br><span class="line"><span class="string">        return temp_result</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        错1：</span></span><br><span class="line"><span class="string">        根源在于，在merge时，有可能n1中的元素全部比n2中的小，即n1全部添加进了result以后n2才开始pop</span></span><br><span class="line"><span class="string">        1.1 and 1.2 皆时assume n1， n2 必是轮流进一个， 即n1进一个后n2就进一个</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        错2：</span></span><br><span class="line"><span class="string">        此处以为添加剩余元素，不可直接append， 这样会使整个列表变成result中的一个元素，即[..., []] 而非 [...,...]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">while</span> left <span class="keyword">and</span> right:</span><br><span class="line">            <span class="keyword">if</span> left[<span class="number">0</span>] &lt; right[<span class="number">0</span>]:</span><br><span class="line">                result.append(left.pop(<span class="number">0</span>))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                result.append(right.pop(<span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">        result += left</span><br><span class="line">        result += right</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">merge_sort_entry</span>(<span class="params">nums</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">            merge_sort_entry 本身的函数功能 “仅仅为分解而已！” ， 看终止条件的设置即可理解。（写递归代码时需确定： 终止条件，函数功能，递归方程）</span></span><br><span class="line"><span class="string">            merge排序的工作是merge function做的</span></span><br><span class="line"><span class="string">        :param nums:</span></span><br><span class="line"><span class="string">        :return:</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(nums) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line">        mid = <span class="built_in">len</span>(nums)//<span class="number">2</span></span><br><span class="line">        left = nums[:mid]</span><br><span class="line">        right = nums[mid:]</span><br><span class="line">        <span class="keyword">return</span> merge(merge_sort_entry(left), merge_sort_entry(right))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(nums) &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> nums</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> merge_sort_entry(nums)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sorting-algorithm-algorithm-general/" rel="tag"># sorting algorithm & algorithm general</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/10/30/test/" rel="prev" title="For LeiHeHe">
+                For LeiHeHe <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
-
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          
+          </div>
+          
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">categories</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3%E5%8F%8A%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B8%8E%E5%AF%B9%E6%AF%94"><span class="nav-number">1.</span> <span class="nav-text">算法思想及排序算法的实现与对比</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link"><span class="nav-number">1.0.0.1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E5%92%8C%E9%80%92%E5%BD%92"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">循环和递归</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">动态规划</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%B4%AA%E5%BF%83"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">贪心</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9B%9E%E6%BA%AF"><span class="nav-number">1.0.0.5.</span> <span class="nav-text">回溯</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">查找算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%A1%BA%E5%BA%8F%E6%9F%A5%E6%89%BE"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">顺序查找</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">二分查找</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%93%88%E5%B8%8C%E6%9F%A5%E6%89%BE"><span class="nav-number">2.0.0.3.</span> <span class="nav-text">哈希查找</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%8E%92%E5%BA%8F%E6%A0%91%E6%9F%A5%E6%89%BE%EF%BC%88%E5%8D%B3%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%EF%BC%89"><span class="nav-number">2.0.0.4.</span> <span class="nav-text">二叉排序树查找（即二叉查找树）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">排序算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Code-and-Commitment"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">Code and Commitment:</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shain</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

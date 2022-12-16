@@ -1,38 +1,723 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="IoC,IoC Container,BeanFactory,ApplicationContext," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Spring Foundation(1) – IoC and IoC Container1. What is IoC?IoC (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high lev">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Foundation(1) -- IoC and IoC Container">
+<meta property="og:url" content="https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/index.html">
+<meta property="og:site_name" content="Shain&#39;s Blogs">
+<meta property="og:description" content="Spring Foundation(1) – IoC and IoC Container1. What is IoC?IoC (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high lev">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-10-31T11:27:38.000Z">
+<meta property="article:modified_time" content="2022-12-16T14:01:26.427Z">
+<meta property="article:author" content="Shain">
+<meta property="article:tag" content="IoC">
+<meta property="article:tag" content="IoC Container">
+<meta property="article:tag" content="BeanFactory">
+<meta property="article:tag" content="ApplicationContext">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/"/>
+
+
+
+
+
+  <title> Spring Foundation(1) -- IoC and IoC Container | Shain's Blogs </title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shain's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/10/31/springFoundation-1-Ioc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shain's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring Foundation(1) -- IoC and IoC Container
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-10-31T22:27:38+11:00">
+                2021-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Spring-Foundation-1-–-IoC-and-IoC-Container"><a href="#Spring-Foundation-1-–-IoC-and-IoC-Container" class="headerlink" title="Spring Foundation(1) – IoC and IoC Container"></a>Spring Foundation(1) – IoC and IoC Container</h1><h3 id="1-What-is-IoC"><a href="#1-What-is-IoC" class="headerlink" title="1. What is IoC?"></a>1. What is IoC?</h3><p><code>IoC</code> (inversion of control) is an abstract concept, meaning that let “high level” decides “low level” instead of “low level” decides “high level”. </p>
+<p>In software engineering, this abstract concept normally just refers to let a “third party” to help us <code>create objects and manage their dependencies</code> , in which context the so called third party is  the <code>IoC Container</code> and the process that IoC Container helps to create and manage objects is called <code>Dependency Injection(DI)</code>.</p>
+<span id="more"></span>
+
+<h3 id="2-Why-we-need-it"><a href="#2-Why-we-need-it" class="headerlink" title="2. Why we need it"></a>2. Why we need it</h3><p>This might be confusing, so let’s see an example to have a clearer understanding. Imagine one scenario that you have 5 classes A - E, where Class A depends on Class B and Class B depends on Class C and so on.  Let’s say Class E has a field e, so in Class D there should be a line of code <code>new ClassE(&#39;valueOfe&#39;)</code>, then in Class C, still you have to have a line of code saying <code>new ClassD(&#39;valueOfe&#39;)</code> right? Same thing happens in Class A and B.  To be more specific:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Class E&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> e;</span><br><span class="line">    E(<span class="keyword">int</span> e)&#123;</span><br><span class="line">        <span class="keyword">this</span>.e = e;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Class D&#123;</span><br><span class="line">	<span class="keyword">private</span> E objectE;</span><br><span class="line">    D(<span class="keyword">int</span> valueOfIntE)&#123;</span><br><span class="line">        <span class="keyword">this</span>.objectE = <span class="keyword">new</span> E(valueOfIntE);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Class C&#123;</span><br><span class="line">    <span class="keyword">private</span> D objectD;</span><br><span class="line">    C(<span class="keyword">int</span> valueofIntE)&#123;</span><br><span class="line">        <span class="keyword">this</span>.objectD = <span class="keyword">new</span> D(valueOfIntE);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+
+
+<p>This means that when the value of <code>e</code> in Class E changes, all the classes need to be updated. In reality development, this kind of dependency can be hundreds of classes, which is almost impossible to be manually updated one by one. </p>
+<p>This is why IoC, or we can say, DI is useful.  In the above code, the inconvenience comes from the problem that the highest level Class A depends on low level classes, which means that we have to manually new objects in our code. But DI can release us from “newing” objects in our code. Instead, we just need to say what object we require and then the IoC container will give it to us.  In this way, the code would become as following:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Class E&#123;</span><br><span class="line">	private int e;</span><br><span class="line">    E(int e)&#123;</span><br><span class="line">        this.e = e;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Class D&#123;</span><br><span class="line">	private E objectE;</span><br><span class="line">    D(E e)&#123;</span><br><span class="line">        this.objectE = e;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Class C&#123;</span><br><span class="line">    private D objectD;</span><br><span class="line">    C(D d)&#123;</span><br><span class="line">        this.objectD = d;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>As seen in the code, after using DI, all the objects is provided by the container. Then if the value of e changes at this time, there is no other objects needed to be updated. And this is the so called “Inversion of Control”, previously the “highest level” Class A depends on low level classes. But now the situation changed, it has become to <code>low level classes are injected to high level Class A</code>.</p>
+<p>The benefit that IoC can give include:  <code>Decoupling</code>, <code>improve code reusable</code>, and <code>improve convenience of unit test</code>.</p>
+<h3 id="3-How-does-it-work"><a href="#3-How-does-it-work" class="headerlink" title="3. How does it work?"></a>3. How does it work?</h3><p>After knowing the why we need IoC in software engineering, there is still one question remains: how does the system know the dependency relationship between objects? Also, how does the system know which class should be managed by it instead of ourselves? In the context of Spring framework, this work is done by the <code>IoC Service Provider</code>.</p>
+<h5 id="IoC-Service-Provider"><a href="#IoC-Service-Provider" class="headerlink" title="IoC Service Provider"></a>IoC Service Provider</h5><p>IoC Service Provider is an abstract concept, and the so called <code>Ioc Container</code> is exactly an IoC Service Provider. It has two main responsibilities: 1) <code>create the object</code>, 2) <code>manage the dependencies between objects</code>.  The basic principle is that we do some configuration works to tell the container what classes need to be managed by it and what’s the dependency relationships between them. Then, the container will help us do the job.</p>
+<p>Three ways of configuration is acceptable in Spring framework: <code>coding</code>, <code>configuration file</code>, or <code>annotation</code>.  Details will be introduced later.</p>
+<h3 id="4-IoC-Container"><a href="#4-IoC-Container" class="headerlink" title="4. IoC Container"></a>4. IoC Container</h3><p>The term container might be confusing and abstract, but it is actually nothing but a running environment. You can say it set of libraries that provides some functions or a context where the application-related information can be automatically managed and stored. </p>
+<p>As discussed earlier, the IoC container is an IoC Service Provider that can manage and create objects, but in fact the IoC container has much more other functionalities such as providing the AOP support, Object Lifecycle Management, and Thread Management. Spring framework provides two types of containers : <code>BeanFactory</code> and <code>ApplicationContext</code>.</p>
+<h5 id="BeanFactory-VS-ApplicationContext"><a href="#BeanFactory-VS-ApplicationContext" class="headerlink" title="BeanFactory VS ApplicationContext"></a>BeanFactory VS ApplicationContext</h5><p>The term “bean” just means nothing special but object. So the work of BeanFactory is just generate beans to you. There are only two responsibilities it has: <code>create beans</code> and <code>manage dependencies</code>.  In other words, you only need to tell the BeanFactory what object you want, and it will return it for you.</p>
+<p>BeanFactory uses <code>Lazy-load</code> strategy, which means <strong>it initiates object and inject dependencies to it only when this object is needed</strong>. This means <strong>BeanFactory has a faster speed when the container is initiated.</strong>  Therefore, <strong>in the situation where the resource is limited and there is no strict requirement about the functionalities, BeanFactory would be a good choice.</strong></p>
+<p>In contrast, ApplicationContext has more functionalities than BeanFactory. <strong>It indirectly inherent from the BeanFactory and thus has all functionalities that BeanFactory has, and provide more functionalities such as Event Publish etc.</strong>  Unlike BeanFactory, <strong>ApplicationContext initiate all objects and inject dependencies to them as soon as the container is initiated, which means the initiating speed is lower.</strong>  <strong>It fits the situation where you have enough resource and has needs more functionalities.</strong></p>
+<p>Created by Shain Melbourne, Australia.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/IoC/" rel="tag"># IoC</a>
+          
+            <a href="/tags/IoC-Container/" rel="tag"># IoC Container</a>
+          
+            <a href="/tags/BeanFactory/" rel="tag"># BeanFactory</a>
+          
+            <a href="/tags/ApplicationContext/" rel="tag"># ApplicationContext</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/10/30/test/" rel="next" title="For LeiHeHe">
+                <i class="fa fa-chevron-left"></i> For LeiHeHe
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/12/02/JVM-1-JVM%E5%88%86%E5%8C%BA/" rel="prev" title="JVM (1)-JVM Memory Area">
+                JVM (1)-JVM Memory Area <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
-
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          
+          </div>
+          
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">categories</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-Foundation-1-%E2%80%93-IoC-and-IoC-Container"><span class="nav-number">1.</span> <span class="nav-text">Spring Foundation(1) – IoC and IoC Container</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-What-is-IoC"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. What is IoC?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Why-we-need-it"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. Why we need it</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-How-does-it-work"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. How does it work?</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#IoC-Service-Provider"><span class="nav-number">1.0.3.0.1.</span> <span class="nav-text">IoC Service Provider</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-IoC-Container"><span class="nav-number">1.0.4.</span> <span class="nav-text">4. IoC Container</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#BeanFactory-VS-ApplicationContext"><span class="nav-number">1.0.4.0.1.</span> <span class="nav-text">BeanFactory VS ApplicationContext</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shain</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

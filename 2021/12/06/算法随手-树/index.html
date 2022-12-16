@@ -1,38 +1,898 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Tree," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Conclusion与树结构相关的题，多为递归求解。 若可确定使用递归求解树相关的题， 则：  分析问题， 确定解体步骤。 按照步骤，确定递归函数。 所谓确定递归函数，即以下三个步骤： 确定函数终止条件 在利用递归解决树相关问题时， 为了确定函数终止条件， 可以从输入的节点的不同状态入手，进而判断何时应该是False, 也即被拦截，或者说被终止。例如， a, b两个节点都为空则如何， 一个为空如何">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法随手-树">
+<meta property="og:url" content="https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/index.html">
+<meta property="og:site_name" content="Shain&#39;s Blogs">
+<meta property="og:description" content="Conclusion与树结构相关的题，多为递归求解。 若可确定使用递归求解树相关的题， 则：  分析问题， 确定解体步骤。 按照步骤，确定递归函数。 所谓确定递归函数，即以下三个步骤： 确定函数终止条件 在利用递归解决树相关问题时， 为了确定函数终止条件， 可以从输入的节点的不同状态入手，进而判断何时应该是False, 也即被拦截，或者说被终止。例如， a, b两个节点都为空则如何， 一个为空如何">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-12-06T04:28:56.000Z">
+<meta property="article:modified_time" content="2022-12-16T14:01:26.428Z">
+<meta property="article:author" content="Shain">
+<meta property="article:tag" content="Tree">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://shain001.github.io/2021/12/06/算法随手-树/"/>
+
+
+
+
+
+  <title> 算法随手-树 | Shain's Blogs </title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shain's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shain's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                算法随手-树
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-12-06T15:28:56+11:00">
+                2021-12-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">Algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Algorithm/Data-Structure/" itemprop="url" rel="index">
+                    <span itemprop="name">Data Structure</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h1><p>与树结构相关的题，多为递归求解。 若可确定使用递归求解树相关的题， 则：</p>
+<ul>
+<li>分析问题， 确定解体步骤。</li>
+<li>按照步骤，确定递归函数。 所谓确定递归函数，即以下三个步骤：<ul>
+<li>确定函数终止条件<ul>
+<li><strong>在利用递归解决树相关问题时， 为了确定函数终止条件， 可以从输入的节点的不同状态入手，进而判断何时应该是False, 也即被拦截，或者说被终止。</strong>例如， a, b两个节点都为空则如何， 一个为空如何等等。 同时，如果有可以合并的终止条件， 那么在写if 条件时， 可以利用不同 if 间的顺序达到精简代码的效果。</li>
+<li><strong>并且目前接触到的大部分情况下。 再树中递归时的终止条件基本是拦截所有False的情况， 对于True的情况不需显示写if拦截， 只需让程序继续往下跑即可。 那么通常此时是跑到 return的函数方程， 或者进行某些更改操作。</strong></li>
+</ul>
+</li>
+<li>确定函数功能</li>
+<li>确定递归方程</li>
+<li>切记不要用人脑模拟递归过程！</li>
+</ul>
+</li>
+</ul>
+<span id="more"></span>
+
+<p>同时， 目前接触到的 “二叉树” 相关的需要递归的题， <strong>要么是需要更改树， 要么是需要判断树是否满足某种条件</strong>，即只需遍历树的个节点值同时做判断，而非更改。 </p>
+<p>仅限目前接触的来说， <strong>当需要更改树的内容时， 可”从下至上“ 更改。</strong> 那么在这种情况下，往往需要通过 前序遍历 先到达树的底部，然后进行更改操作， e.g. offer 26。  通常再这种情况下，代码的结构很可能是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fun():</span><br><span class="line">	pre_order_traversal(left)</span><br><span class="line">    pre_order_traversal(right)</span><br><span class="line">    do somthing..</span><br></pre></td></tr></table></figure>
+
+
+
+<p>**当不需要更改，只需要判断时， 可”从上至下判断”**。所为从上至下判断， <strong>即每当一个节点进来递归函数， 先对该节点进行判断</strong>， <strong>然后再 return fun(左) and fun(右)。</strong>e.g. offer 28。通常再这种情况下，代码的结构很可能是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用if 过滤所有需被终止的不满足需求的条件。</span></span><br><span class="line"><span class="keyword">if</span> ...</span><br><span class="line">	<span class="keyword">return</span> </span><br><span class="line"><span class="keyword">if</span> ...</span><br><span class="line">	<span class="keyword">return</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> fun(left) <span class="keyword">and</span> fun(right)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果不想用递归， 那么可以使用栈实现， 因为只要能用递归求解的问题， 用栈都可解决， 递归的过程实际也就是计算机进行压栈出栈的过程。其典型代表即为BST的中/前序遍历。</p>
+<h1 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h1><h4 id="剑指offer-26-判断输入的树B是否是A的子树。"><a href="#剑指offer-26-判断输入的树B是否是A的子树。" class="headerlink" title="剑指offer 26. 判断输入的树B是否是A的子树。"></a>剑指offer 26. 判断输入的树B是否是A的子树。</h4><p>思路：</p>
+<ul>
+<li>确定求解步骤 – 2步，对应两个递归函数：<ul>
+<li>遍历树</li>
+<li>如果发现A中某节点与B的根节点相等， 则检查B的其他节点</li>
+</ul>
+</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li><p>如果面试问到此题， 注意确认输入是否可以为空?， 如果可以的话， 空树是否是子树？</p>
+</li>
+<li><p>体会下列代码中的终止条件判断</p>
+</li>
+<li><p>此题的递归中过程可以理解成是<strong>自下向上在更改树</strong></p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_subtree</span>(<span class="params">a: Node, b: Node</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    注意 check_subtree中的终止条件的写法和逻辑。</span></span><br><span class="line"><span class="string">    再check_subtree中， 传入的两个参数状态一共五中：</span></span><br><span class="line"><span class="string">    (1) a None b None: true</span></span><br><span class="line"><span class="string">    (2) a None b not None: False</span></span><br><span class="line"><span class="string">    (3) a not None b None: true</span></span><br><span class="line"><span class="string">    (4) a not None b not None =&gt; equal: True, not equal: False</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param a:  tree</span></span><br><span class="line"><span class="string">    :param b:  subtree</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">check_subtree</span>(<span class="params">a_root: Node, b_root: Node</span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 能跑到b_root 是空， 则一定是subtree中的之前的节点已经相等了。所有此处为空的话则是b已经遍历完了，返回false</span></span><br><span class="line">        <span class="comment"># 如果这样无法理解， 那么就是 结合（1）（3） 发现，只要b是None， 不管a是不是None， 都为true</span></span><br><span class="line">        <span class="keyword">if</span> b_root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 至此 b_root一定不为None， 也即b not None, a is None 的情况 --》 情况（2）</span></span><br><span class="line">        <span class="keyword">if</span> a_root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> a_root.value != b_root.value:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 至此 一定是状态(4)中的相等</span></span><br><span class="line">        <span class="keyword">return</span> check_subtree(a_root.right, b_root.right) <span class="keyword">and</span> check_subtree(a_root.left, b_root.left)</span><br><span class="line">	</span><br><span class="line">    <span class="comment"># 注意此处， 其中a is None的部分即是对于用户输入的检查，也是递归的终止条件。</span></span><br><span class="line">    <span class="comment"># 而 对b is None的判断则是单纯的用户输入检查</span></span><br><span class="line">    <span class="keyword">if</span> a <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> b <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">	</span><br><span class="line">    <span class="keyword">if</span> a.value == b.value:</span><br><span class="line">        <span class="keyword">if</span> check_subtree(a, b):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> is_subtree(a.left, b) <span class="keyword">or</span> is_subtree(a.right, b)</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="剑指offer-28-对称二叉树"><a href="#剑指offer-28-对称二叉树" class="headerlink" title="剑指offer 28. 对称二叉树"></a>剑指offer 28. 对称二叉树</h4><p>思路：</p>
+<ul>
+<li>确定求解步骤 –1步，对应两个递归函数：<ul>
+<li>遍历树, 同时检查两个节点的对称情况。</li>
+</ul>
+</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li><p>注意对input为空值的判断。</p>
+</li>
+<li><p>此题的递归中过程可以理解成是<strong>自上向下在判断树</strong></p>
+</li>
+<li><p>注意体会终止条件和recur 中的return；  </p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    2021-12-6</span></span><br><span class="line"><span class="string">    offer28</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    对称二叉树。 一棵树如果与本身的镜像相同，则为对称二叉树。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    解法：</span></span><br><span class="line"><span class="string">    实际上，要判断对称二叉树，新创建一个“对称前序遍历”的方法，将其结果与正常的前序遍历比较即可。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    但需包括结果中需包括空值， 例子看offer P178</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_symmetrical</span>(<span class="params">root: Node</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">recur</span>(<span class="params">left, right</span>):</span></span><br><span class="line">        <span class="keyword">if</span> left <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">and</span> right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> right <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">and</span> left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> left <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">and</span> right <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> left.val != right.val:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">		</span><br><span class="line">        <span class="comment"># 当程序运行到这， 说明两个节点的值是相等的，因为可能造成不对称的情况都已被上述终止条件拦截了</span></span><br><span class="line">        <span class="comment"># 那么只需继续判断两个当先节点下的子树是否对称即可</span></span><br><span class="line">        <span class="comment"># 而此处return的这种形式，可以经常被套用再从上至下遍历树的问题。</span></span><br><span class="line">        <span class="keyword">return</span> recur(left.right, right.left) <span class="keyword">and</span> recur(left.left, right.right)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> recur(root.left, root.right)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="二叉树-BF"><a href="#二叉树-BF" class="headerlink" title="二叉树 BF"></a>二叉树 BF</h2><h4 id="二叉树的层级遍历1-leetcode102"><a href="#二叉树的层级遍历1-leetcode102" class="headerlink" title="二叉树的层级遍历1 leetcode102"></a>二叉树的层级遍历1 leetcode102</h4><p>该题提醒你： <strong>面试写算法时 要问清输出格式。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">   3</span><br><span class="line">   / \</span><br><span class="line">  9  20</span><br><span class="line"> /   /  \</span><br><span class="line">0   15   7</span><br><span class="line">返回其层序遍历结果：</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">  [3],</span><br><span class="line">  [9,20],</span><br><span class="line">  [0, 15,7]</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">注意， 是[0, 15, 7] 而不是 [[0], [15, 7]]</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong><br>    <strong>注意不可以利用”从上至下“ 的思路， 依次遍历每层中的每个node, 即按照如下错误代码的思路解题：</strong>**<br>    <strong>该代码由你自己写于 2021-12-6， 这个代码的错误在于他的输出形式不符合要求， 即输出了上述”而不是“后面的格式</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">levelOrder</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">traversal</span>(<span class="params">node: TreeNode</span>):</span></span><br><span class="line">            <span class="keyword">if</span> node <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            temp = []</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> node.left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                temp.append(node.left.val)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> node.right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                temp.append(node.right.val)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(temp) != <span class="number">0</span>:</span><br><span class="line">                result.append(temp)</span><br><span class="line"></span><br><span class="line">            traversal(node.left)</span><br><span class="line">            traversal(node.right)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line">        result = [[root.val]]</span><br><span class="line">        traversal(root)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>正确定思路：<br><strong>为每个层级标号</strong>， 即维护一个变量level记录当前再那一层， 然后直接把非空的值加入result中的level项。</p>
+<p><strong>实际上使用了深度有限的思想解决此题。</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">levelOrder</span>(<span class="params">self, root</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">traversal</span>(<span class="params">node, level</span>):</span></span><br><span class="line">        <span class="keyword">if</span> node <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">		<span class="comment"># 如果当前层数为第一次到达， 再result中加入一个新的空列表</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(result) &lt; level + <span class="number">1</span>:</span><br><span class="line">            result.append([])</span><br><span class="line">		</span><br><span class="line">        <span class="comment"># 按照level，再result中的level项加入值</span></span><br><span class="line">        result[level].append(node.val)</span><br><span class="line">        </span><br><span class="line">        traversal(node.left, level + <span class="number">1</span>)</span><br><span class="line">        traversal(node.right, level + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    result = []</span><br><span class="line">    traversal(root, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="二叉树层级遍历2"><a href="#二叉树层级遍历2" class="headerlink" title="二叉树层级遍历2"></a>二叉树层级遍历2</h4><p>与上题不同， 该题的返回值是List[int] 而不是List[[]]， 故要用queue实现。</p>
+<p>事实上，只要看到广度优先遍历的题，则应考虑是否可用queue实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">levelOrder</span>(<span class="params">root</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">    <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line">    result = []</span><br><span class="line">    queue = collections.deque()</span><br><span class="line">    queue.append(root)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="built_in">len</span>(queue) != <span class="number">0</span>:</span><br><span class="line">        current_node = queue.popleft()</span><br><span class="line">        result.append(current_node.val)</span><br><span class="line">        <span class="keyword">if</span> current_node.left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            queue.append(current_node.left)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> current_node.right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            queue.append(current_node.right)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="二叉树层级遍历3-（Z字形遍历）-leetcode-剑指offer-32-III"><a href="#二叉树层级遍历3-（Z字形遍历）-leetcode-剑指offer-32-III" class="headerlink" title="二叉树层级遍历3 （Z字形遍历） leetcode 剑指offer 32 - III"></a>二叉树层级遍历3 （Z字形遍历） leetcode 剑指offer 32 - III</h4><p>例如:<br>给定二叉树: [3,9,20,null,null,15,7],</p>
+<p>​    3</p>
+<p>   / <br>  9  20<br>    /  <br>   15   7<br>返回其层次遍历结果：</p>
+<p>[<br>  [3],<br>  [20,9],<br>  [15,7]<br>]</p>
+<p>思路：</p>
+<ul>
+<li>由于对于不同层级的节点需要改变输出顺序， 故用单个队列无法实现</li>
+<li>改变思路为用两个栈实现</li>
+<li>一个栈对应奇数层的所有节点， 从右至左压入。 另一个对应偶数层，从左至右压入</li>
+</ul>
+<p>注意理解：</p>
+<ul>
+<li>一个栈中的节点全部被弹出时，就代表该层已经遍历结束</li>
+<li>弹出后只需要： <ul>
+<li>append到temp</li>
+<li>将子节点压入另一个栈</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> collections</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> bst_review <span class="keyword">import</span> Node</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">levelOrder</span>(<span class="params">root: Node</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span></span><br><span class="line">    <span class="keyword">if</span> root <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line">    result = []</span><br><span class="line">    stack_push_from_left = []</span><br><span class="line">    stack_push_from_right = [root]</span><br><span class="line">    <span class="keyword">while</span> <span class="built_in">len</span>(stack_push_from_left) != <span class="number">0</span> <span class="keyword">or</span> <span class="built_in">len</span>(stack_push_from_right) != <span class="number">0</span>:</span><br><span class="line">        temp = []</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(stack_push_from_right) != <span class="number">0</span>:</span><br><span class="line">            node = stack_push_from_right.pop(-<span class="number">1</span>)</span><br><span class="line">            temp.append(node.val)</span><br><span class="line">            <span class="keyword">if</span> node.left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                stack_push_from_left.append(node.left)</span><br><span class="line">            <span class="keyword">if</span> node.right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                stack_push_from_left.append(node.right)</span><br><span class="line">        <span class="keyword">if</span> temp:</span><br><span class="line">            result.append(temp)</span><br><span class="line">            temp = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(stack_push_from_left) != <span class="number">0</span>:</span><br><span class="line">            node = stack_push_from_left.pop(-<span class="number">1</span>)</span><br><span class="line">            temp.append(node.val)</span><br><span class="line">            <span class="keyword">if</span> node.right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                stack_push_from_right.append(node.right)</span><br><span class="line">            <span class="keyword">if</span> node.left <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                stack_push_from_right.append(node.left)</span><br><span class="line">        <span class="keyword">if</span> temp:</span><br><span class="line">            result.append(temp)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="平衡二叉树DF"><a href="#平衡二叉树DF" class="headerlink" title="平衡二叉树DF"></a>平衡二叉树DF</h2><h4 id="后续遍历非递归"><a href="#后续遍历非递归" class="headerlink" title="后续遍历非递归"></a>后续遍历非递归</h4><p>Overall Procedure:</p>
+<ul>
+<li>压左</li>
+<li>压左结束， 检查栈顶元素是否满足输出条件：<ul>
+<li>栈顶元素应该被输出 –&gt; 没有右子树， 或者右子树已经被输出过</li>
+<li>不应被输出 –&gt; 右子树还为被压栈，也即还没被输出–&gt; cur  = cur.right循环压左。 </li>
+</ul>
+</li>
+</ul>
+<p>关键：</p>
+<ul>
+<li>左-右-根</li>
+<li>只需记住点为：<ul>
+<li>需维护一prev记录是否当前节点可以被记录至result。</li>
+<li><strong>只有当 cur.right为空 或 cur.right == prev时 可以被输出， 此时做三件事。</strong><ul>
+<li>pop stack</li>
+<li>update prev</li>
+<li>cur = None. <strong>目的为实现循环，因为cur is None时不会进入第一个循环。</strong></li>
+</ul>
+</li>
+<li>不可以被输出则代表右侧子树还未被输出， 则只需 cur  = cur.right即可实现循环。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">post_order_traversal_non_recursive</span>(<span class="params">self</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">     2021-12-19</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    cur = self.root</span><br><span class="line">    stack = []</span><br><span class="line">    result = []</span><br><span class="line">    prev = self.root</span><br><span class="line">    <span class="comment"># 压至最左</span></span><br><span class="line">    <span class="comment"># 之所以加 cur is not None是为了最开始能进入循环</span></span><br><span class="line">    <span class="comment"># 因为stack初始为空， 不加这个条件进不来，同时也不能更改while cur is not None这个条件。</span></span><br><span class="line">    <span class="keyword">while</span> <span class="built_in">len</span>(stack) != <span class="number">0</span> <span class="keyword">or</span> cur <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">while</span> cur <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            stack.append(cur)</span><br><span class="line">            cur = cur.left</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 此处不弹出，而是检查</span></span><br><span class="line">        cur = stack[-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 判断append到结果与否</span></span><br><span class="line">        <span class="comment"># 如果cur.right为空， 那么此时必然输出value，因为当程序到此处时， 已经压至最左</span></span><br><span class="line">        <span class="comment"># 如果cur.right不为空，但是cur.right == prev， 则代表当前节点的右侧子树已经全部输出，可以输出当前节点了。</span></span><br><span class="line">        <span class="keyword">if</span> cur.right <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> cur.right == prev:</span><br><span class="line">            <span class="comment"># 只要需要append结果： 则更新prev</span></span><br><span class="line">            <span class="comment"># 弹出stack</span></span><br><span class="line">            <span class="comment"># 使cur=None实现循环目的</span></span><br><span class="line">            result.append(cur.value)</span><br><span class="line">            stack.pop(-<span class="number">1</span>)</span><br><span class="line">            prev = cur</span><br><span class="line">            cur = <span class="literal">None</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># 如果不符合上列判断，则两种情况：</span></span><br><span class="line">            <span class="comment"># 当前节点的右子树还没有被输出， 则此时cur.right不为空， 会继续到第一个while压左</span></span><br><span class="line">            <span class="comment"># 或者当前节点的cur.right为空，即已经没有右子树， 则会略过第一个while， 继续检查输出与否</span></span><br><span class="line">            cur = cur.right</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="中序遍历非递归"><a href="#中序遍历非递归" class="headerlink" title="中序遍历非递归"></a>中序遍历非递归</h4><p>Overall Precedure:</p>
+<ul>
+<li>压左</li>
+<li>pop， 只要pop就输出</li>
+<li>检查右子树是否存在， 存在则继续压左</li>
+<li>否则循环pop，方法为使cur = None</li>
+</ul>
+<p>注意点：</p>
+<ul>
+<li>整体代码逻辑三个顺序遍历都一样。</li>
+<li>记住只要pop就输出即可。</li>
+<li>若是前序遍历， 则改成只要push就输出即可。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorderTraversal</span>(<span class="params">self, root</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        cur = root</span><br><span class="line">        stack = []</span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">while</span> <span class="built_in">len</span>(stack) != <span class="number">0</span> <span class="keyword">or</span> cur <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="comment"># 压左</span></span><br><span class="line">            <span class="keyword">while</span> cur <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                stack.append(cur)</span><br><span class="line">                cur = cur.left</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 至此， 一定是最左元素， 所以必pop，且只要pop就输出</span></span><br><span class="line">            cur = stack.pop()</span><br><span class="line">            result.append(cur.val)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># pop过后检查右子树即可</span></span><br><span class="line">            <span class="comment"># 此处逻辑与后续遍历一样， 如果有右子树， 则循环使用第一个while</span></span><br><span class="line">            <span class="comment"># 无右子树， 则使cur=None就可略过第一个while， 继续pop</span></span><br><span class="line">            <span class="keyword">if</span> cur.right <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                cur = cur.right</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur = <span class="literal">None</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="剑指offer33-判断数组是否可以是后续遍历结果"><a href="#剑指offer33-判断数组是否可以是后续遍历结果" class="headerlink" title="剑指offer33. 判断数组是否可以是后续遍历结果"></a>剑指offer33. 判断数组是否可以是后续遍历结果</h4><p>Overall Precedure:</p>
+<ul>
+<li>只需记住一个数组若是BST的后序遍历结果， 那么最后一个元素必是根节点， 而之前的元素必是左+右。</li>
+<li>因此左子树中不能有大于root的元素</li>
+<li>右子树中不可有小于root的元素</li>
+<li>之后递归求解即可</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li>此题终止条件不是常规的在函数起点直接if判断。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_back_order_traversal</span>(<span class="params">nums</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    2021-12-19</span></span><br><span class="line"><span class="string">    思路：</span></span><br><span class="line"><span class="string">    判断树的后序遍历， 则首先需明确其特点：</span></span><br><span class="line"><span class="string">    数组最后一位必为根节点。 那么根节点之前的elements， 必为左右子树， 且左右子树连续， 即必一组都小于root的+一组都大于root的</span></span><br><span class="line"><span class="string">    e.g. [5, 7, 6, 9, 11, 10, 8] --&gt; root = 8; left = [5, 7, 6]; right = [9, 11, 10, 8]</span></span><br><span class="line"><span class="string">    那么此时， 继续判断left和right是否符合条件即可。 上例中， 如果right = [9, 1, 11, 10, 8]则不符条件， 因为右子树中无小于root</span></span><br><span class="line"><span class="string">    的元素</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    至此， 可确定必为使用递归解决。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    递归：</span></span><br><span class="line"><span class="string">        递归函数作用：</span></span><br><span class="line"><span class="string">            判断当前列表是否符合后续遍历条件</span></span><br><span class="line"><span class="string">        函数方程：</span></span><br><span class="line"><span class="string">            left and right 则True</span></span><br><span class="line"><span class="string">        函数终止条件：</span></span><br><span class="line"><span class="string">            当list长度小于等于2， 则必为True；</span></span><br><span class="line"><span class="string">            当右子树中出现比root小的元素， 则为false；</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        此题特殊点在于终止条件不是简单的写于前面的if， 而是先找到左右子树， 再判断右子树是否符合。</span></span><br><span class="line"><span class="string">        之所以说只需判断右子树， 是因为第一while中的左子树一定是符合条件的。 因为找到的元素都是小于root的。</span></span><br><span class="line"><span class="string">    :param nums:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">recursive</span>(<span class="params">nums</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(nums) &lt;= <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        root = nums[-<span class="number">1</span>]</span><br><span class="line">        left_end = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> left_end &lt; <span class="built_in">len</span>(nums) <span class="keyword">and</span> nums[left_end] &lt; root:</span><br><span class="line">            <span class="comment"># 此处注意， [5, 7, 6, 9, 11, 10, 8]中， 第一次遍历时实际left_end应该等于2, 但是这里是等于3的， 因为Left_end先</span></span><br><span class="line">            <span class="comment"># 加了1才判断不符合while条件。 所以再return中切片时， 切成[0: left_end]正好符合所需。</span></span><br><span class="line">            left_end += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(left_end, <span class="built_in">len</span>(nums)):</span><br><span class="line">            <span class="keyword">if</span> nums[i] &lt; root:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        <span class="comment"># 注意and后的切片范围不要弄错，传入下一个递归中的数组不要带上当前root。</span></span><br><span class="line">        <span class="keyword">return</span> recursive(nums[<span class="number">0</span>:left_end]) <span class="keyword">and</span> recursive(nums[left_end:<span class="built_in">len</span>(nums)-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(nums) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> recursive(nums)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>Created by Shain at 2021/12/06, Mel, Australia</p>
+<p>Last Updated:  2021/12/19</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Tree/" rel="tag"># Tree</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/" rel="next" title="算法随手-链表">
+                <i class="fa fa-chevron-left"></i> 算法随手-链表
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/12/09/%E9%9D%A2%E8%AF%95%E5%85%AB%E8%82%A1%E6%96%87-Spring/" rel="prev" title="面试八股文-Spring">
+                面试八股文-Spring <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
-
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          
+          </div>
+          
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">categories</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Conclusion"><span class="nav-number">1.</span> <span class="nav-text">Conclusion</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">2.</span> <span class="nav-text">二叉树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%91%E6%8C%87offer-26-%E5%88%A4%E6%96%AD%E8%BE%93%E5%85%A5%E7%9A%84%E6%A0%91B%E6%98%AF%E5%90%A6%E6%98%AFA%E7%9A%84%E5%AD%90%E6%A0%91%E3%80%82"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">剑指offer 26. 判断输入的树B是否是A的子树。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%91%E6%8C%87offer-28-%E5%AF%B9%E7%A7%B0%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">剑指offer 28. 对称二叉树</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91-BF"><span class="nav-number">2.1.</span> <span class="nav-text">二叉树 BF</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E5%B1%82%E7%BA%A7%E9%81%8D%E5%8E%861-leetcode102"><span class="nav-number">2.1.0.1.</span> <span class="nav-text">二叉树的层级遍历1 leetcode102</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E5%B1%82%E7%BA%A7%E9%81%8D%E5%8E%862"><span class="nav-number">2.1.0.2.</span> <span class="nav-text">二叉树层级遍历2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E5%B1%82%E7%BA%A7%E9%81%8D%E5%8E%863-%EF%BC%88Z%E5%AD%97%E5%BD%A2%E9%81%8D%E5%8E%86%EF%BC%89-leetcode-%E5%89%91%E6%8C%87offer-32-III"><span class="nav-number">2.1.0.3.</span> <span class="nav-text">二叉树层级遍历3 （Z字形遍历） leetcode 剑指offer 32 - III</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%A0%91DF"><span class="nav-number">2.2.</span> <span class="nav-text">平衡二叉树DF</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8E%E7%BB%AD%E9%81%8D%E5%8E%86%E9%9D%9E%E9%80%92%E5%BD%92"><span class="nav-number">2.2.0.1.</span> <span class="nav-text">后续遍历非递归</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%AD%E5%BA%8F%E9%81%8D%E5%8E%86%E9%9D%9E%E9%80%92%E5%BD%92"><span class="nav-number">2.2.0.2.</span> <span class="nav-text">中序遍历非递归</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%91%E6%8C%87offer33-%E5%88%A4%E6%96%AD%E6%95%B0%E7%BB%84%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E6%98%AF%E5%90%8E%E7%BB%AD%E9%81%8D%E5%8E%86%E7%BB%93%E6%9E%9C"><span class="nav-number">2.2.0.3.</span> <span class="nav-text">剑指offer33. 判断数组是否可以是后续遍历结果</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shain</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

@@ -1,38 +1,693 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!doctype html>
 
 
-{% block title %} {{ page.title }} | {{ config.title }} {% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
+  
 
 
-{% block content %}
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="bitmap," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Overall位运算， 无非： 与， 或， 非， 左移， 右移， 异或。  目前接触到位运算的思路主要两种：  利用异或，找出重复元素： leetcode 136. 只出现一次的数字   利用 左移+与或， 达到用 bit 形成 bool数组， 也即 Redis中的bitmap的形式： leetcode 面试题 01.01 判断无重复字符的字符串   信息论 （略）： 老鼠试毒    关于异或，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法随手-位运算">
+<meta property="og:url" content="https://shain001.github.io/2022/02/19/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E4%BD%8D%E8%BF%90%E7%AE%97/index.html">
+<meta property="og:site_name" content="Shain&#39;s Blogs">
+<meta property="og:description" content="Overall位运算， 无非： 与， 或， 非， 左移， 右移， 异或。  目前接触到位运算的思路主要两种：  利用异或，找出重复元素： leetcode 136. 只出现一次的数字   利用 左移+与或， 达到用 bit 形成 bool数组， 也即 Redis中的bitmap的形式： leetcode 面试题 01.01 判断无重复字符的字符串   信息论 （略）： 老鼠试毒    关于异或，">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-19T06:15:12.000Z">
+<meta property="article:modified_time" content="2022-12-16T14:01:26.428Z">
+<meta property="article:author" content="Shain">
+<meta property="article:tag" content="bitmap">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://shain001.github.io/2022/02/19/算法随手-位运算/"/>
+
+
+
+
+
+  <title> 算法随手-位运算 | Shain's Blogs </title>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Shain's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
 
   <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://shain001.github.io/2022/02/19/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E4%BD%8D%E8%BF%90%E7%AE%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Shain's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                算法随手-位运算
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-02-19T17:15:12+11:00">
+                2022-02-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h1><p>位运算， 无非： 与， 或， 非， 左移， 右移， 异或。 </p>
+<p>目前接触到位运算的思路主要两种：</p>
+<ul>
+<li>利用异或，找出重复元素：<ul>
+<li>leetcode 136. 只出现一次的数字</li>
+</ul>
+</li>
+<li>利用 左移+与或， 达到用 bit 形成 bool数组， 也即 Redis中的bitmap的形式：<ul>
+<li>leetcode 面试题 01.01 判断无重复字符的字符串</li>
+</ul>
+</li>
+<li>信息论 （略）：<ul>
+<li>老鼠试毒</li>
+</ul>
+</li>
+</ul>
+<p>关于异或， 其记忆的点为： 异或结果与顺序无关。</p>
+<p>关于 左移+与或  这种类型， 只需记忆 bitmap即可， 当一个问题， 需要使用 数组记录一 二元变量的值时， 可以考虑使用 bitmap 替代 Bool[]。</p>
+<p>而bitmap的使用关键， 即是理解， 要 update bitmap中的一位， 则需 将 bitmap 与一 tempBit 进行 或 运算。 读， 则进行 与 运算。 其中 tempBit是一个只包含一个 ‘1’ 的二进制数字。 1 所在的 索引， 即要 读/写 的 bitmap中的对应位索引。</p>
+<p>同时， 字符转数字， 则可通过ASC码实现。 一个字符， 直接进行 左移/右移， 输出的就是数字。 如果需要标的， 则可通过 ”字符-a“ 实现锚定。</p>
+<h2 id="Sample-Question"><a href="#Sample-Question" class="headerlink" title="Sample Question"></a>Sample Question</h2><h4 id="leetcode-136"><a href="#leetcode-136" class="headerlink" title="leetcode 136"></a>leetcode 136</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">You must implement a solution with a linear runtime complexity and use only constant extra space.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">输入一组数字， 每个元素都重复一次， 只有 一个元素是单独出现的， 没有重复， 找出这个单独的元素</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">使用异或：</span></span><br><span class="line"><span class="string">异或的特点： 相同为0， 不同为1， “并且异或的顺序不影响结果” 即 A ^ B ^ A ^ B ^ C = A ^ A ^ B ^ B ^ C..</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span>(<span class="params">nums</span>):</span></span><br><span class="line">    to_return = <span class="number">0</span> <span class="comment"># 之所以初始化为0， 因为 如果 0 与 01010110 异或的话， 原值不变, e.g. 0 ^ 34 = 34</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(nums)):</span><br><span class="line">        to_return = to_return ^ nums[i]</span><br><span class="line">    <span class="keyword">return</span> to_return</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="leetcode-面试题01-01"><a href="#leetcode-面试题01-01" class="headerlink" title="leetcode 面试题01.01"></a>leetcode 面试题01.01</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 无重复字符的字符串</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 利用bit运算解决 --&gt; 即， 利用 Redis中的bitmap的思路， 形成一个二进制数， 而这个二进制数即相当于一个bool数组。</span></span><br><span class="line"><span class="comment"> * 为什么是bool数组？ 因为 每一位上不是0就是1</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 那么接下来， 即如何实现的问题：</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 1. 将字符转换为数字 --&gt; ASC码。</span></span><br><span class="line"><span class="comment"> * 2. 如何将 转换后的数字， 映射到 二进制数字中的一位？ 即， 转换后的数字相当于一个索引， 如何利用这个索引， 读/写 二进制中的某一位？</span></span><br><span class="line"><span class="comment"> *    即， 如何将 1001 改为 1000？ 同时， 如何读取到 1001中的 第2 位是0还是1？</span></span><br><span class="line"><span class="comment"> *    --&gt;</span></span><br><span class="line"><span class="comment"> *    通过 与， 或运算。 与即是 读， 或等 便是 写。</span></span><br><span class="line"><span class="comment"> *    以 1001 为例， 要判断 1001 的低处第2位是不是1， 则可用 0010 跟 1001 做 and， 则结果为 1 则代表 第二位为1， 反之为0.</span></span><br><span class="line"><span class="comment"> *    那么， 要将 1001 的低处低2位改为1， 则， 使 1001 |= 0010 即可。 因为 0|0 为0， 0|1 为1， 用0做或， 不会改变原值. 而1 或 任何数</span></span><br><span class="line"><span class="comment"> *    均为1， 所以能达到更改某一个位的值的作用。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 3. 至此， 仅剩最后一个步骤， 即如何将字符转换为一个二进制数？</span></span><br><span class="line"><span class="comment"> * --&gt; 左移 + ASC码。</span></span><br><span class="line"><span class="comment"> *     3.1 首先， 要的到 1000， 则只需 将 0001， 也即1， 左移3 位即可。</span></span><br><span class="line"><span class="comment"> *     3.2 每个字符， 与 ‘a’ 相减， 则能得到一个唯一数 x， 也即， 1 左移 x位， 就能得到该字符对应的唯一 二进制数。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 4. 最后， 针对此题的context， 字符的数量， 也即字符的种类， 最多有128个， 也即需要 128 位 这么长的二进制数， 也即， 两个 long型变量。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UniqueLCCI</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//System.out.println(checkUnique(&quot;123&quot;));</span></span><br><span class="line">        <span class="keyword">char</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">        System.out.println(c&lt;&lt;<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">checkUnique</span><span class="params">(String target)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// high 64 bits and low 64bits</span></span><br><span class="line">        <span class="keyword">long</span> high = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">long</span> low = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Character c : target.toCharArray())&#123;</span><br><span class="line">            <span class="comment">// check use high bits or low bits</span></span><br><span class="line">            <span class="keyword">if</span> (c &gt;= <span class="number">64</span>)&#123;</span><br><span class="line">                <span class="keyword">long</span> toBit = <span class="number">1l</span> &lt;&lt; (c-<span class="number">64</span>);</span><br><span class="line">                <span class="keyword">if</span> ((high &amp; toBit) != <span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// if not return, then update high bits to record a character</span></span><br><span class="line">                high |= toBit;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">long</span> toBit = <span class="number">1l</span> &lt;&lt; c;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> ((low &amp; toBit) != <span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                low |= toBit;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/bitmap/" rel="tag"># bitmap</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/01/23/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="next" title="算法随手-动态规划">
+                <i class="fa fa-chevron-left"></i> 算法随手-动态规划
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/12/17/test-1/" rel="prev" title="test">
+                test <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
 
     <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+      
     </div>
   </div>
 
-{% endblock %}
-
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+          
+          </div>
+          
 
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="" />
+          <p class="site-author-name" itemprop="name"></p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">categories</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Overall"><span class="nav-number">1.</span> <span class="nav-text">Overall</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sample-Question"><span class="nav-number">1.1.</span> <span class="nav-text">Sample Question</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-136"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">leetcode 136</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#leetcode-%E9%9D%A2%E8%AF%95%E9%A2%9801-01"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">leetcode 面试题01.01</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shain</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" target="_blank" rel="noopener" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
