@@ -8,14 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
     <meta name="description" content="回溯问题总结：基础无非三种情况：  同一层级中， 每个节点的分支数相同。 –&gt; 使用 used[] 改变状态，不使用 start作为 递归方程的参数。   e.g.  leetcode 全排列1，2   同一层级中， 每个节点的分支数不相同， 即同一层级中， 节点2 的分支中不包含节点1的元素， 同理， 节点三的分支中不包含节点1，2两个节点的元素。 –&gt; 使用 start 作为 递归">
 <meta property="og:type" content="article">
-<meta property="og:title" content="算法随手-链表">
+<meta property="og:title" content="算法笔记-链表">
 <meta property="og:url" content="https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/index.html">
 <meta property="og:site_name" content="Shain&#39;s Blogs">
 <meta property="og:description" content="回溯问题总结：基础无非三种情况：  同一层级中， 每个节点的分支数相同。 –&gt; 使用 used[] 改变状态，不使用 start作为 递归方程的参数。   e.g.  leetcode 全排列1，2   同一层级中， 每个节点的分支数不相同， 即同一层级中， 节点2 的分支中不包含节点1的元素， 同理， 节点三的分支中不包含节点1，2两个节点的元素。 –&gt; 使用 start 作为 递归">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="c:/Users/Senry/Desktop/bt.png">
 <meta property="article:published_time" content="2022-01-18T04:20:25.000Z">
-<meta property="article:modified_time" content="2022-12-16T14:01:26.428Z">
+<meta property="article:modified_time" content="2022-12-17T09:19:27.548Z">
 <meta property="article:author" content="Shain">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="c:/Users/Senry/Desktop/bt.png">
@@ -38,7 +38,7 @@
       
     
     <!-- title -->
-    <title>算法随手-链表</title>
+    <title>算法笔记-链表</title>
     <!-- styles -->
     
 <link rel="stylesheet" href="/css/style.css">
@@ -97,16 +97,16 @@
     <div id="share" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&text=算法随手-链表"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法随手-链表"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&is_video=false&description=算法随手-链表"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=算法随手-链表&body=Check out this article: https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法随手-链表"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法随手-链表"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法随手-链表"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法随手-链表"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&name=算法随手-链表&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&t=算法随手-链表"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&text=算法笔记-链表"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-链表"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&is_video=false&description=算法笔记-链表"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=算法笔记-链表&body=Check out this article: https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-链表"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-链表"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-链表"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-链表"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&name=算法笔记-链表&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&t=算法笔记-链表"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -123,7 +123,7 @@
   <header>
     
     <h1 class="posttitle" itemprop="name headline">
-        算法随手-链表
+        算法笔记-链表
     </h1>
 
 
@@ -227,16 +227,16 @@
     <div id="share-footer" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&text=算法随手-链表"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法随手-链表"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&is_video=false&description=算法随手-链表"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=算法随手-链表&body=Check out this article: https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法随手-链表"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法随手-链表"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法随手-链表"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法随手-链表"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&name=算法随手-链表&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&t=算法随手-链表"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&text=算法笔记-链表"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-链表"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&is_video=false&description=算法笔记-链表"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=算法笔记-链表&body=Check out this article: https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-链表"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-链表"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-链表"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-链表"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&name=算法笔记-链表&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&t=算法笔记-链表"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>

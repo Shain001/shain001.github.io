@@ -8,13 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
     <meta name="description" content="Conclusion与树结构相关的题，多为递归求解。 若可确定使用递归求解树相关的题， 则：  分析问题， 确定解体步骤。 按照步骤，确定递归函数。 所谓确定递归函数，即以下三个步骤： 确定函数终止条件 在利用递归解决树相关问题时， 为了确定函数终止条件， 可以从输入的节点的不同状态入手，进而判断何时应该是False, 也即被拦截，或者说被终止。例如， a, b两个节点都为空则如何， 一个为空如何">
 <meta property="og:type" content="article">
-<meta property="og:title" content="算法随手-树">
+<meta property="og:title" content="算法笔记-树">
 <meta property="og:url" content="https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/index.html">
 <meta property="og:site_name" content="Shain&#39;s Blogs">
 <meta property="og:description" content="Conclusion与树结构相关的题，多为递归求解。 若可确定使用递归求解树相关的题， 则：  分析问题， 确定解体步骤。 按照步骤，确定递归函数。 所谓确定递归函数，即以下三个步骤： 确定函数终止条件 在利用递归解决树相关问题时， 为了确定函数终止条件， 可以从输入的节点的不同状态入手，进而判断何时应该是False, 也即被拦截，或者说被终止。例如， a, b两个节点都为空则如何， 一个为空如何">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-12-06T04:28:56.000Z">
-<meta property="article:modified_time" content="2022-12-16T14:01:26.428Z">
+<meta property="article:modified_time" content="2022-12-17T09:19:44.100Z">
 <meta property="article:author" content="Shain">
 <meta property="article:tag" content="Tree">
 <meta name="twitter:card" content="summary">
@@ -37,7 +37,7 @@
       
     
     <!-- title -->
-    <title>算法随手-树</title>
+    <title>算法笔记-树</title>
     <!-- styles -->
     
 <link rel="stylesheet" href="/css/style.css">
@@ -96,15 +96,15 @@
     <div id="share" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&text=算法随手-树"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法随手-树"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&is_video=false&description=算法随手-树"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=算法随手-树&body=Check out this article: https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法随手-树"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法随手-树"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法随手-树"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法随手-树"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&name=算法随手-树&description=&lt;h1 id=&#34;Conclusion&#34;&gt;&lt;a href=&#34;#Conclusion&#34; class=&#34;headerlink&#34; title=&#34;Conclusion&#34;&gt;&lt;/a&gt;Conclusion&lt;/h1&gt;&lt;p&gt;与树结构相关的题，多为递归求解。 若可确定使用递归求解树相关的题， 则：&lt;/p&gt;
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&text=算法笔记-树"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法笔记-树"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&is_video=false&description=算法笔记-树"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=算法笔记-树&body=Check out this article: https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法笔记-树"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法笔记-树"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法笔记-树"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法笔记-树"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&name=算法笔记-树&description=&lt;h1 id=&#34;Conclusion&#34;&gt;&lt;a href=&#34;#Conclusion&#34; class=&#34;headerlink&#34; title=&#34;Conclusion&#34;&gt;&lt;/a&gt;Conclusion&lt;/h1&gt;&lt;p&gt;与树结构相关的题，多为递归求解。 若可确定使用递归求解树相关的题， 则：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;分析问题， 确定解体步骤。&lt;/li&gt;
 &lt;li&gt;按照步骤，确定递归函数。 所谓确定递归函数，即以下三个步骤：&lt;ul&gt;
@@ -119,7 +119,7 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&t=算法随手-树"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&t=算法笔记-树"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -136,7 +136,7 @@
   <header>
     
     <h1 class="posttitle" itemprop="name headline">
-        算法随手-树
+        算法笔记-树
     </h1>
 
 
@@ -405,15 +405,15 @@
     <div id="share-footer" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&text=算法随手-树"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法随手-树"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&is_video=false&description=算法随手-树"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=算法随手-树&body=Check out this article: https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法随手-树"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法随手-树"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法随手-树"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法随手-树"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&name=算法随手-树&description=&lt;h1 id=&#34;Conclusion&#34;&gt;&lt;a href=&#34;#Conclusion&#34; class=&#34;headerlink&#34; title=&#34;Conclusion&#34;&gt;&lt;/a&gt;Conclusion&lt;/h1&gt;&lt;p&gt;与树结构相关的题，多为递归求解。 若可确定使用递归求解树相关的题， 则：&lt;/p&gt;
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&text=算法笔记-树"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法笔记-树"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&is_video=false&description=算法笔记-树"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=算法笔记-树&body=Check out this article: https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法笔记-树"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法笔记-树"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法笔记-树"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&title=算法笔记-树"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&name=算法笔记-树&description=&lt;h1 id=&#34;Conclusion&#34;&gt;&lt;a href=&#34;#Conclusion&#34; class=&#34;headerlink&#34; title=&#34;Conclusion&#34;&gt;&lt;/a&gt;Conclusion&lt;/h1&gt;&lt;p&gt;与树结构相关的题，多为递归求解。 若可确定使用递归求解树相关的题， 则：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;分析问题， 确定解体步骤。&lt;/li&gt;
 &lt;li&gt;按照步骤，确定递归函数。 所谓确定递归函数，即以下三个步骤：&lt;ul&gt;
@@ -428,7 +428,7 @@
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&t=算法随手-树"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/&t=算法笔记-树"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>

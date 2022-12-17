@@ -4,26 +4,20 @@
   
     
     <entry>
-      <title>test</title>
-      <link href="/2022/12/17/test-1/"/>
-      <url>/2022/12/17/test-1/</url>
+      <title>EffectiveJava-StaticBuilder</title>
+      <link href="/2022/12/17/EffectiveJava-StaticBuilder/"/>
+      <url>/2022/12/17/EffectiveJava-StaticBuilder/</url>
       
-        <content type="html"><![CDATA[<p>Ssss</p>]]></content>
+        <content type="html"><![CDATA[]]></content>
       
       
-      
-        <tags>
-            
-            <tag> ss </tag>
-            
-        </tags>
       
     </entry>
     
     
     
     <entry>
-      <title>算法随手-位运算</title>
+      <title>算法笔记-位运算</title>
       <link href="/2022/02/19/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E4%BD%8D%E8%BF%90%E7%AE%97/"/>
       <url>/2022/02/19/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E4%BD%8D%E8%BF%90%E7%AE%97/</url>
       
@@ -42,7 +36,7 @@
     
     
     <entry>
-      <title>算法随手-动态规划</title>
+      <title>算法笔记-动态规划</title>
       <link href="/2022/01/23/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
       <url>/2022/01/23/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/</url>
       
@@ -55,7 +49,7 @@
     
     
     <entry>
-      <title>算法随手-数组/字符串</title>
+      <title>算法笔记-数组/字符串</title>
       <link href="/2022/01/20/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%95%B0%E7%BB%84-%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
       <url>/2022/01/20/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%95%B0%E7%BB%84-%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
       
@@ -68,7 +62,7 @@
     
     
     <entry>
-      <title>算法随手-链表</title>
+      <title>算法笔记-链表</title>
       <link href="/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"/>
       <url>/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/</url>
       
@@ -88,6 +82,18 @@
         <content type="html"><![CDATA[<h2 id="fallback-vs-fallbackFactory"><a href="#fallback-vs-fallbackFactory" class="headerlink" title="fallback vs fallbackFactory"></a>fallback vs fallbackFactory</h2><p>fallback 方式无法获取异常内容， 只能做降级。</p><p>fallbackFactory 可以获取异常内容。</p><h1 id="fallbackFactory-使用方式"><a href="#fallbackFactory-使用方式" class="headerlink" title="fallbackFactory 使用方式"></a>fallbackFactory 使用方式</h1><ol><li>Maven -&gt; Hystrix</li><li>配置文件修改</li><li>启动类注解@EnableCircuitBreaker开启断路器</li><li>Feign 接口 （接口名假设为Feign， 方便下文描述） 的注解 @FeignClient(……    fallbackFactory = FallBackClass.class)设置fallback =</li><li>创建FallBackClass-&gt; implements FallbackFactory<T> 接口， T值为Feign 接口类名</li><li>创建 InheritanceClass 接口， 继承 Feign接口 Feign。 内容为空即可。 </li><li> 在 FallBackClass中override FallbackFactory的方法， 只有一个 create 方法， 其返回值类型为 Feign， this is why we need to do step5。 </li></ol><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> PaymentConsumerFeign <span class="title">create</span><span class="params">(Throwable throwable)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// &#123;&#125;中的内容会被替换为 throwable.getMessage() 获取的内容</span></span><br><span class="line">    LOG.error(<span class="string">&quot;ExceptionTest = &#123;&#125;&quot;</span>, throwable.getMessage());</span><br><span class="line">    <span class="comment">// 之所以创建空接口 InheritanceClass， 因为此处直接return new ...即可</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> PaymentConsumerWithFallBackFactory() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">consumePayment</span><span class="params">(String userId, String saleId)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Oops, server is busy&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>LOG.error(“ExceptionTest = {}”, throwable.getMessage())输出的内容</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ExceptionTest = status 500 reading PaymentConsumerFeign#consumePayment(String,String); content:</span><br><span class="line">&#123;&quot;timestamp&quot;:&quot;2022-01-07T06:41:58.885+0000&quot;,&quot;status&quot;:500,&quot;error&quot;:&quot;Internal Server Error&quot;,&quot;message&quot;:&quot;Not Created Yet&quot;,&quot;path&quot;:&quot;/processPayment&quot;&#125;</span><br></pre></td></tr></table></figure><p>Provider中抛出的异常</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (state == <span class="number">0</span>)&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">&quot;Not Created Yet&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="fallback方式的使用"><a href="#fallback方式的使用" class="headerlink" title="fallback方式的使用"></a>fallback方式的使用</h2><p>只需：</p><ol><li> @FeignClinet()中设置为fallback = FallBackClass</li><li>创建FallBackClass， implements Feign接口</li><li>对于每个方法， 写出降级内容即可</li></ol>]]></content>
       
       
+      <categories>
+          
+          <category> project </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> sale </tag>
+            
+        </tags>
       
     </entry>
     
@@ -102,6 +108,12 @@
       
       
       
+        <tags>
+            
+            <tag> sale </tag>
+            
+        </tags>
+      
     </entry>
     
     
@@ -114,13 +126,25 @@
         <content type="html"><![CDATA[<h1 id="从伪超杀问题的解决思路及问题演变理解Redisson加锁机制"><a href="#从伪超杀问题的解决思路及问题演变理解Redisson加锁机制" class="headerlink" title="从伪超杀问题的解决思路及问题演变理解Redisson加锁机制"></a>从伪超杀问题的解决思路及问题演变理解Redisson加锁机制</h1><h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><ul><li><p>功能： 秒杀 –&gt; 高并发</p></li><li><p>架构： nginx + multiple TomCat + Redis Database (Redis中存一简单KV， K = 商品名， V = 库存)</p></li><li><p>Note： 均为伪场景， 实际秒杀问题并非这样设计</p></li></ul><h3 id="V1"><a href="#V1" class="headerlink" title="V1"></a>V1</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> string <span class="title">deductStock</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> stock = Integer.parseInt(stringRedisTemplate.opsForValue().get(<span class="string">&quot;stock&quot;</span>));  <span class="comment">// 得到stock数量</span></span><br><span class="line">    <span class="keyword">if</span> ( strock &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> realStrock = stock - <span class="number">1</span>;</span><br><span class="line">        stringRedisTemplate.opsForValue().set(<span class="string">&quot;stock&quot;</span>, realStrok + <span class="string">&quot;&quot;</span>);  <span class="comment">// 写回</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        库存不足；</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;end&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>问题</strong>：</p><p>单机内，TomCat集群皆无锁。</p><p>线程1 得到stock = 200 时， 线程2 也可能得到stock = 200， 两个线程操作后正常数量应为198， 但是均写回了199。</p><h3 id="V2"><a href="#V2" class="headerlink" title="V2"></a>V2</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> string <span class="title">deductStock</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="keyword">synchronized</span>(<span class="keyword">this</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> stock = Integer.parseInt(stringRedisTemplate.opsForValue().get(<span class="string">&quot;stock&quot;</span>));  <span class="comment">// 得到stock数量</span></span><br><span class="line">        <span class="keyword">if</span> ( strock &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">int</span> realStrock = stock - <span class="number">1</span>;</span><br><span class="line">            stringRedisTemplate.opsForValue().set(<span class="string">&quot;stock&quot;</span>, realStrok + <span class="string">&quot;&quot;</span>);  <span class="comment">// 写回</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            库存不足；</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;end&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li><p>evolution1: added Synchronized keyword</p></li><li><p>问题：</p><p>单机内实现了并发安全， 但集群下无效，因为多个TomCat同一时刻下均各自出来一条线程访问redis， 此时依然有线程安全问题</p></li></ul><h3 id="V3"><a href="#V3" class="headerlink" title="V3"></a>V3</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> string <span class="title">deductStock</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    String lockKey = <span class="string">&quot;lockKey&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 此处不可将设置key与设置超时两个步骤写成两句代码， 因为无法保证原子性， 如设置了key以后宕机了， 那么时间设置就丢失了。</span></span><br><span class="line">    Boolean result = StringRedisTemplate.opsForValue().setIfAbscent(lockKey, <span class="string">&quot;test&quot;</span>, <span class="number">10</span>, TimeUnit.Seconds);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (! result)</span><br><span class="line">retrun <span class="string">&quot;error&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        nt stock = Integer.parseInt(stringRedisTemplate.opsForValue().get(<span class="string">&quot;stock&quot;</span>));  <span class="comment">// 得到stock数量</span></span><br><span class="line">        <span class="keyword">if</span> ( strock &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> realStrock = stock - <span class="number">1</span>;</span><br><span class="line">        stringRedisTemplate.opsForValue().set(<span class="string">&quot;stock&quot;</span>, realStrok + <span class="string">&quot;&quot;</span>);  <span class="comment">// 写回</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">    库存不足；</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">finally</span>&#123;</span><br><span class="line">        stringRedisTemplate.delete(lockKey);</span><br><span class="line">    &#125;</span><br><span class="line">    i</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;end&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li><p>evolution2:</p><ul><li>利用 redis的单线成特性， <strong>使用setnx指令</strong>， 使各个线程串行的取set一个key， 如果set成功则代表抢锁成功， <strong>此时没抢到锁的线程做自旋等待。</strong></li><li>同时需将key设置expire时间， 其目的是防止程序跑到finally前宕机而无法释放这个key， 也即无法释放锁导致死锁。</li></ul></li><li><p>问题：</p><ul><li>线程实际运行时间超过设置的expire时间， 一个线程还未结束时就释放了锁， 此时线程2拿到锁， 线程2运行过程中线程1运行结束调用finally代码， 从而删除了这个key，也即释放了这个锁。 但问题是此时这个被删除的锁其实是线程2的。 –&gt; 这个现象称为永久失效？</li></ul></li></ul><h3 id="V4"><a href="#V4" class="headerlink" title="V4"></a>V4</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> string <span class="title">deductStock</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    String lockKey = <span class="string">&quot;lockKey&quot;</span>;</span><br><span class="line">    String clientID = <span class="string">&quot;..&quot;</span></span><br><span class="line">    <span class="comment">// 此处不可将设置key与设置超时两个步骤写成两句代码， 因为无法保证原子性， 如设置了key以后宕机了， 那么时间设置就丢失了。</span></span><br><span class="line">    Boolean result = StringRedisTemplate.opsForValue().setIfAbscent(lockKey, clientID, <span class="number">10</span>, TimeUnit.Seconds);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (! result)</span><br><span class="line">retrun <span class="string">&quot;error&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line"> # 更新内存并写回</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">finally</span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> ( clientID.equals(redis.get(LockKey)))</span><br><span class="line">        &#123;</span><br><span class="line">            stringRedisTemplate.delete(lockKey);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    i</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;end&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li>Evolution:<ul><li>V3的问题是一个线程删除了不属于自己的锁， 也即不属于自己的key， 所以V4将key的value设置成线程唯一的， 再删除key之前先判断这个key是不是自己的</li></ul></li><li>问题：<ul><li>依然会出现一个线程删除了不属于自己的key的情况。 如： key的超时时间为10s, 即10s后一个key会被自动删除。 假设在第9.99999s时， 一个线程运行了finally 中的if条件， 判断if为true， 所以开始执行delete操作。 而在执行delete时， 已经是第10.000001s。 这意味着该线程的key其实已经被自动删除了， 而此时再此执行delete， 则删除的还是另一个线程的锁，即key。</li></ul></li><li>该问题原因：<ul><li>所有线程都用了同一个名称的key，即锁。 –&gt;  无法解决<ul><li>因为，利用redis实现分布式线程安全的本质是利用了“SETNX”， 这意味着所有线程必须使用同一个名称的KEY。</li></ul></li><li>一个线程还未正常运行结束时， key就超时被自动删除了 –&gt; 可解决： <strong>线程运行中为其持有的key续时间</strong>， which is Redisson did。</li></ul></li></ul><h3 id="Redisson-Lock"><a href="#Redisson-Lock" class="headerlink" title="Redisson Lock"></a>Redisson Lock</h3><p>Redisson Lock即帮助自动的为一个线程持有的锁“续命”， 从而避免出现误删其他线程的key的问题。</p><p>总结 Redisson Lock工作原理本质：</p><ul><li>利用SETNX的特点（实际源码中并不是这么写， 但原理是一样的）， 即判断一个key是否存在， 存在即不可持有， 不存在则可更新value， 来实现给线程分发锁。</li><li>使每个线程持有的key中的value唯一， 来实现防止误删的问题。</li><li>使每个线程持有的key自动续命， 来实现防止误删的问题。</li><li>Redisson Lock的源码中大量使用Lua脚本语言来保证操作的原子性。</li></ul><h3 id="Extra-如何提高并发效率？"><a href="#Extra-如何提高并发效率？" class="headerlink" title="Extra: 如何提高并发效率？"></a>Extra: 如何提高并发效率？</h3><p>上述场景中， 所有操作时串行的，例如stock=1000， 那么每个线程都需排队操作者1000个库存。 效率低下。 </p><p>若想提高并发效率， 可将stock分段， 如分成stock_001 = 200,  stock_002 = 200 …. ， 如此并发效率便提高五倍。 同时服务器压力也会增大。 即分段粒度越高， 并发效率越高。</p>]]></content>
       
       
+      <categories>
+          
+          <category> project </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> sale </tag>
+            
+        </tags>
       
     </entry>
     
     
     
     <entry>
-      <title>面试八股文-Spring</title>
+      <title>算法笔记-Spring</title>
       <link href="/2021/12/09/%E9%9D%A2%E8%AF%95%E5%85%AB%E8%82%A1%E6%96%87-Spring/"/>
       <url>/2021/12/09/%E9%9D%A2%E8%AF%95%E5%85%AB%E8%82%A1%E6%96%87-Spring/</url>
       
@@ -133,7 +157,7 @@
     
     
     <entry>
-      <title>算法随手-树</title>
+      <title>算法笔记-树</title>
       <link href="/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/"/>
       <url>/2021/12/06/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%A0%91/</url>
       
@@ -160,7 +184,7 @@
     
     
     <entry>
-      <title>算法随手-链表</title>
+      <title>算法笔记-链表</title>
       <link href="/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/"/>
       <url>/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/</url>
       
@@ -261,7 +285,7 @@
       
         <tags>
             
-            <tag> JVM分区 </tag>
+            <tag> JVM Memory </tag>
             
         </tags>
       
@@ -293,31 +317,6 @@
             <tag> BeanFactory </tag>
             
             <tag> ApplicationContext </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>For LeiHeHe</title>
-      <link href="/2021/10/30/test/"/>
-      <url>/2021/10/30/test/</url>
-      
-        <content type="html"><![CDATA[<p>Thank my dear dear dear favorite girl <a href="https://leihehehe.github.io/">Leiheee’s</a> help during the construction of this blog❤❤❤❤😍😍😍😍🐱‍🐉🐱‍🐉🐱‍🐉🐱‍🐉.</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> for_leihee </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> for_Leiheee </tag>
             
         </tags>
       
