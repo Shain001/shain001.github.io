@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title>Effective Java - StaticBuilder+Builder</title>
+      <title>Effective Java - StaticBuilder &amp; Builder Pattern</title>
       <link href="/2022/12/17/effectiveJava-staticBuilder/"/>
       <url>/2022/12/17/effectiveJava-staticBuilder/</url>
       
@@ -25,6 +25,8 @@
             <tag> Java </tag>
             
             <tag> Static Builder </tag>
+            
+            <tag> Builder Pattern </tag>
             
         </tags>
       
