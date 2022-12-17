@@ -2,13 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://shain001.github.io/2022/12/17/EffectiveJava-StaticBuilder/</loc>
-    
-    <lastmod>2022-12-17</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://shain001.github.io/2021/12/09/%E9%9D%A2%E8%AF%95%E5%85%AB%E8%82%A1%E6%96%87-Spring/</loc>
     
     <lastmod>2022-12-17</lastmod>
@@ -100,14 +93,7 @@
   </url>
   
   <url>
-    <loc>https://shain001.github.io/google7a5a2b021e9be6bd.html</loc>
-    
-    <lastmod>2022-12-16</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://shain001.github.io/about/index.html</loc>
+    <loc>https://shain001.github.io/categories/index.html</loc>
     
     <lastmod>2022-12-16</lastmod>
     
@@ -115,13 +101,6 @@
   
   <url>
     <loc>https://shain001.github.io/archives/index.html</loc>
-    
-    <lastmod>2022-12-16</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://shain001.github.io/categories/index.html</loc>
     
     <lastmod>2022-12-16</lastmod>
     
@@ -136,6 +115,20 @@
   
   <url>
     <loc>https://shain001.github.io/tags/index.html</loc>
+    
+    <lastmod>2022-12-16</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://shain001.github.io/about/index.html</loc>
+    
+    <lastmod>2022-12-16</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://shain001.github.io/google7a5a2b021e9be6bd.html</loc>
     
     <lastmod>2022-12-16</lastmod>
     
@@ -221,6 +214,13 @@
   </url>
   
   <url>
+    <loc>https://shain001.github.io/tags/sale/</loc>
+    <lastmod>2022-12-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://shain001.github.io/tags/GC/</loc>
     <lastmod>2022-12-17</lastmod>
     <changefreq>daily</changefreq>
@@ -229,13 +229,6 @@
   
   <url>
     <loc>https://shain001.github.io/tags/JVM-Memory-Allocation/</loc>
-    <lastmod>2022-12-17</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://shain001.github.io/tags/sale/</loc>
     <lastmod>2022-12-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
