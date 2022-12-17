@@ -40,6 +40,14 @@
         <content type="html"><![CDATA[<h1 id="Overall"><a href="#Overall" class="headerlink" title="Overall"></a>Overall</h1><p>位运算， 无非： 与， 或， 非， 左移， 右移， 异或。 </p><p>目前接触到位运算的思路主要两种：</p><ul><li>利用异或，找出重复元素：<ul><li>leetcode 136. 只出现一次的数字</li></ul></li><li>利用 左移+与或， 达到用 bit 形成 bool数组， 也即 Redis中的bitmap的形式：<ul><li>leetcode 面试题 01.01 判断无重复字符的字符串</li></ul></li><li>信息论 （略）：<ul><li>老鼠试毒</li></ul></li></ul><p>关于异或， 其记忆的点为： 异或结果与顺序无关。</p><p>关于 左移+与或  这种类型， 只需记忆 bitmap即可， 当一个问题， 需要使用 数组记录一 二元变量的值时， 可以考虑使用 bitmap 替代 Bool[]。</p><p>而bitmap的使用关键， 即是理解， 要 update bitmap中的一位， 则需 将 bitmap 与一 tempBit 进行 或 运算。 读， 则进行 与 运算。 其中 tempBit是一个只包含一个 ‘1’ 的二进制数字。 1 所在的 索引， 即要 读/写 的 bitmap中的对应位索引。</p><p>同时， 字符转数字， 则可通过ASC码实现。 一个字符， 直接进行 左移/右移， 输出的就是数字。 如果需要标的， 则可通过 ”字符-a“ 实现锚定。</p><h2 id="Sample-Question"><a href="#Sample-Question" class="headerlink" title="Sample Question"></a>Sample Question</h2><h4 id="leetcode-136"><a href="#leetcode-136" class="headerlink" title="leetcode 136"></a>leetcode 136</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Given a non-empty array of integers nums, every element appears twice except for one. Find that single one.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">You must implement a solution with a linear runtime complexity and use only constant extra space.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">输入一组数字， 每个元素都重复一次， 只有 一个元素是单独出现的， 没有重复， 找出这个单独的元素</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">使用异或：</span></span><br><span class="line"><span class="string">异或的特点： 相同为0， 不同为1， “并且异或的顺序不影响结果” 即 A ^ B ^ A ^ B ^ C = A ^ A ^ B ^ B ^ C..</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun</span>(<span class="params">nums</span>):</span></span><br><span class="line">    to_return = <span class="number">0</span> <span class="comment"># 之所以初始化为0， 因为 如果 0 与 01010110 异或的话， 原值不变, e.g. 0 ^ 34 = 34</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(nums)):</span><br><span class="line">        to_return = to_return ^ nums[i]</span><br><span class="line">    <span class="keyword">return</span> to_return</span><br></pre></td></tr></table></figure><h4 id="leetcode-面试题01-01"><a href="#leetcode-面试题01-01" class="headerlink" title="leetcode 面试题01.01"></a>leetcode 面试题01.01</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 无重复字符的字符串</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 利用bit运算解决 --&gt; 即， 利用 Redis中的bitmap的思路， 形成一个二进制数， 而这个二进制数即相当于一个bool数组。</span></span><br><span class="line"><span class="comment"> * 为什么是bool数组？ 因为 每一位上不是0就是1</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 那么接下来， 即如何实现的问题：</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 1. 将字符转换为数字 --&gt; ASC码。</span></span><br><span class="line"><span class="comment"> * 2. 如何将 转换后的数字， 映射到 二进制数字中的一位？ 即， 转换后的数字相当于一个索引， 如何利用这个索引， 读/写 二进制中的某一位？</span></span><br><span class="line"><span class="comment"> *    即， 如何将 1001 改为 1000？ 同时， 如何读取到 1001中的 第2 位是0还是1？</span></span><br><span class="line"><span class="comment"> *    --&gt;</span></span><br><span class="line"><span class="comment"> *    通过 与， 或运算。 与即是 读， 或等 便是 写。</span></span><br><span class="line"><span class="comment"> *    以 1001 为例， 要判断 1001 的低处第2位是不是1， 则可用 0010 跟 1001 做 and， 则结果为 1 则代表 第二位为1， 反之为0.</span></span><br><span class="line"><span class="comment"> *    那么， 要将 1001 的低处低2位改为1， 则， 使 1001 |= 0010 即可。 因为 0|0 为0， 0|1 为1， 用0做或， 不会改变原值. 而1 或 任何数</span></span><br><span class="line"><span class="comment"> *    均为1， 所以能达到更改某一个位的值的作用。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 3. 至此， 仅剩最后一个步骤， 即如何将字符转换为一个二进制数？</span></span><br><span class="line"><span class="comment"> * --&gt; 左移 + ASC码。</span></span><br><span class="line"><span class="comment"> *     3.1 首先， 要的到 1000， 则只需 将 0001， 也即1， 左移3 位即可。</span></span><br><span class="line"><span class="comment"> *     3.2 每个字符， 与 ‘a’ 相减， 则能得到一个唯一数 x， 也即， 1 左移 x位， 就能得到该字符对应的唯一 二进制数。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 4. 最后， 针对此题的context， 字符的数量， 也即字符的种类， 最多有128个， 也即需要 128 位 这么长的二进制数， 也即， 两个 long型变量。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UniqueLCCI</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//System.out.println(checkUnique(&quot;123&quot;));</span></span><br><span class="line">        <span class="keyword">char</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">        System.out.println(c&lt;&lt;<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">checkUnique</span><span class="params">(String target)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// high 64 bits and low 64bits</span></span><br><span class="line">        <span class="keyword">long</span> high = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">long</span> low = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Character c : target.toCharArray())&#123;</span><br><span class="line">            <span class="comment">// check use high bits or low bits</span></span><br><span class="line">            <span class="keyword">if</span> (c &gt;= <span class="number">64</span>)&#123;</span><br><span class="line">                <span class="keyword">long</span> toBit = <span class="number">1l</span> &lt;&lt; (c-<span class="number">64</span>);</span><br><span class="line">                <span class="keyword">if</span> ((high &amp; toBit) != <span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">// if not return, then update high bits to record a character</span></span><br><span class="line">                high |= toBit;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">long</span> toBit = <span class="number">1l</span> &lt;&lt; c;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> ((low &amp; toBit) != <span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                low |= toBit;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       
       
+      <categories>
+          
+          <category> Algorithm </category>
+          
+          <category> bitmap </category>
+          
+      </categories>
+      
       
         <tags>
             
@@ -341,31 +349,6 @@
     
     
     <entry>
-      <title>For LeiHeHe</title>
-      <link href="/2021/10/30/test/"/>
-      <url>/2021/10/30/test/</url>
-      
-        <content type="html"><![CDATA[<p>Thank my dear dear dear favorite girl <a href="https://leihehehe.github.io/">Leiheee’s</a> help during the construction of this blog❤❤❤❤😍😍😍😍🐱‍🐉🐱‍🐉🐱‍🐉🐱‍🐉.</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> for_leihee </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> for_Leiheee </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>算法思想及排序算法的实现与对比</title>
       <link href="/2021/10/30/%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/"/>
       <url>/2021/10/30/%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/</url>
@@ -383,6 +366,31 @@
         <tags>
             
             <tag> sorting algorithm &amp; algorithm general </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>For LeiHeHe</title>
+      <link href="/2021/10/30/test/"/>
+      <url>/2021/10/30/test/</url>
+      
+        <content type="html"><![CDATA[<p>Thank my dear dear dear favorite girl <a href="https://leihehehe.github.io/">Leiheee’s</a> help during the construction of this blog❤❤❤❤😍😍😍😍🐱‍🐉🐱‍🐉🐱‍🐉🐱‍🐉.</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> for_leihee </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> for_Leiheee </tag>
             
         </tags>
       
