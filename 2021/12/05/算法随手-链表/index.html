@@ -6,18 +6,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="See code in Git Repository&#x2F;Leetcode-algorithm&#x2F;data_structure&#x2F;Linked_list Most in Link_List_Review.py 链表的环 判断是否有环： 维护快慢两个指针， 快指针一次前进两位，慢指针一次一位。 若两个指针能够相遇，则有环。 若快指针运动到末尾还未与满指针相遇则无环。 注意， 如果有环，则使用 while n">
+    <meta name="description" content="See code in Git Repository&#x2F;Leetcode-algorithm&#x2F;data_structure&#x2F;Linked_list Most in Link_List_Review.py 链表的环判断是否有环： 维护快慢两个指针， 快指针一次前进两位，慢指针一次一位。 若两个指针能够相遇，则有环。 若快指针运动到末尾还未与满指针相遇则无环。 注意， 如果有环，则使用 while no">
 <meta property="og:type" content="article">
 <meta property="og:title" content="算法笔记-链表">
 <meta property="og:url" content="https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/index.html">
 <meta property="og:site_name" content="Shain&#39;s Blogs">
-<meta property="og:description" content="See code in Git Repository&#x2F;Leetcode-algorithm&#x2F;data_structure&#x2F;Linked_list Most in Link_List_Review.py 链表的环 判断是否有环： 维护快慢两个指针， 快指针一次前进两位，慢指针一次一位。 若两个指针能够相遇，则有环。 若快指针运动到末尾还未与满指针相遇则无环。 注意， 如果有环，则使用 while n">
+<meta property="og:description" content="See code in Git Repository&#x2F;Leetcode-algorithm&#x2F;data_structure&#x2F;Linked_list Most in Link_List_Review.py 链表的环判断是否有环： 维护快慢两个指针， 快指针一次前进两位，慢指针一次一位。 若两个指针能够相遇，则有环。 若快指针运动到末尾还未与满指针相遇则无环。 注意， 如果有环，则使用 while no">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blog%E7%AC%94%E8%AE%B0%202023%E5%B9%B44%E6%9C%8815%E6%97%A5.jpg">
+<meta property="og:image" content="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blog%E9%93%BE%E8%A1%A8-2.jpg">
 <meta property="article:published_time" content="2021-12-05T04:48:26.000Z">
-<meta property="article:modified_time" content="2022-12-17T12:56:35.257Z">
+<meta property="article:modified_time" content="2023-04-16T12:13:31.762Z">
 <meta property="article:author" content="Shain">
 <meta property="article:tag" content="LinkList">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blog%E7%AC%94%E8%AE%B0%202023%E5%B9%B44%E6%9C%8815%E6%97%A5.jpg">
     
     
       
@@ -104,30 +107,13 @@
   <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/&title=算法笔记-链表"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/&title=算法笔记-链表"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
   <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/&title=算法笔记-链表"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/&name=算法笔记-链表&description=&lt;p&gt;See code in Git Repository/Leetcode-algorithm/data_structure/Linked_list&lt;/p&gt;
-&lt;p&gt;Most in Link_List_Review.py&lt;/p&gt;
-&lt;h4 id=&#34;链表的环&#34;&gt;&lt;a href=&#34;#链表的环&#34; class=&#34;headerlink&#34; title=&#34;链表的环&#34;&gt;&lt;/a&gt;链表的环&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;判断是否有环：&lt;ul&gt;
-&lt;li&gt;维护快慢两个指针， 快指针一次前进两位，慢指针一次一位。 若两个指针能够相遇，则有环。 若快指针运动到末尾还未与满指针相遇则无环。&lt;/li&gt;
-&lt;li&gt;注意， 如果有环，则使用 while node.next is not None为判断条件时，一定会有快慢指针相遇的时候， &lt;strong&gt;因为如果有环的话， 那么链表就没有尾节点，也就是没有next为None的节点。换句话说， 如果链表有尾节点，也就是next 为none的节点，那么链表一定无环。&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;找到链表环的入口：&lt;ul&gt;
-&lt;li&gt;首先使用上述方法判断是否有环&lt;/li&gt;
-&lt;li&gt;找到环中任意一个节点。 &lt;ul&gt;
-&lt;li&gt;方法： 若有环， 则使用上述方法判断过程中会得到两个指针相遇的节点， 记录该节点。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;当快慢指针相遇时，创建一新指针从头节点出发， 当该新指针与慢指针相遇时所处的结点即为环的入口。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/&name=算法笔记-链表&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
   <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/&t=算法笔记-链表"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E7%8E%AF"><span class="toc-number">1.</span> <span class="toc-text">链表的环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACK%E4%B8%AA%E5%85%83%E7%B4%A0-offer"><span class="toc-number">2.</span> <span class="toc-text">链表的倒数第K个元素 - offer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E5%8F%8D%E8%BD%AC"><span class="toc-number">3.</span> <span class="toc-text">链表的反转</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E7%8E%AF"><span class="toc-number">1.</span> <span class="toc-text">链表的环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">判断是否有环：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%BE%E5%88%B0%E9%93%BE%E8%A1%A8%E7%8E%AF%E7%9A%84%E5%85%A5%E5%8F%A3%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">找到链表环的入口：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Explaination"><span class="toc-number">1.2.1.</span> <span class="toc-text">Explaination</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E4%BA%A4%E9%93%BE%E8%A1%A8"><span class="toc-number">1.3.</span> <span class="toc-text">相交链表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Explanation"><span class="toc-number">1.3.1.</span> <span class="toc-text">Explanation</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACK%E4%B8%AA%E5%85%83%E7%B4%A0-offer"><span class="toc-number">1.4.</span> <span class="toc-text">链表的倒数第K个元素 - offer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E5%8F%8D%E8%BD%AC"><span class="toc-number">1.5.</span> <span class="toc-text">链表的反转</span></a></li></ol></li></ol>
     </div>
   </span>
 </div>
@@ -178,25 +164,44 @@
   <div class="content" itemprop="articleBody">
     <p>See code in Git Repository/Leetcode-algorithm/data_structure/Linked_list</p>
 <p>Most in Link_List_Review.py</p>
-<h4 id="链表的环"><a href="#链表的环" class="headerlink" title="链表的环"></a>链表的环</h4><ul>
-<li>判断是否有环：<ul>
+<h2 id="链表的环"><a href="#链表的环" class="headerlink" title="链表的环"></a>链表的环</h2><h3 id="判断是否有环："><a href="#判断是否有环：" class="headerlink" title="判断是否有环："></a>判断是否有环：</h3><ul>
 <li>维护快慢两个指针， 快指针一次前进两位，慢指针一次一位。 若两个指针能够相遇，则有环。 若快指针运动到末尾还未与满指针相遇则无环。</li>
 <li>注意， 如果有环，则使用 while node.next is not None为判断条件时，一定会有快慢指针相遇的时候， <strong>因为如果有环的话， 那么链表就没有尾节点，也就是没有next为None的节点。换句话说， 如果链表有尾节点，也就是next 为none的节点，那么链表一定无环。</strong></li>
 </ul>
-</li>
-<li>找到链表环的入口：<ul>
+<p><em>More in Detail update at 16/04/2023</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (fast != <span class="keyword">null</span> &amp;&amp; fast.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">    slow = slow.next;</span><br><span class="line">    fast = fast.next.next;</span><br><span class="line">    <span class="keyword">if</span> (fast == slow) &#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>快慢指针同向奔跑， fast 的速度是slow的一倍， 如果有环， 那么两者必定在某一点相遇， 也即fast会追上slow， 此时fast正好比slow多走了一圈的路程。</strong></p>
+<h3 id="找到链表环的入口："><a href="#找到链表环的入口：" class="headerlink" title="找到链表环的入口："></a>找到链表环的入口：</h3><ul>
 <li>首先使用上述方法判断是否有环</li>
 <li>找到环中任意一个节点。 <ul>
-<li>方法： 若有环， 则使用上述方法判断过程中会得到两个指针相遇的节点， 记录该节点。</li>
+<li>方法： 若有环， 则使用上述方法判断过程中会得到两个指针相遇的节点。</li>
 </ul>
 </li>
 <li>当快慢指针相遇时，创建一新指针从头节点出发， 当该新指针与慢指针相遇时所处的结点即为环的入口。</li>
 </ul>
-</li>
-</ul>
-<span id="more"></span>
+<p><em>More in Detail update at 16/04/2023</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 若链表无环， 则fast会走到链表结尾， 而此时slow还在链表中间。</span></span><br><span class="line"><span class="keyword">while</span> (fast != <span class="keyword">null</span> &amp;&amp; fast.next != <span class="keyword">null</span>) &#123;</span><br><span class="line">    slow = slow.next;</span><br><span class="line">    fast = fast.next.next;</span><br><span class="line">    <span class="keyword">if</span> (fast == slow) &#123;</span><br><span class="line">        slow = head;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果链表中没有环， 该while condition 中的前两个条件会跳过该while， 直接return。</span></span><br><span class="line"><span class="keyword">while</span> (fast != <span class="keyword">null</span> &amp;&amp; fast.next != <span class="keyword">null</span> &amp;&amp; slow != fast) &#123;</span><br><span class="line">    slow = slow.next;</span><br><span class="line">    fast = fast.next;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果fast为null 或者fast.next为null， 代表链表无环</span></span><br><span class="line"><span class="keyword">return</span> fast == <span class="keyword">null</span> || fast.next == <span class="keyword">null</span>? <span class="keyword">null</span>: slow;</span><br></pre></td></tr></table></figure>
 
-<h4 id="链表的倒数第K个元素-offer"><a href="#链表的倒数第K个元素-offer" class="headerlink" title="链表的倒数第K个元素 - offer"></a>链表的倒数第K个元素 - offer</h4><ul>
+<h4 id="Explaination"><a href="#Explaination" class="headerlink" title="Explaination"></a>Explaination</h4><p>slow 路程 = x + y; fast 路程 = x + y + n(y + z) </p>
+<p>由于 fast = 2 slow:     </p>
+<p>2(x+y) = x+y + n (y+z)； </p>
+<p>x + y = n (y + z)</p>
+<p>x = (n-1) y + nz</p>
+<p>其中n为fast在环中跑的圈数。在相遇时， fast指针最少在环中已经跑了一圈， 所以 n &gt;=1。</p>
+<p><strong>假设 n = 1， 则得 x=z, 也即当slow&amp;fast相遇以后， 使得slow在head开始跑， fast在meeting point开始跑， 则两者必定在entry poin相遇。</strong></p>
+<p><img src="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blog%E7%AC%94%E8%AE%B0%202023%E5%B9%B44%E6%9C%8815%E6%97%A5.jpg" alt="笔记 2023年4月15日"></p>
+<h3 id="相交链表"><a href="#相交链表" class="headerlink" title="相交链表"></a>相交链表</h3><p>使pA， pB两个指针分别从headA和headB出发， 当pA跑完了A链以后， 使其从B链头节点继续跑， pB 同理。 </p>
+<p>当pA=pB时， 要么两者相遇在相交节点， 要么两者同时跑到链表结尾， 即 null = null。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">getIntersectionNode</span><span class="params">(ListNode headA, ListNode headB)</span> </span>&#123;</span><br><span class="line">    ListNode pA = headA;</span><br><span class="line">    ListNode pB = headB;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (pA != pB) &#123;</span><br><span class="line">        pA = pA == <span class="keyword">null</span>? headB: pA.next;</span><br><span class="line">        pB = pB ==<span class="keyword">null</span>? headA: pB.next;</span><br><span class="line">    &#125;</span><br><span class="line">		</span><br><span class="line">  	<span class="comment">// 若没有交点， while将在pA = pB = null 时退出循环</span></span><br><span class="line">    <span class="keyword">return</span> pA;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Explanation"><a href="#Explanation" class="headerlink" title="Explanation"></a>Explanation</h4><p>当P1 第二次经过交点 I 时， 其走过的距离 = (M + N) + Z;</p>
+<p>同理， 当P2 第二次经过交点时， 其走过的距离 = (N + Z ) + M;</p>
+<p><strong>两者相等。所以只要有交点， P1 &amp; P2 必相交于交点处。</strong></p>
+<p><img src="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blog%E9%93%BE%E8%A1%A8-2.jpg" alt="链表-2"></p>
+<p><strong>若两条链没有交点， 假设 ListA = X, ListB = Y.</strong></p>
+<p><strong>则当P1 遍历完两条链走到null 时， 其路程为 X + Y。 同理， P2的路程为Y + X。 所以只要两条链表没有相交， 两者必在 null 处相遇。</strong></p>
+<h3 id="链表的倒数第K个元素-offer"><a href="#链表的倒数第K个元素-offer" class="headerlink" title="链表的倒数第K个元素 - offer"></a>链表的倒数第K个元素 - offer</h3><ul>
 <li>注意双指针在链表中的使用：<ul>
 <li>倒数第k个元素， 可使快指针先走k步， 然后慢指针再开始走，这样当快指针走到末尾慢指针所指即答案。</li>
 </ul>
@@ -212,7 +217,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="链表的反转"><a href="#链表的反转" class="headerlink" title="链表的反转"></a>链表的反转</h4><ul>
+<h3 id="链表的反转"><a href="#链表的反转" class="headerlink" title="链表的反转"></a>链表的反转</h3><ul>
 <li><p>recursive即可</p>
 </li>
 <li><p>但是注意：</p>
@@ -253,7 +258,7 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E7%8E%AF"><span class="toc-number">1.</span> <span class="toc-text">链表的环</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACK%E4%B8%AA%E5%85%83%E7%B4%A0-offer"><span class="toc-number">2.</span> <span class="toc-text">链表的倒数第K个元素 - offer</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E5%8F%8D%E8%BD%AC"><span class="toc-number">3.</span> <span class="toc-text">链表的反转</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E7%8E%AF"><span class="toc-number">1.</span> <span class="toc-text">链表的环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%9C%89%E7%8E%AF%EF%BC%9A"><span class="toc-number">1.1.</span> <span class="toc-text">判断是否有环：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%BE%E5%88%B0%E9%93%BE%E8%A1%A8%E7%8E%AF%E7%9A%84%E5%85%A5%E5%8F%A3%EF%BC%9A"><span class="toc-number">1.2.</span> <span class="toc-text">找到链表环的入口：</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Explaination"><span class="toc-number">1.2.1.</span> <span class="toc-text">Explaination</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E4%BA%A4%E9%93%BE%E8%A1%A8"><span class="toc-number">1.3.</span> <span class="toc-text">相交链表</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Explanation"><span class="toc-number">1.3.1.</span> <span class="toc-text">Explanation</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E5%80%92%E6%95%B0%E7%AC%ACK%E4%B8%AA%E5%85%83%E7%B4%A0-offer"><span class="toc-number">1.4.</span> <span class="toc-text">链表的倒数第K个元素 - offer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E5%8F%8D%E8%BD%AC"><span class="toc-number">1.5.</span> <span class="toc-text">链表的反转</span></a></li></ol></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">
@@ -267,24 +272,7 @@
   <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/&title=算法笔记-链表"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/&title=算法笔记-链表"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
   <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/&title=算法笔记-链表"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/&name=算法笔记-链表&description=&lt;p&gt;See code in Git Repository/Leetcode-algorithm/data_structure/Linked_list&lt;/p&gt;
-&lt;p&gt;Most in Link_List_Review.py&lt;/p&gt;
-&lt;h4 id=&#34;链表的环&#34;&gt;&lt;a href=&#34;#链表的环&#34; class=&#34;headerlink&#34; title=&#34;链表的环&#34;&gt;&lt;/a&gt;链表的环&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;判断是否有环：&lt;ul&gt;
-&lt;li&gt;维护快慢两个指针， 快指针一次前进两位，慢指针一次一位。 若两个指针能够相遇，则有环。 若快指针运动到末尾还未与满指针相遇则无环。&lt;/li&gt;
-&lt;li&gt;注意， 如果有环，则使用 while node.next is not None为判断条件时，一定会有快慢指针相遇的时候， &lt;strong&gt;因为如果有环的话， 那么链表就没有尾节点，也就是没有next为None的节点。换句话说， 如果链表有尾节点，也就是next 为none的节点，那么链表一定无环。&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;找到链表环的入口：&lt;ul&gt;
-&lt;li&gt;首先使用上述方法判断是否有环&lt;/li&gt;
-&lt;li&gt;找到环中任意一个节点。 &lt;ul&gt;
-&lt;li&gt;方法： 若有环， 则使用上述方法判断过程中会得到两个指针相遇的节点， 记录该节点。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;当快慢指针相遇时，创建一新指针从头节点出发， 当该新指针与慢指针相遇时所处的结点即为环的入口。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/&name=算法笔记-链表&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
   <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2021/12/05/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E9%93%BE%E8%A1%A8/&t=算法笔记-链表"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
@@ -306,7 +294,7 @@
     Copyright &copy;
     
     
-    2021-2022
+    2021-2023
     Shain
   </div>
   <div class="footer-right">
