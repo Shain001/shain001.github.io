@@ -6,20 +6,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="回溯问题总结：基础无非三种情况：  同一层级中， 每个节点的分支数相同。 –&gt; 使用 used[] 改变状态，不使用 start作为 递归方程的参数。   e.g.  leetcode 全排列1，2   同一层级中， 每个节点的分支数不相同， 即同一层级中， 节点2 的分支中不包含节点1的元素， 同理， 节点三的分支中不包含节点1，2两个节点的元素。 –&gt; 使用 start 作为 递归">
+    <meta name="description" content="回溯问题总结：updated Used[] VS start两者主要区别：  used 可使 “同一层级中， 所有节点的分支数统一减少‘一定’数量”。 如上图右侧部分， L1 中 1， 2， 3 下的节点均因used[] 减少了一， 进而使得每个节点下的分支中， 不包含自身 （i.e. L1中 1 节点下的分支中不再包含 1 本身）  p.s. 之所以说减少 ‘一定数量’， 因为理论上不一定是仅仅">
 <meta property="og:type" content="article">
 <meta property="og:title" content="算法笔记-回溯">
-<meta property="og:url" content="https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/index.html">
+<meta property="og:url" content="https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/index.html">
 <meta property="og:site_name" content="Shain&#39;s Blogs">
-<meta property="og:description" content="回溯问题总结：基础无非三种情况：  同一层级中， 每个节点的分支数相同。 –&gt; 使用 used[] 改变状态，不使用 start作为 递归方程的参数。   e.g.  leetcode 全排列1，2   同一层级中， 每个节点的分支数不相同， 即同一层级中， 节点2 的分支中不包含节点1的元素， 同理， 节点三的分支中不包含节点1，2两个节点的元素。 –&gt; 使用 start 作为 递归">
+<meta property="og:description" content="回溯问题总结：updated Used[] VS start两者主要区别：  used 可使 “同一层级中， 所有节点的分支数统一减少‘一定’数量”。 如上图右侧部分， L1 中 1， 2， 3 下的节点均因used[] 减少了一， 进而使得每个节点下的分支中， 不包含自身 （i.e. L1中 1 节点下的分支中不再包含 1 本身）  p.s. 之所以说减少 ‘一定数量’， 因为理论上不一定是仅仅">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blogimage-20230611224057808.png">
 <meta property="og:image" content="c:/Users/Senry/Desktop/bt.png">
-<meta property="article:published_time" content="2022-01-18T04:20:25.000Z">
-<meta property="article:modified_time" content="2023-04-23T05:24:29.674Z">
+<meta property="article:published_time" content="2023-06-10T14:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-11T13:02:43.782Z">
 <meta property="article:author" content="Shain">
 <meta property="article:tag" content="backtrack">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:/Users/Senry/Desktop/bt.png">
+<meta name="twitter:image" content="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blogimage-20230611224057808.png">
     
     
       
@@ -81,10 +82,8 @@
     <span id="actions">
       <ul>
         
-        <li><a class="icon" aria-label="Previous post" href="/2022/01/20/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E6%95%B0%E7%BB%84-%E5%AD%97%E7%AC%A6%E4%B8%B2/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
-        
-        <li><a class="icon" aria-label="Next post" href="/2022/01/07/Spring-Cloud-configures-Hystrix-using-Feign-Record/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Next post" href="/2023/05/27/Algorithm-DP1-1-bottomUpTraverse/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
         
         <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
         <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
@@ -97,22 +96,22 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&text=算法笔记-回溯"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&is_video=false&description=算法笔记-回溯"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=算法笔记-回溯&body=Check out this article: https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&name=算法笔记-回溯&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&t=算法笔记-回溯"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&text=算法笔记-回溯"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&is_video=false&description=算法笔记-回溯"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=算法笔记-回溯&body=Check out this article: https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&name=算法笔记-回溯&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&t=算法笔记-回溯"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">回溯问题总结：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text">基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%B1%82%E5%AD%90%E9%9B%86%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">关于求子集问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E4%BA%9B%E7%9A%84%E9%97%AE%E9%A2%98-%E6%90%9C%E7%B4%A2%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">复杂些的问题 - 搜索问题？</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">回溯问题总结：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#updated"><span class="toc-number">1.0.1.</span> <span class="toc-text">updated</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Used-VS-start"><span class="toc-number">1.0.1.1.</span> <span class="toc-text">Used[] VS start</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#old"><span class="toc-number">1.1.</span> <span class="toc-text">old</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%B1%82%E5%AD%90%E9%9B%86%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">关于求子集问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E4%BA%9B%E7%9A%84%E9%97%AE%E9%A2%98-%E6%90%9C%E7%B4%A2%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">复杂些的问题 - 搜索问题？</span></a></li></ol></li></ol>
     </div>
   </span>
 </div>
@@ -136,7 +135,7 @@
       
     <div class="postdate">
       
-        <time datetime="2022-01-18T04:20:25.000Z" itemprop="datePublished">2022-01-18</time>
+        <time datetime="2023-06-10T14:00:00.000Z" itemprop="datePublished">2023-06-11</time>
         
       
     </div>
@@ -161,7 +160,22 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h1 id="回溯问题总结："><a href="#回溯问题总结：" class="headerlink" title="回溯问题总结："></a>回溯问题总结：</h1><h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p>无非三种情况：</p>
+    <h1 id="回溯问题总结："><a href="#回溯问题总结：" class="headerlink" title="回溯问题总结："></a>回溯问题总结：</h1><h3 id="updated"><a href="#updated" class="headerlink" title="updated"></a>updated</h3><p><img src="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blogimage-20230611224057808.png" alt="image-20230611224057808"></p>
+<h4 id="Used-VS-start"><a href="#Used-VS-start" class="headerlink" title="Used[] VS start"></a>Used[] VS start</h4><p>两者主要区别：</p>
+<ul>
+<li><p>used 可使 “同一层级中， 所有节点的分支数统一减少‘一定’数量”。 如上图右侧部分， L1 中 1， 2， 3 下的节点均因used[] 减少了一， 进而使得每个节点下的分支中， 不包含自身 （i.e. L1中 1 节点下的分支中不再包含 1 本身）</p>
+<ul>
+<li>p.s. 之所以说减少 ‘一定数量’， 因为理论上不一定是仅仅减少1， 比如， 可以通过used[] 的设置， 使得L1 的 1 节点下 的分支中， 也不包括 2。 但还没遇到过这种题。</li>
+</ul>
+</li>
+<li><p>Start 主要作用仅仅是 “使得统一层级中的节点 x1, x2, x3, x4… (从左到右数， x1 在x2 的左侧， x2在x3的左侧… )，Xn 下的分支中， 不包含 X1-n-1 中出现的所有元素， 进而表现为 同一层级中 从左至右， 每个节点下的分支数量 依次减少”， 例子如上图。</p>
+<ul>
+<li><p>需要注意的是， 一旦使用了start， 必定会使得 Xn 节点下的分支中，不包括所有 X1- Xn-1 节点中的元素。 即， 如上图， 使用了start以后， L1 的 3 节点下面， 不包含1， 也不包含2， 只剩下了3。 “这意味着， 如果 你想要 一个节点下的分支中不包含自己， 但是要包含除了自己以外的所有元素， 你需要使用 used， 而不是start，因为这会使得一个节点下丢失更多的元素。” 一个例子如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">backtrack</span><span class="params">(LinkedList&lt;Integer&gt; path, <span class="keyword">int</span> curSum, <span class="keyword">int</span> start)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &lt; candidates.length; i++) &#123;</span><br><span class="line">          	</span><br><span class="line">          	<span class="comment">// 此处i+1 确实使得当前节点下的分支中不包含自己， 但是也 排除了所有 0-i 之间的元素。</span></span><br><span class="line">            backtrack(path, curSum, i+<span class="number">1</span>);</span><br><span class="line">          </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="old"><a href="#old" class="headerlink" title="old"></a>old</h2><p>无非三种情况：</p>
 <ul>
 <li><p>同一层级中， 每个节点的分支数相同。 –&gt; 使用 used[] 改变状态，不使用 start作为 递归方程的参数。 </p>
 <ul>
@@ -232,22 +246,22 @@
     </div>
 
     <div id="toc-footer" style="display: none">
-      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">回溯问题总结：</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text">基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%B1%82%E5%AD%90%E9%9B%86%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">关于求子集问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E4%BA%9B%E7%9A%84%E9%97%AE%E9%A2%98-%E6%90%9C%E7%B4%A2%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">复杂些的问题 - 搜索问题？</span></a></li></ol></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9E%E6%BA%AF%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">回溯问题总结：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#updated"><span class="toc-number">1.0.1.</span> <span class="toc-text">updated</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Used-VS-start"><span class="toc-number">1.0.1.1.</span> <span class="toc-text">Used[] VS start</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#old"><span class="toc-number">1.1.</span> <span class="toc-text">old</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%B1%82%E5%AD%90%E9%9B%86%E9%97%AE%E9%A2%98"><span class="toc-number">1.2.</span> <span class="toc-text">关于求子集问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E6%9D%82%E4%BA%9B%E7%9A%84%E9%97%AE%E9%A2%98-%E6%90%9C%E7%B4%A2%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">复杂些的问题 - 搜索问题？</span></a></li></ol></li></ol>
     </div>
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&text=算法笔记-回溯"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&is_video=false&description=算法笔记-回溯"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=算法笔记-回溯&body=Check out this article: https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&name=算法笔记-回溯&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2022/01/18/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&t=算法笔记-回溯"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&text=算法笔记-回溯"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&is_video=false&description=算法笔记-回溯"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=算法笔记-回溯&body=Check out this article: https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&title=算法笔记-回溯"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&name=算法笔记-回溯&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2023/06/11/%E7%AE%97%E6%B3%95%E9%9A%8F%E6%89%8B-%E5%9B%9E%E6%BA%AF/&t=算法笔记-回溯"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
