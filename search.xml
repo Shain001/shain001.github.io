@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>Two Random Algorithm</title>
+      <link href="/2023/09/10/Two-Random-Algorithm/"/>
+      <url>/2023/09/10/Two-Random-Algorithm/</url>
+      
+        <content type="html"><![CDATA[<h1 id="两个取随机数算法"><a href="#两个取随机数算法" class="headerlink" title="两个取随机数算法"></a>两个取随机数算法</h1><h2 id="洗牌算法"><a href="#洗牌算法" class="headerlink" title="洗牌算法"></a>洗牌算法</h2><p>即给你一个数组， 要求你<strong>打乱</strong>这个数组。 也可应用于“扫雷这种类型， 例如 随机在数组中的几个位置生成雷”。</p><h3 id="如何确定-验证算法所打乱的数组真的是随机的？"><a href="#如何确定-验证算法所打乱的数组真的是随机的？" class="headerlink" title="如何确定/验证算法所打乱的数组真的是随机的？"></a>如何确定/验证算法所打乱的数组真的是随机的？</h3><p><strong>通过结果的可能性的数量来确定是不是真的打乱了</strong></p><p>即， 对于一个长度为n的数组， <strong>对其进行 全排列 的结果可能性数量为 n!。</strong></p><p>那么只要保证算法所打乱的数组， 也有n！中可能性即可确定 算法被打乱的数组 真的被打乱了。 </p><p><strong>注意：洗牌算法目的在于‘打乱’数组， 正确性自然是通过 排列组合总数证明的！</strong> </p><p>理解以后直接看代码实现即可。</p><h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShuffleAlgorithm_L384</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] nums;</span><br><span class="line">    <span class="keyword">private</span> Random random;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ShuffleAlgorithm_L384</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.random = <span class="keyword">new</span> Random();</span><br><span class="line">        <span class="keyword">this</span>.nums = nums;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] reset() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.nums;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] shuffle() &#123;</span><br><span class="line">        <span class="keyword">int</span> n = nums.length;</span><br><span class="line">        <span class="keyword">int</span>[] copy = Arrays.copyOf(nums, n);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">          <span class="comment">// 对于每个下标i， 其可能被交换到的下标范围为 [i, len-1], 即 n-i, where i 为下标</span></span><br><span class="line">            <span class="comment">// (len-1 - i + 1), +1 因为下标从0 开始</span></span><br><span class="line">            <span class="keyword">int</span> randomIndex = random.nextInt(i, nums.length);</span><br><span class="line">            swap(copy, i, randomIndex);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> copy;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> temp = nums[i];</span><br><span class="line">        nums[i] = nums[j];</span><br><span class="line">        nums[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="局限"><a href="#局限" class="headerlink" title="局限"></a>局限</h2><p>不难发现， 该算法只能处理 数组长度已知并且长度不变的情况 (当然也很正常， 因为这个算法的目的就是打乱一个数组)。</p><p>那么对于扫雷游戏中随机地点生成地雷这种需求， 虽然也可以利用这个算法“将地雷随机分配到某个地点”（先将x个地雷全部放到数组头部， 然后打乱数组， But what if 你不知到元素总量， you may say 我可以遍历两次数组， 第一次遍历数有多少元素， 第二次再选取， 但是如果数组长度是动态的呢？ 例如遍历了第一次数组以后， 数组长度就变化了。—&gt; This is where reservior algorithm should be used.</p><h1 id="蓄水池算法-Reservior-Algorithm"><a href="#蓄水池算法-Reservior-Algorithm" class="headerlink" title="蓄水池算法 Reservior Algorithm"></a>蓄水池算法 Reservior Algorithm</h1><p>蓄水池算法目的是“随机抽样”， 并且算法无需知道 元素总量是多少， 也无需样本数量固定。 </p><p>这意味着对于streaming data, 该算法依然可以生效。</p><p>那么要证明算法选取的样本真的是随机的， 自然是证明每个样本被选择的概率都是 1/n.</p><h3 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h3><p>算法通过简单的数学运算实现， <strong>首先要理解的一个point是： “假设只需选取一个元素， instead of 只选取一次， 算法会对每个元素都进行 ‘选与不选’的判断， 即 加入 1-10 是个数字中， 已经选取了1， 对于剩下的 2-9 也可能会再次选取， 只不过 如果又选到了2， 那么原本选取的 1 就不要了 ”</strong></p><p>进而不难发现， <strong>假设最终成为答案的样本编号为 k，那么 k 成为答案的充要条件为「在遍历到 k 时被选中」并且「遍历大于 k 的所有元素时，均没有被选择（没有覆盖 k）」 。</strong></p><p><strong>具体做法为：从前往后处理每个样本，每个样本成为答案的概率为 1/i （i 位样本 编号， 从1 开始）</strong> </p><h3 id="证明"><a href="#证明" class="headerlink" title="证明"></a>证明</h3><p><strong>对于每一个样本 i， 由于其最终成为答案的 条件为： 「在遍历到 k 时被选中」并且「遍历大于 k 的所有元素时，均没有被选择（没有覆盖 k）」</strong> 那么其对应的概率为：</p><p><img src="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blogimage-20230910224309928.png" alt="image-20230910224309928"></p><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReservoirAlgorithm_L382</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> result;</span><br><span class="line">    <span class="keyword">private</span> Random random;</span><br><span class="line">    <span class="keyword">private</span> ListNode head;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ReservoirAlgorithm_L382</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.head = head;</span><br><span class="line">        <span class="keyword">this</span>.random = <span class="keyword">new</span> Random();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getRandom</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ListNode p = <span class="keyword">this</span>.head;</span><br><span class="line">        <span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (p != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// radom.nextInt取值左闭右开</span></span><br><span class="line">            <span class="keyword">if</span> (random.nextInt(<span class="number">0</span>, count) == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">this</span>.result = p.val;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            p = p.next;</span><br><span class="line">            count++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>bit calculation &amp; Rabin-Karp Algorithm</title>
       <link href="/2023/08/27/bit-calculation-Rabin-Karp-Algorithm/"/>
       <url>/2023/08/27/bit-calculation-Rabin-Karp-Algorithm/</url>
@@ -502,31 +515,6 @@
     
     
     <entry>
-      <title>For LeiHeHe</title>
-      <link href="/2021/10/30/test/"/>
-      <url>/2021/10/30/test/</url>
-      
-        <content type="html"><![CDATA[<p>Thank my dear dear dear favorite girl <a href="https://leihehehe.github.io/">Leiheee’s</a> help during the construction of this blog❤❤❤❤😍😍😍😍🐱‍🐉🐱‍🐉🐱‍🐉🐱‍🐉.</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> for_leihee </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> for_Leiheee </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>算法思想及排序算法的实现与对比</title>
       <link href="/2021/10/30/%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/"/>
       <url>/2021/10/30/%E5%87%A0%E7%A7%8D%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%E6%80%9D%E6%83%B3/</url>
@@ -544,6 +532,31 @@
         <tags>
             
             <tag> sorting algorithm &amp; algorithm general </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>For LeiHeHe</title>
+      <link href="/2021/10/30/test/"/>
+      <url>/2021/10/30/test/</url>
+      
+        <content type="html"><![CDATA[<p>Thank my dear dear dear favorite girl <a href="https://leihehehe.github.io/">Leiheee’s</a> help during the construction of this blog❤❤❤❤😍😍😍😍🐱‍🐉🐱‍🐉🐱‍🐉🐱‍🐉.</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> for_leihee </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> for_Leiheee </tag>
             
         </tags>
       
