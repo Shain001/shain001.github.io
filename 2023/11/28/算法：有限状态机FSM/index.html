@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Leetcode 137 给你一个整数数组 nums ，除某个元素仅出现 一次 外，其余每个元素都恰出现 三次 。请你找出并返回那个只出现了一次的元素。 你必须设计并实现线性时间复杂度的算法且使用常数级空间来解决此问题。 由于 “只有一个元素出现一次， 其他都是三次”， 那么假如我们 “数” 每一个二进制位上1出现的次数， 其最终结果必定如下图所示：  也即， 每一个二进制位上， 1 出现的次数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法：有限状态机FSM">
+<meta property="og:url" content="https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/index.html">
+<meta property="og:site_name" content="Shain&#39;s Blogs">
+<meta property="og:description" content="Leetcode 137 给你一个整数数组 nums ，除某个元素仅出现 一次 外，其余每个元素都恰出现 三次 。请你找出并返回那个只出现了一次的元素。 你必须设计并实现线性时间复杂度的算法且使用常数级空间来解决此问题。 由于 “只有一个元素出现一次， 其他都是三次”， 那么假如我们 “数” 每一个二进制位上1出现的次数， 其最终结果必定如下图所示：  也即， 每一个二进制位上， 1 出现的次数">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blogimage-20231128005230956.png">
+<meta property="og:image" content="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blogimage-20231128005230956.png">
+<meta property="og:image" content="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blogimage-20231128012054859.png">
+<meta property="article:published_time" content="2023-11-27T13:47:13.000Z">
+<meta property="article:modified_time" content="2023-11-27T14:28:37.832Z">
+<meta property="article:author" content="Shain">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blogimage-20231128005230956.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>算法：有限状态机FSM</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/project/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/11/12/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%95%B0%E7%BB%84%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0%E5%AD%97-1/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&text=算法：有限状态机FSM"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&title=算法：有限状态机FSM"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&is_video=false&description=算法：有限状态机FSM"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=算法：有限状态机FSM&body=Check out this article: https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&title=算法：有限状态机FSM"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&title=算法：有限状态机FSM"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&title=算法：有限状态机FSM"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&title=算法：有限状态机FSM"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&name=算法：有限状态机FSM&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&t=算法：有限状态机FSM"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        算法：有限状态机FSM
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Shain</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-11-27T13:47:13.000Z" itemprop="datePublished">2023-11-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>Leetcode 137</p>
+<p>给你一个整数数组 <code>nums</code> ，除某个元素仅出现 <strong>一次</strong> 外，其余每个元素都恰出现 <strong>三次 。</strong>请你找出并返回那个只出现了一次的元素。</p>
+<p>你必须设计并实现线性时间复杂度的算法且使用常数级空间来解决此问题。</p>
+<p>由于 “只有一个元素出现一次， 其他都是三次”， 那么假如我们 “数” 每一个二进制位上1出现的次数， 其最终结果必定如下图所示：</p>
+<p><img src="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blogimage-20231128005230956.png" alt="image-20231128005230956"></p>
+<p>也即， 每一个二进制位上， 1 出现的次数 对 3 求余的话， 其结果 要么是 0 （即 只出现一次的 数字在这一位上是0）， 要么是 1 （即 只出现一次的数字在这一位上 是1）。</p>
+<p>为什么？ 因为“只有一个数字出现一次， 其他数字都是三次”， 这也就意味着， 每一位上1出现的次数， 只可能是 1, 3, 4(1+3), 6, 7(1+2*3)…</p>
+<p>那么下一步我们只需要 遍历数组， 进行计算， 得到每一位上 1 出现的次数，对3求余， 即可 得到答案。</p>
+<p>这样当然可以， 但是我们发现一个问题。 假设以上图为例， 某一个单个 位上的 1 的个数可能很大， 假如 数组中 有 1000 个数， 这个值可能是1000. 不好表示。那么不妨我们直接在遍历过程中 计算 某一个位上 1 的个数 对3 求余的 变化， 最终得到结果。</p>
+<p>进一步讲， 当我们遍历完所有数字， 某一个位上 1 的个数对3 的余数 只有两种可能： 1 或者 0. </p>
+<p>但是这是遍历完以后， 在遍历过程中， 由于我们要一个一个的遍历数字， 所以在过程中 一定会出现 对3余数为2的时刻。</p>
+<p>也即， 每一位 对于3 求余 的余数 有三种可能性： 0，1，2</p>
+<p>由于有三种状态， 那么我们需要表示为：</p>
+<p>00 -&gt; 余数为0 ,     01 -&gt; 余数为1 ,     10-&gt; 余数为 2.</p>
+<p><img src="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blogimage-20231128005230956.png" alt="image-20231128005230956"></p>
+<p>以这张图为例。 我们遍历数组中， 所更新的 二进制数长成这样：</p>
+<p>00 （代表左边第一列 1 的个数对3的余数） | 00 （左边第二列）| 00 | 00</p>
+<p>即， 对于 每一个元素的二进制数上的每一位， 我们需要维护 一个 长度为 2 的二进制数 来记录其余数的变化。 </p>
+<p>那么， 不妨将长度为 2 的二进制数拆开， 变成 高位和低位 两组 二进制数， 即：</p>
+<p>high:  0 0 0 0</p>
+<p>low: 0 0 0 0</p>
+<p>此时， 对于上图中 对3 求余 的 二进制数 0101, 他实际上是  00, 01, 00, 01, —-&gt; 拆开成 high &amp; low:</p>
+<p>high: 0 0 0 0</p>
+<p>low: 0 1 0 1</p>
+<p>不难发现， 当我们遍历完数组， 计算完 low and high以后， low所对应的值即为答案。 为什么？ 因为上面说的，  对三余数为2 的情况只是一个中间状态， 最终所有位上的1的个数 对三的余数 要么是 0， 要么是 1， 也即对应着状态 00 &amp; 01 </p>
+<p>到这里， 我们要做的就仅仅是 遍历数组， 然后更新 high &amp; low.  他们的状态变化为下图所示 （下图中 two代表high， one对应low， 图是偷的）：</p>
+<p><img src="https://shain001blog.oss-ap-southeast-2.aliyuncs.com/blogimage-20231128012054859.png" alt="image-20231128012054859"></p>
+<p>也即， 当我们遍历到数组中一个新的元素， 要计算 low中或high中某一位的值， 要取决于 high 中 或 low中 对应的值当前为多少。 为什么？ 因为low 和high是拆开的嘛， 两者何在一起才能表示当前这一位上 1 的个数对三的余数为多少。</p>
+<p>到这里我们能得到：</p>
+<p>if high == 0: // 看上图， 如果 橘色代表的高位是 0 时， 当遍历的数字当前位为 1， low 是要取反的， 当遍历的数字当前位为0 则不变<br>  if n == 0:<br>    Low = low<br>  if n == 1:<br>    Low = ~low<br>if high == 1:<br>    Low = 0</p>
+<p>引入 异或运算 ，可将以上拆分简化为：</p>
+<p>if high == 0:<br>    Low = low ^ n<br>if high == 1:<br>    Low = 0<br>引入 与运算 ，可继续简化为：</p>
+<p><strong>Low = low ^ n &amp; ~high</strong></p>
+<p>对于 high的计算， 也是一样的公式。</p>
+<p>这题的重点在于理解， high 和 low两个二进制数的意义， 即他们原本应该是写成： 00 | 00 | 00 | 00 | …… </p>
+<p>但是为了计算方便， 所以拆成了两个二进制数high和low。 </p>
+<p>其次在于理解， 为什么计算结束后， low代表的值即为答案。</p>
+<p>最后则是理解 位运算的公式推导过程。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/project/">Projects</a></li>
+         
+          <li><a href="/tags/">Tag</a></li>
+         
+          <li><a href="/categories/">Category</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&text=算法：有限状态机FSM"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&title=算法：有限状态机FSM"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&is_video=false&description=算法：有限状态机FSM"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=算法：有限状态机FSM&body=Check out this article: https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&title=算法：有限状态机FSM"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&title=算法：有限状态机FSM"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&title=算法：有限状态机FSM"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&title=算法：有限状态机FSM"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&name=算法：有限状态机FSM&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://shain001.github.io/2023/11/28/%E7%AE%97%E6%B3%95%EF%BC%9A%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BAFSM/&t=算法：有限状态机FSM"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2021-2023
+    Shain
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/project/">Projects</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/categories/">Category</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
